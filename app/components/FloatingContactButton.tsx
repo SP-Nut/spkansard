@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FaPhone, FaTimes, FaHeadset, FaLifeRing } from "react-icons/fa";
+import { FaPhone, FaTimes, FaHeadset } from "react-icons/fa";
 import { SiLine } from "react-icons/si";
 
 export default function FloatingContactButton() {

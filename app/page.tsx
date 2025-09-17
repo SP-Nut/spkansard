@@ -152,31 +152,31 @@ export default function Home() {
       <section className="relative py-12 sm:py-16 lg:py-20 xl:py-24 text-white" style={{backgroundColor: '#314874'}}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold italic mb-4 sm:mb-6 lg:mb-8 leading-tight">
-            SP KANSARD ปฏิวัติการต่อเติม<br className="hidden sm:block" />
-            <span className="sm:hidden"> </span>หลังคาจอดรถให้มีดีไซน์
+           SP KANSARD : ปฏิวัติการต่อเติม<br className="hidden sm:block" />
+            <span className="sm:hidden"> </span>หลังคากันสาด
           </h2>
           
           <p className="text-sm sm:text-base lg:text-lg xl:text-xl mb-6 sm:mb-8 lg:mb-12 max-w-4xl mx-auto leading-relaxed opacity-90 px-2">
-            ความก้าวหน้าของนวัตกรรมกันสาดและโรงจอดรถ ที่จะเปลี่ยนมุมมองการตกแต่งบ้านของคุณ เปลี่ยนบ้านธรรมดาให้กลายเป็นบ้านที่มีสไตล์ 
-            ตอบโจทย์ผู้เชี่ยวชาญ ออกแบบจากสถาปนิกผู้เชี่ยวชาญเรื่องความงามและการใช้งาน
+            เติมเต็มความสมบูรณ์แบบให้บ้านของคุณด้วยนวัตกรรมกันสาดและโรงจอดรถดีไซน์ทันสมัยจาก เอสพี กันสาด ผู้นำด้านการต่อเติมบ้านที่มีประสบการณ์ยาวนานกว่า 35 ปี 
+            เรานำเสนอการออกแบบที่ผสมผสานระหว่างความงามและฟังก์ชันการใช้งานอย่างลงตัว เพื่อเปลี่ยนบ้านธรรมดาให้กลายเป็นบ้านที่มีสไตล์ สะท้อนรสนิยมเจ้าของบ้านได้อย่างชัดเจน
           </p>
 
           <div className="text-left max-w-3xl mx-auto mb-8 sm:mb-12 space-y-3 sm:space-y-4 px-2">
             <div className="flex items-start">
-              <span className="text-white mr-3 mt-1 flex-shrink-0">•</span>
-              <span className="text-sm sm:text-base lg:text-lg">รับติดตั้งหลังคาโรงจอดรถทุกรูปแบบ ป้องกันแสงแดด ป้องกันความร้อนได้อย่างมีประสิทธิภาพ</span>
+              <span className="text-white mr-4 mt-1 flex-shrink-0 text-xl sm:text-2xl font-bold">●</span>
+              <span className="text-sm sm:text-base lg:text-lg">บริการครบวงจร ตั้งแต่การติดตั้งหลังคาโรงจอดรถทุกรูปแบบ ที่ช่วยป้องกันแสงแดดและลดความร้อนอย่างมีประสิทธิภาพ</span>
             </div>
             <div className="flex items-start">
-              <span className="text-white mr-3 mt-1 flex-shrink-0">•</span>
-              <span className="text-sm sm:text-base lg:text-lg">ต่อเติมกันสาดหน้าบ้านและข้างบ้าน ด้วยดีไซน์ที่สวยงาม ลงตัวกับสถาปัตยกรรมของบ้านคุณ</span>
+              <span className="text-white mr-4 mt-1 flex-shrink-0 text-xl sm:text-2xl font-bold">●</span>
+              <span className="text-sm sm:text-base lg:text-lg">การต่อเติมกันสาดหน้าบ้าน ข้างบ้าน และหลังบ้าน ที่ออกแบบให้กลมกลืนกับสถาปัตยกรรมเดิมของบ้าน</span>
             </div>
             <div className="flex items-start">
-              <span className="text-white mr-3 mt-1 flex-shrink-0">•</span>
-              <span className="text-sm sm:text-base lg:text-lg">ใช้วัสดุคุณภาพสูงที่ทนทาน ออกแบบได้ตามความต้องการเฉพาะบุคคล</span>
+              <span className="text-white mr-4 mt-1 flex-shrink-0 text-xl sm:text-2xl font-bold">●</span>
+              <span className="text-sm sm:text-base lg:text-lg">คัดสรรวัสดุคุณภาพสูงเกรดพรีเมียม ทั้งเมทัลชีท ไวนิล อลูมิเนียม และโพลีคาร์บอเนต ตอบโจทย์ทุกความต้องการ</span>
             </div>
             <div className="flex items-start">
-              <span className="text-white mr-3 mt-1 flex-shrink-0">•</span>
-              <span className="text-sm sm:text-base lg:text-lg">มีทีมงานมืออาชีพตลอด 35 ปี พร้อมให้คำปรึกษาและบริการที่ดีที่สุดเพื่อคุณ</span>
+              <span className="text-white mr-4 mt-1 flex-shrink-0 text-xl sm:text-2xl font-bold">●</span>
+              <span className="text-sm sm:text-base lg:text-lg">ทีมสถาปนิกและทีมงานติดตั้งมืออาชีพ ยึดมาตรฐานสากลในทุกขั้นตอน พร้อมให้คำปรึกษาอย่างใกล้ชิด</span>
             </div>
           </div>
 
@@ -185,16 +185,12 @@ export default function Home() {
             <div className="w-12 sm:w-16 h-1 bg-white mx-auto"></div>
           </div>
 
-          {/* Service Categories */}
-          <div className="mb-8 sm:mb-12 px-2">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center text-sm sm:text-base lg:text-lg font-medium space-y-2 sm:space-y-0">
-              <span className="text-center">Prefab Steel Garage & Canopy</span>
-              <span className="text-gray-300 hidden sm:inline mx-4">|</span>
-              <span className="text-center">Aluminum Garage & Canopy</span>
-              <span className="text-gray-300 hidden sm:inline mx-4">|</span>
-              <span className="text-center">Facade</span>
+            {/* Service Categories */}
+            <div className="mb-8 sm:mb-12 px-2">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center text-sm sm:text-base lg:text-lg font-medium space-y-2 sm:space-y-0">
+              <span className="text-center">SP KANSARD CO., LTD. | บริษัท เอสพี กันสาด จำกัด</span>
+              </div>
             </div>
-          </div>
 
           {/* Call to Action Buttons */}
           <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:gap-4 lg:gap-6 justify-center px-4">
