@@ -1,13 +1,17 @@
 "use client";
 import HeroSection from "./components/HeroSection";
 import PortfolioSection from "./components/PortfolioSection";
-import { useEffect, useRef } from "react";
-import { FaUsers, FaShieldAlt, FaHeart, FaPhone, FaCalculator } from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import { FaUsers, FaShieldAlt, FaHeart, FaPhone, FaCalculator, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FaCalendarCheck } from "react-icons/fa6";
 import { SiLine } from "react-icons/si";
+import { FaPhoneAlt, FaFileAlt, FaTools, FaHome, FaClock, FaCheckCircle } from "react-icons/fa";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const reviewsScrollRef = useRef<HTMLDivElement | null>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   useEffect(() => {
     const el = videoRef.current;
@@ -26,59 +30,98 @@ export default function Home() {
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
+
+  // Scroll functions for reviews
+  const scrollReviews = (direction: 'left' | 'right') => {
+    const container = reviewsScrollRef.current;
+    if (!container) return;
+    
+    const scrollAmount = 320; // Width of one card plus gap
+    const newScrollLeft = direction === 'left' 
+      ? container.scrollLeft - scrollAmount
+      : container.scrollLeft + scrollAmount;
+    
+    container.scrollTo({
+      left: newScrollLeft,
+      behavior: 'smooth'
+    });
+  };
+
+  const updateScrollButtons = () => {
+    const container = reviewsScrollRef.current;
+    if (!container) return;
+    
+    setCanScrollLeft(container.scrollLeft > 0);
+    setCanScrollRight(
+      container.scrollLeft < container.scrollWidth - container.clientWidth - 10
+    );
+  };
+
+  useEffect(() => {
+    const container = reviewsScrollRef.current;
+    if (!container) return;
+    
+    const handleScroll = () => updateScrollButtons();
+    container.addEventListener('scroll', handleScroll);
+    
+    // Initial check
+    updateScrollButtons();
+    
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
   return (
-    <div className="font-prompt">
+    <div className="font-prompt bg-blue-50">
       <HeroSection />
 
       {/* Intro Section: กันสาด */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 text-center">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8" style={{color:'var(--brand-900)'}}>เอสพี กันสาด</h2>
-        <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24 text-center">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 sm:mb-6 lg:mb-8" style={{color:'var(--brand-900)'}}>เอสพี กันสาด</h2>
+        <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
           SP Kansard ผู้นำด้านกันสาดอันดับ 1 ในกรุงเทพฯและปริมณฑล ด้วยประสบการณ์กว่า 35 ปี และความไว้วางใจจากลูกค้ากว่า 50,000 ครัวเรือนทั่วประเทศ เราสร้างสรรค์กันสาดที่สวยงาม แข็งแรง และใช้งานได้จริง ครบด้วยวัสดุกันสาดมากที่สุดในไทย ทั้ง เมทัลชีท, ไวนิลดรีมรูฟ, อลูมิเนียมรูฟ, โพลีคาร์บอเนต, ชินโคไลท์ และ ระแนง–ฝ้าทุกประเภท ติดตั้งด้วยมาตรฐานสูงสุด พร้อม รับประกันงานสูงสุด 5 ปี เพื่อความมั่นใจในคุณภาพและบริการที่คุณวางใจได้
         </p>
 
         {/* Feature Badges */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-6 sm:gap-8 lg:gap-12">
+        <div className="mt-6 sm:mt-8 grid grid-cols-2 lg:flex lg:flex-wrap items-center justify-center gap-4 sm:gap-6 lg:gap-8 xl:gap-12">
           {/* 50,000+ Customers */}
           <div className="flex flex-col items-center text-gray-700">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
-              <FaUsers className="text-[20px] sm:text-[24px]" style={{color:'var(--brand-700)'}} />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
+              <FaUsers className="text-[16px] sm:text-[20px] lg:text-[24px]" style={{color:'var(--brand-700)'}} />
             </div>
             <div className="mt-2 text-center">
-              <div className="text-lg sm:text-xl font-bold" style={{color:'var(--brand-900)'}}>50,000+</div>
+              <div className="text-base sm:text-lg lg:text-xl font-bold" style={{color:'var(--brand-900)'}}>50,000+</div>
               <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">ครัวเรือน</div>
             </div>
           </div>
 
           {/* 35+ Years Experience */}
           <div className="flex flex-col items-center text-gray-700">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
-              <FaCalendarCheck className="text-[20px] sm:text-[24px]" style={{color:'var(--brand-700)'}} />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
+              <FaCalendarCheck className="text-[16px] sm:text-[20px] lg:text-[24px]" style={{color:'var(--brand-700)'}} />
             </div>
             <div className="mt-2 text-center">
-              <div className="text-lg sm:text-xl font-bold" style={{color:'var(--brand-900)'}}>35+</div>
+              <div className="text-base sm:text-lg lg:text-xl font-bold" style={{color:'var(--brand-900)'}}>35+</div>
               <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">ปี ประสบการณ์</div>
             </div>
           </div>
 
           {/* Customer Satisfaction 100% */}
           <div className="flex flex-col items-center text-gray-700">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
-              <FaHeart className="text-[20px] sm:text-[24px]" style={{color:'var(--brand-700)'}} />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
+              <FaHeart className="text-[16px] sm:text-[20px] lg:text-[24px]" style={{color:'var(--brand-700)'}} />
             </div>
             <div className="mt-2 text-center">
-              <div className="text-lg sm:text-xl font-bold" style={{color:'var(--brand-900)'}}>100%</div>
+              <div className="text-base sm:text-lg lg:text-xl font-bold" style={{color:'var(--brand-900)'}}>100%</div>
               <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">ความพึงพอใจ</div>
             </div>
           </div>
 
           {/* 5 Years Warranty */}
           <div className="flex flex-col items-center text-gray-700">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
-              <FaShieldAlt className="text-[20px] sm:text-[24px]" style={{color:'var(--brand-700)'}} />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
+              <FaShieldAlt className="text-[16px] sm:text-[20px] lg:text-[24px]" style={{color:'var(--brand-700)'}} />
             </div>
             <div className="mt-2 text-center">
-              <div className="text-lg sm:text-xl font-bold" style={{color:'var(--brand-900)'}}>5</div>
+              <div className="text-base sm:text-lg lg:text-xl font-bold" style={{color:'var(--brand-900)'}}>5</div>
               <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">ปี รับประกัน</div>
             </div>
           </div>
@@ -106,72 +149,72 @@ export default function Home() {
       </section>
 
       {/* ROOVTECT SOLUTION Section */}
-      <section className="relative py-16 sm:py-20 lg:py-24 text-white" style={{backgroundColor: '#314874'}}>
+      <section className="relative py-12 sm:py-16 lg:py-20 xl:py-24 text-white" style={{backgroundColor: '#314874'}}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold italic mb-6 sm:mb-8">
-            SP KANSARD ปฏิวัติการต่อเติม<br />
-            หลังคาจอดรถให้มีดีไซน์
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold italic mb-4 sm:mb-6 lg:mb-8 leading-tight">
+            SP KANSARD ปฏิวัติการต่อเติม<br className="hidden sm:block" />
+            <span className="sm:hidden"> </span>หลังคาจอดรถให้มีดีไซน์
           </h2>
           
-          <p className="text-lg sm:text-xl mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed opacity-90">
+          <p className="text-sm sm:text-base lg:text-lg xl:text-xl mb-6 sm:mb-8 lg:mb-12 max-w-4xl mx-auto leading-relaxed opacity-90 px-2">
             ความก้าวหน้าของนวัตกรรมกันสาดและโรงจอดรถ ที่จะเปลี่ยนมุมมองการตกแต่งบ้านของคุณ เปลี่ยนบ้านธรรมดาให้กลายเป็นบ้านที่มีสไตล์ 
             ตอบโจทย์ผู้เชี่ยวชาญ ออกแบบจากสถาปนิกผู้เชี่ยวชาญเรื่องความงามและการใช้งาน
           </p>
 
-          <div className="text-left max-w-3xl mx-auto mb-12 space-y-4">
+          <div className="text-left max-w-3xl mx-auto mb-8 sm:mb-12 space-y-3 sm:space-y-4 px-2">
             <div className="flex items-start">
-              <span className="text-white mr-3 mt-1">•</span>
-              <span className="text-base sm:text-lg">รับติดตั้งหลังคาโรงจอดรถทุกรูปแบบ ป้องกันแสงแดด ป้องกันความร้อนได้อย่างมีประสิทธิภาพ</span>
+              <span className="text-white mr-3 mt-1 flex-shrink-0">•</span>
+              <span className="text-sm sm:text-base lg:text-lg">รับติดตั้งหลังคาโรงจอดรถทุกรูปแบบ ป้องกันแสงแดด ป้องกันความร้อนได้อย่างมีประสิทธิภาพ</span>
             </div>
             <div className="flex items-start">
-              <span className="text-white mr-3 mt-1">•</span>
-              <span className="text-base sm:text-lg">ต่อเติมกันสาดหน้าบ้านและข้างบ้าน ด้วยดีไซน์ที่สวยงาม ลงตัวกับสถาปัตยกรรมของบ้านคุณ</span>
+              <span className="text-white mr-3 mt-1 flex-shrink-0">•</span>
+              <span className="text-sm sm:text-base lg:text-lg">ต่อเติมกันสาดหน้าบ้านและข้างบ้าน ด้วยดีไซน์ที่สวยงาม ลงตัวกับสถาปัตยกรรมของบ้านคุณ</span>
             </div>
             <div className="flex items-start">
-              <span className="text-white mr-3 mt-1">•</span>
-              <span className="text-base sm:text-lg">ใช้วัสดุคุณภาพสูงที่ทนทาน ออกแบบได้ตามความต้องการเฉพาะบุคคล</span>
+              <span className="text-white mr-3 mt-1 flex-shrink-0">•</span>
+              <span className="text-sm sm:text-base lg:text-lg">ใช้วัสดุคุณภาพสูงที่ทนทาน ออกแบบได้ตามความต้องการเฉพาะบุคคล</span>
             </div>
             <div className="flex items-start">
-              <span className="text-white mr-3 mt-1">•</span>
-              <span className="text-base sm:text-lg">มีทีมงานมืออาชีพตลอด 35 ปี พร้อมให้คำปรึกษาและบริการที่ดีที่สุดเพื่อคุณ</span>
+              <span className="text-white mr-3 mt-1 flex-shrink-0">•</span>
+              <span className="text-sm sm:text-base lg:text-lg">มีทีมงานมืออาชีพตลอด 35 ปี พร้อมให้คำปรึกษาและบริการที่ดีที่สุดเพื่อคุณ</span>
             </div>
           </div>
 
           {/* Decorative Element */}
-          <div className="mb-8">
-            <div className="w-16 h-1 bg-white mx-auto"></div>
+          <div className="mb-6 sm:mb-8">
+            <div className="w-12 sm:w-16 h-1 bg-white mx-auto"></div>
           </div>
 
           {/* Service Categories */}
-          <div className="mb-12">
-            <p className="text-lg font-medium mb-6">
-              <span className="mx-4">Prefab Steel Garage & Canopy</span>
-              <span className="text-gray-300">|</span>
-              <span className="mx-4">Aluminum Garage & Canopy</span>
-              <span className="text-gray-300">|</span>
-              <span className="mx-4">Facade</span>
-            </p>
+          <div className="mb-8 sm:mb-12 px-2">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center text-sm sm:text-base lg:text-lg font-medium space-y-2 sm:space-y-0">
+              <span className="text-center">Prefab Steel Garage & Canopy</span>
+              <span className="text-gray-300 hidden sm:inline mx-4">|</span>
+              <span className="text-center">Aluminum Garage & Canopy</span>
+              <span className="text-gray-300 hidden sm:inline mx-4">|</span>
+              <span className="text-center">Facade</span>
+            </div>
           </div>
 
           {/* Call to Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
+          <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:gap-4 lg:gap-6 justify-center px-4">
             <a
               href="https://line.me/R/ti/p/@spkansard"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-gray-200 hover:bg-white text-gray-800 font-semibold py-3 px-8 rounded-full transition-all duration-300 text-base"
+              className="bg-gray-200 hover:bg-white text-gray-800 font-semibold py-3 px-6 sm:px-8 rounded-full transition-all duration-300 text-sm sm:text-base"
             >
               LINE ›
             </a>
             <a
               href="tel:021368899"
-              className="bg-gray-200 hover:bg-white text-gray-800 font-semibold py-3 px-8 rounded-full transition-all duration-300 text-base"
+              className="bg-gray-200 hover:bg-white text-gray-800 font-semibold py-3 px-6 sm:px-8 rounded-full transition-all duration-300 text-sm sm:text-base"
             >
               CALL ›
             </a>
             <a
               href="/free-service"
-              className="bg-gray-200 hover:bg-white text-gray-800 font-semibold py-3 px-8 rounded-full transition-all duration-300 text-base"
+              className="bg-gray-200 hover:bg-white text-gray-800 font-semibold py-3 px-6 sm:px-8 rounded-full transition-all duration-300 text-sm sm:text-base"
             >
               บริการฟรี ›
             </a>
@@ -182,58 +225,444 @@ export default function Home() {
       {/* Our Work Portfolio Section - Full Width */}
       <PortfolioSection />
 
+
+      
       {/* Price Calculator Section - Full Width Sharp Edges */}
       <section
-        className="text-center p-8 sm:p-12 lg:p-16 text-white"
+        className="text-center p-4 sm:p-6 lg:p-8 text-white"
         style={{
           background: "linear-gradient(to right, #1E2E4F, #31487A)",
         }}
       >
         {/* Main Price Calculator Focus */}
-        <div className="mb-6">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3">
+        <div className="mb-3 sm:mb-4">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
             ประเมินราคากันสาด
           </h2>
-          <div className="w-16 h-0.5 bg-white mx-auto mb-4"></div>
-          <p className="text-lg sm:text-xl mb-6 max-w-3xl mx-auto">
+          <p className="text-sm sm:text-base lg:text-lg mb-4 max-w-2xl mx-auto px-2">
             คำนวณราคาทันที ด้วยเครื่องมือออนไลน์ที่แม่นยำ
           </p>
 
           {/* Main Calculator CTA */}
           <a
             href="/calculator"
-            className="inline-flex items-center justify-center bg-white hover:bg-gray-100 font-bold py-4 px-8 rounded-full transition-all duration-300 text-lg shadow-lg transform hover:-translate-y-1 mb-8"
+            className="inline-flex items-center justify-center bg-white hover:bg-gray-100 font-bold py-2.5 sm:py-3 px-5 sm:px-6 rounded-full transition-all duration-300 text-sm sm:text-base shadow-lg transform hover:-translate-y-1 mb-4 sm:mb-5"
             style={{ color: "#1E2E4F" }}
           >
-            <FaCalculator className="w-5 h-5 mr-3" />
+            <FaCalculator className="w-4 h-4 mr-2" />
             คำนวณราคาทันที
           </a>
         </div>
 
         {/* Compact Consultation Section */}
-        <div className="border-t border-white/20 pt-6">
-          <h3 className="text-xl font-semibold mb-3">ต้องการคำปรึกษา?</h3>
+        <div className="border-t border-white/20 pt-3 sm:pt-4">
+          <h3 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3">ต้องการคำปรึกษา?</h3>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="flex flex-col space-y-2 sm:space-y-0 sm:flex-row sm:gap-3 justify-center px-2">
             <a
               href="tel:02-136-8899"
-              className="inline-flex items-center justify-center bg-white/20 hover:bg-white/30 border border-white text-white font-medium py-2.5 px-6 rounded-full transition-all duration-300 backdrop-blur-sm"
+              className="inline-flex items-center justify-center bg-white/20 hover:bg-white/30 border border-white text-white font-medium py-2 px-4 sm:px-5 rounded-full transition-all duration-300 backdrop-blur-sm text-xs sm:text-sm"
             >
-              <FaPhone className="w-4 h-4 mr-2" />
+              <FaPhone className="w-3 h-3 mr-2" />
               โทร 02-136-8899
             </a>
             <a
               href="https://line.me/R/ti/p/@spkansard"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center bg-white/20 hover:bg-white/30 border border-white text-white font-medium py-2.5 px-6 rounded-full transition-all duration-300 backdrop-blur-sm"
+              className="inline-flex items-center justify-center bg-white/20 hover:bg-white/30 border border-white text-white font-medium py-2 px-4 sm:px-5 rounded-full transition-all duration-300 backdrop-blur-sm text-xs sm:text-sm"
             >
-              <SiLine className="w-4 h-4 mr-2" />
+              <SiLine className="w-3 h-3 mr-2" />
               LINE @spkansard
             </a>
           </div>
         </div>
       </section>
+
+      {/* Customer Reviews Section - Compact & Scrollable */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header - Compact */}
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light mb-4" style={{color:'var(--brand-900)'}}>
+              ลูกค้าพูดถึงเรา
+            </h2>
+            <p className="text-base text-gray-500 max-w-lg mx-auto font-light">
+              ประสบการณ์จริงจากลูกค้าที่ไว้วางใจ
+            </p>
+          </div>
+
+          {/* Reviews - Single Row Horizontal Scroll for All Devices */}
+          <div className="relative">
+            {/* Navigation Buttons - Desktop Only */}
+            <div className="hidden lg:flex">
+              <button
+                onClick={() => scrollReviews('left')}
+                disabled={!canScrollLeft}
+                className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
+                  canScrollLeft 
+                    ? 'bg-white hover:bg-gray-50 text-gray-700 hover:shadow-xl' 
+                    : 'bg-gray-100 text-gray-300 cursor-not-allowed'
+                }`}
+                style={{ transform: 'translateY(-50%) translateX(-50%)' }}
+              >
+                <FaChevronLeft className="w-4 h-4" />
+              </button>
+              
+              <button
+                onClick={() => scrollReviews('right')}
+                disabled={!canScrollRight}
+                className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
+                  canScrollRight 
+                    ? 'bg-white hover:bg-gray-50 text-gray-700 hover:shadow-xl' 
+                    : 'bg-gray-100 text-gray-300 cursor-not-allowed'
+                }`}
+                style={{ transform: 'translateY(-50%) translateX(50%)' }}
+              >
+                <FaChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="overflow-x-auto scrollbar-hide pb-4" ref={reviewsScrollRef}>
+              <div className="flex space-x-4 sm:space-x-6" style={{ width: 'max-content' }}>
+              {/* Review 1 */}
+              <div className="w-72 sm:w-80 flex-shrink-0">
+                <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center mb-3 sm:mb-4">
+                    <div className="flex space-x-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <div key={star} className="w-3 h-3 rounded-full" style={{backgroundColor:'var(--brand-400)'}}></div>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-4 sm:mb-5 font-light">
+                    &ldquo;คุณภาพเยี่ยม ทีมงานมืออาชีพ ราคาเป็นธรรม แนะนำเลย&rdquo;
+                  </p>
+                  <div className="flex items-center">
+                    <div 
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm"
+                      style={{backgroundColor:'var(--brand-600)'}}
+                    >
+                      ก
+                    </div>
+                    <div className="ml-3">
+                      <div className="font-medium text-gray-900 text-sm sm:text-base">คุณกิตติศักดิ์</div>
+                      <div className="text-xs sm:text-sm text-gray-500">ลาดพร้าว</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Review 2 */}
+              <div className="w-72 sm:w-80 flex-shrink-0">
+                <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center mb-3 sm:mb-4">
+                    <div className="flex space-x-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <div key={star} className="w-3 h-3 rounded-full" style={{backgroundColor:'var(--brand-400)'}}></div>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-4 sm:mb-5 font-light">
+                    &ldquo;โรงจอดรถสวยงาม แข็งแรงทนทาน บริการดีเยี่ยม&rdquo;
+                  </p>
+                  <div className="flex items-center">
+                    <div 
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm"
+                      style={{backgroundColor:'var(--brand-500)'}}
+                    >
+                      ส
+                    </div>
+                    <div className="ml-3">
+                      <div className="font-medium text-gray-900 text-sm sm:text-base">คุณสุนีย์</div>
+                      <div className="text-xs sm:text-sm text-gray-500">รามอินทรา</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Review 3 */}
+              <div className="w-72 sm:w-80 flex-shrink-0">
+                <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center mb-3 sm:mb-4">
+                    <div className="flex space-x-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <div key={star} className="w-3 h-3 rounded-full" style={{backgroundColor:'var(--brand-400)'}}></div>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-4 sm:mb-5 font-light">
+                    &ldquo;วัสดุดี ราคาไม่แพง ติดตั้งรวดเร็ว สะอาดเรียบร้อย&rdquo;
+                  </p>
+                  <div className="flex items-center">
+                    <div 
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm"
+                      style={{backgroundColor:'var(--brand-700)'}}
+                    >
+                      ว
+                    </div>
+                    <div className="ml-3">
+                      <div className="font-medium text-gray-900 text-sm sm:text-base">คุณวิชัย</div>
+                      <div className="text-xs sm:text-sm text-gray-500">บางนา</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Review 4 */}
+              <div className="w-72 sm:w-80 flex-shrink-0">
+                <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center mb-3 sm:mb-4">
+                    <div className="flex space-x-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <div key={star} className="w-3 h-3 rounded-full" style={{backgroundColor:'var(--brand-400)'}}></div>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-4 sm:mb-5 font-light">
+                    &ldquo;กันสาดกระจกโค้งสวยมาก ทีมติดตั้งมืออาชีพ&rdquo;
+                  </p>
+                  <div className="flex items-center">
+                    <div 
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm"
+                      style={{backgroundColor:'var(--brand-500)'}}
+                    >
+                      น
+                    </div>
+                    <div className="ml-3">
+                      <div className="font-medium text-gray-900 text-sm sm:text-base">คุณนันทนา</div>
+                      <div className="text-xs sm:text-sm text-gray-500">เอกมัย</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Review 5 */}
+              <div className="w-72 sm:w-80 flex-shrink-0">
+                <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center mb-3 sm:mb-4">
+                    <div className="flex space-x-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <div key={star} className="w-3 h-3 rounded-full" style={{backgroundColor:'var(--brand-400)'}}></div>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-4 sm:mb-5 font-light">
+                    &ldquo;โรงจอดรถ 4 คัน แข็งแรงดี ราคาคุ้มค่า&rdquo;
+                  </p>
+                  <div className="flex items-center">
+                    <div 
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm"
+                      style={{backgroundColor:'var(--brand-600)'}}
+                    >
+                      อ
+                    </div>
+                    <div className="ml-3">
+                      <div className="font-medium text-gray-900 text-sm sm:text-base">คุณอนุชา</div>
+                      <div className="text-xs sm:text-sm text-gray-500">สาทร</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Review 6 */}
+              <div className="w-72 sm:w-80 flex-shrink-0">
+                <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center mb-3 sm:mb-4">
+                    <div className="flex space-x-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <div key={star} className="w-3 h-3 rounded-full" style={{backgroundColor:'var(--brand-400)'}}></div>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-4 sm:mb-5 font-light">
+                    &ldquo;ใช้บริการหลายครั้ง คุณภาพคงที่ ไว้ใจได้&rdquo;
+                  </p>
+                  <div className="flex items-center">
+                    <div 
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm"
+                      style={{backgroundColor:'var(--brand-700)'}}
+                    >
+                      ป
+                    </div>
+                    <div className="ml-3">
+                      <div className="font-medium text-gray-900 text-sm sm:text-base">คุณปรีชา</div>
+                      <div className="text-xs sm:text-sm text-gray-500">บางกะปิ</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          {/* Summary Stats - Compact */}
+          <div className="mt-8 sm:mt-12 text-center">
+            <div className="inline-flex items-center space-x-6">
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-light mb-1" style={{color:'var(--brand-900)'}}>4.9</div>
+                <div className="flex justify-center mb-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <div key={star} className="w-3 h-3 rounded-full mx-0.5" style={{backgroundColor:'var(--brand-400)'}}></div>
+                  ))}
+                </div>
+                <div className="text-xs sm:text-sm text-gray-500">จาก 2,847 รีวิว</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Service Process Section */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light mb-4" style={{color:'var(--brand-900)'}}>
+              ขั้นตอนการใช้บริการ
+            </h2>
+            <p className="text-base sm:text-lg text-gray-500 max-w-xl mx-auto font-light">
+              กระบวนการทำงานที่เป็นระบบ เพื่อความมั่นใจในคุณภาพ
+            </p>
+          </div>
+
+          {/* Process Steps Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {/* Step 1: ติดต่อเรา */}
+            <div className="text-center group">
+              <div className="relative mb-4 sm:mb-5">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
+                  <FaPhoneAlt className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
+                </div>
+                <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full text-white text-xs sm:text-sm font-bold flex items-center justify-center" style={{backgroundColor:'var(--brand-600)'}}>
+                  1
+                </div>
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3" style={{color:'var(--brand-900)'}}>
+                ติดต่อเรา
+              </h3>
+              <p className="text-gray-600 leading-relaxed text-sm sm:text-base px-2">
+                ติดต่อเราผ่านหลายช่องทาง เพื่อขอคำปรึกษา หรือดูตัวอย่างผลงาน
+              </p>
+            </div>
+
+            {/* Step 2: ประเมินหน้างาน */}
+            <div className="text-center group">
+              <div className="relative mb-4 sm:mb-5">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
+                  <FaFileAlt className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
+                </div>
+                <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full text-white text-xs sm:text-sm font-bold flex items-center justify-center" style={{backgroundColor:'var(--brand-600)'}}>
+                  2
+                </div>
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3" style={{color:'var(--brand-900)'}}>
+                ประเมินหน้างาน
+              </h3>
+              <p className="text-gray-600 leading-relaxed text-sm sm:text-base px-2">
+                ทีมงานจะออกสำรวจพื้นที่ และประเมินความเหมาะสม เพื่อวางแผนการทำงาน
+              </p>
+            </div>
+
+            {/* Step 3: เสนอราคา */}
+            <div className="text-center group">
+              <div className="relative mb-4 sm:mb-5">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
+                  <FaCheckCircle className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
+                </div>
+                <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full text-white text-xs sm:text-sm font-bold flex items-center justify-center" style={{backgroundColor:'var(--brand-600)'}}>
+                  3
+                </div>
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3" style={{color:'var(--brand-900)'}}>
+                เสนอราคา
+              </h3>
+              <p className="text-gray-600 leading-relaxed text-sm sm:text-base px-2">
+                คำนวณราคาอย่างแม่นยำ พร้อมรายละเอียดวัสดุ และระยะเวลาดำเนินงาน
+              </p>
+            </div>
+
+            {/* Step 4: ออกแบบ */}
+            <div className="text-center group">
+              <div className="relative mb-4 sm:mb-5">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
+                  <FaTools className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
+                </div>
+                <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full text-white text-xs sm:text-sm font-bold flex items-center justify-center" style={{backgroundColor:'var(--brand-600)'}}>
+                  4
+                </div>
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3" style={{color:'var(--brand-900)'}}>
+                ออกแบบ
+              </h3>
+              <p className="text-gray-600 leading-relaxed text-sm sm:text-base px-2">
+                ออกแบบให้เห็นภาพ 3D ก่อนลงมือทำจริง เพื่อให้ตรงกับความต้องการ
+              </p>
+            </div>
+
+            {/* Step 5: ติดตั้ง */}
+            <div className="text-center group">
+              <div className="relative mb-4 sm:mb-5">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
+                  <FaClock className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
+                </div>
+                <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full text-white text-xs sm:text-sm font-bold flex items-center justify-center" style={{backgroundColor:'var(--brand-600)'}}>
+                  5
+                </div>
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3" style={{color:'var(--brand-900)'}}>
+                ติดตั้ง
+              </h3>
+              <p className="text-gray-600 leading-relaxed text-sm sm:text-base px-2">
+                ทีมช่างมืออาชีพติดตั้งตรงเวลา ด้วยมาตรฐานความปลอดภัยสูงสุด
+              </p>
+            </div>
+
+            {/* Step 6: ส่งมอบงาน */}
+            <div className="text-center group">
+              <div className="relative mb-4 sm:mb-5">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
+                  <FaHome className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
+                </div>
+                <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full text-white text-xs sm:text-sm font-bold flex items-center justify-center" style={{backgroundColor:'var(--brand-600)'}}>
+                  6
+                </div>
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3" style={{color:'var(--brand-900)'}}>
+                ส่งมอบงาน
+              </h3>
+              <p className="text-gray-600 leading-relaxed text-sm sm:text-base px-2">
+                ตรวจสอบความเรียบร้อย พร้อมใบรับประกันงาน และบริการหลังการขาย
+              </p>
+            </div>
+          </div>
+
+          {/* Call to Action */}
+          <div className="text-center mt-8 sm:mt-12">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
+              <a
+                href="tel:02-136-8899"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold transition-all duration-300 text-white hover:shadow-lg transform hover:-translate-y-1 text-sm sm:text-base"
+                style={{backgroundColor:'var(--brand-600)'}}
+              >
+                <FaPhone className="w-4 h-4 mr-2" />
+                โทร 02-136-8899
+              </a>
+              <a
+                href="https://line.me/R/ti/p/@spkansard"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-full border-2 font-semibold transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 text-sm sm:text-base"
+                style={{borderColor:'var(--brand-600)', color:'var(--brand-600)'}}
+              >
+                <SiLine className="w-4 h-4 mr-2" />
+                LINE @spkansard
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
     </div>
   );

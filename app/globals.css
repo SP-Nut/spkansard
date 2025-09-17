@@ -70,3 +70,26 @@ h1, h2, h3, h4, h5, h6 {
 .horizontal-scroll > * {
   scroll-snap-align: start;
 }
+
+/* Modern review cards */
+.review-card {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Smooth scrolling for mobile reviews */
+@media (max-width: 1023px) {
+  .review-scroll {
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+  }
+  
+  .review-scroll > * {
+    scroll-snap-align: center;
+  }
+}
