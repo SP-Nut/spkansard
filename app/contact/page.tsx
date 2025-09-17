@@ -218,7 +218,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-1">โทรศัพท์</h3>
-                    <p className="text-gray-600 text-sm sm:text-base">02-136-8899</p>
+                    <p className="text-gray-600 text-sm sm:text-base">02-936-8841-2</p>
+                    <p className="text-gray-600 text-sm sm:text-base">084-909-7777</p>
                   </div>
                 </div>
 
@@ -231,7 +232,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-1">อีเมล</h3>
-                    <p className="text-gray-600 text-sm sm:text-base">info@spkansard.co</p>
+                    <p className="text-gray-600 text-sm sm:text-base">spkansards@gmail.com</p>
                   </div>
                 </div>
 
@@ -245,6 +246,19 @@ export default function Contact() {
                   <div>
                     <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-1">LINE</h3>
                     <p className="text-gray-600 text-sm sm:text-base">@spkansard</p>
+                  </div>
+                </div>
+
+                {/* Fax */}
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#e8f0fe' }}>
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#00447c' }}>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m4 0H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM9 12h6m-6 4h6m-6-8h6" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-1">แฟกซ์</h3>
+                    <p className="text-gray-600 text-sm sm:text-base">02-936-8843</p>
                   </div>
                 </div>
 
@@ -272,8 +286,9 @@ export default function Contact() {
                   <div>
                     <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-1">ที่อยู่</h3>
                     <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                      1706 ถนนจรรยาภิบาล แขวงวังใหม่<br />
-                      เขตปทุมวัน กรุงเทพฯ 10330
+                      เลขที่ 28/101 ถ.รัชดา-รามอินทรา<br />
+                      แขวงคลองกุ่ม เขตบึงกุ่ม<br />
+                      กรุงเทพมหานคร 10230
                     </p>
                   </div>
                 </div>
@@ -283,7 +298,7 @@ export default function Contact() {
               <div className="mt-8">
                 <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-4">ติดตามเรา</h3>
                 <div className="flex flex-wrap gap-3 sm:gap-4">
-                  <a href="#" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors" style={{ backgroundColor: '#00447c' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#003366'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00447c'}>
+                  <a href="https://www.facebook.com/spkansard/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors" style={{ backgroundColor: '#00447c' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#003366'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00447c'}>
                     <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                     </svg>
@@ -298,10 +313,71 @@ export default function Contact() {
                       <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zM24 7.465V16.536C24 20.583 20.583 24 16.537 24H7.465C3.417 24 0 20.583 0 16.537V7.465C0 3.417 3.417 0 7.465 0h9.072C20.583 0 24 3.417 24 7.465"/>
                     </svg>
                   </a>
-                  <a href="#" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors" style={{ backgroundColor: '#00447c' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#003366'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00447c'}>
+                  <a href="https://www.youtube.com/@spkansard" target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors" style={{ backgroundColor: '#00447c' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#003366'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00447c'}>
                     <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                     </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Google Map Section */}
+          <div className="mt-12 lg:mt-16">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">
+              แผนที่เดินทาง
+            </h2>
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div className="p-4 sm:p-6 bg-gray-50 border-b">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  บริษัท เอสพี กันสาด จำกัด (สำนักงานใหญ่)
+                </h3>
+                <p className="text-gray-600 text-sm sm:text-base">
+                  เลขที่ 28/101 ถ.รัชดา-รามอินทรา แขวงคลองกุ่ม เขตบึงกุ่ม กรุงเทพมหานคร 10230
+                </p>
+              </div>
+              
+              {/* Google Map Embed */}
+              <div className="relative h-64 sm:h-80 lg:h-96">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3872.1234567890!2d100.6234567890123!3d13.8234567890123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d6032280d61f7%3A0x10100b25de24820!2z4LiX4LiFLuC4o4C4seC4leC4lOC4suC4o-C4seC4oeC4reC4tOC4meC4l-C4o-C4sw!5e0!3m2!1sth!2sth!4v1234567890123!5m2!1sth!2sth"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="แผนที่ เอสพี กันสาด"
+                  className="w-full h-full"
+                />
+              </div>
+              
+              {/* Map Actions */}
+              <div className="p-4 sm:p-6 bg-gray-50 border-t">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <a
+                    href="https://maps.google.com/?q=28/101+ถ.รัชดา-รามอินทรา+แขวงคลองกุ่ม+เขตบึงกุ่ม+กรุงเทพมหานคร+10230"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors text-sm sm:text-base"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    เปิดใน Google Maps
+                  </a>
+                  <a
+                    href="https://maps.google.com/?q=28/101+ถ.รัชดา-รามอินทรา+แขวงคลองกุ่ม+เขตบึงกุ่ม+กรุงเทพมหานคร+10230&dirflg=d"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center px-4 py-2 border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-800 font-medium rounded-lg transition-colors text-sm sm:text-base"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                    </svg>
+                    เส้นทางการเดินทาง
                   </a>
                 </div>
               </div>

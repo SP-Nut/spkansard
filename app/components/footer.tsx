@@ -143,7 +143,7 @@ const Footer = () => {
             {/* Company - Hidden on mobile grid, shown separately below */}
             <div className="hidden lg:block lg:order-4">
               <h3 className="text-white font-semibold text-base sm:text-lg mb-2 sm:mb-3">
-                บริษัท เอสพีเค แอนซาร์ด จำกัด
+                บริษัท เอสพี กันสาด จำกัด
               </h3>
 
               <p className="text-gray-200 text-sm leading-relaxed mb-3">
@@ -152,11 +152,24 @@ const Footer = () => {
               </p>
 
               <div className="space-y-1 text-sm">
+                <p className="text-white/90 mb-1">
+                  28/101 ถ.รัชดา-รามอินทรา แขวงคลองกุ่ม<br />
+                  เขตบึงกุ่ม กรุงเทพมหานคร 10230
+                </p>
                 <a
-                  href="tel:021368899"
+                  href="tel:02-936-8841"
                   className="text-white/90 hover:text-white transition-colors block"
                 >
-                  โทร. 02-136-8899
+                  โทร. 02-936-8841-2, 084-909-7777
+                </a>
+                <p className="text-white/90">
+                  แฟกซ์. 02-936-8843
+                </p>
+                <a
+                  href="mailto:spkansards@gmail.com"
+                  className="text-white/90 hover:text-white transition-colors block"
+                >
+                  อีเมล: spkansards@gmail.com
                 </a>
                 <a
                   href="https://line.me/R/ti/p/@spkansard"
@@ -186,7 +199,7 @@ const Footer = () => {
           {/* Company section - Full width on mobile, shown below the grid */}
           <div className="lg:hidden">
             <h3 className="text-white font-semibold text-base sm:text-lg mb-2 sm:mb-3">
-              บริษัท เอสพีเค แอนซาร์ด จำกัด
+              บริษัท เอสพี กันสาด จำกัด
             </h3>
 
             <p className="text-gray-200 text-sm leading-relaxed mb-3">
@@ -195,11 +208,24 @@ const Footer = () => {
             </p>
 
             <div className="space-y-1 text-sm">
+              <p className="text-white/90 mb-1">
+                28/101 ถ.รัชดา-รามอินทรา แขวงคลองกุ่ม<br />
+                เขตบึงกุ่ม กรุงเทพมหานคร 10230
+              </p>
               <a
-                href="tel:021368899"
+                href="tel:02-936-8841"
                 className="text-white/90 hover:text-white transition-colors block"
               >
-                โทร. 02-136-8899
+                โทร. 02-936-8841-2, 084-909-7777
+              </a>
+              <p className="text-white/90">
+                แฟกซ์. 02-936-8843
+              </p>
+              <a
+                href="mailto:spkansards@gmail.com"
+                className="text-white/90 hover:text-white transition-colors block"
+              >
+                อีเมล: spkansards@gmail.com
               </a>
               <a
                 href="https://line.me/R/ti/p/@spkansard"
@@ -220,7 +246,7 @@ const Footer = () => {
             {/* Phone + Socials */}
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full lg:w-auto">
               <a
-                href="tel:021368899"
+                href="tel:02-936-8841"
                 className="flex items-center text-white hover:text-white/90 transition-colors"
               >
                 <svg
@@ -237,7 +263,7 @@ const Footer = () => {
                     d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                   />
                 </svg>
-                <span className="text-lg sm:text-xl font-semibold">02-136-8899</span>
+                <span className="text-lg sm:text-xl font-semibold">02-936-8841</span>
               </a>
 
               <div className="flex items-center gap-2 sm:gap-3">
@@ -256,7 +282,7 @@ const Footer = () => {
 
             {/* Copyright */}
             <div className="text-gray-200 text-xs sm:text-sm text-center lg:text-right">
-              © สงวนลิขสิทธิ์ บริษัท เอสพีเค แอนซาร์ด จำกัด
+              © สงวนลิขสิทธิ์ บริษัท เอสพี กันสาด จำกัด
             </div>
           </div>
         </div>

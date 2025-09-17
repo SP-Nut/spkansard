@@ -256,11 +256,11 @@ export default function Home() {
 
           <div className="flex flex-col space-y-2 sm:space-y-0 sm:flex-row sm:gap-3 justify-center px-2">
             <a
-              href="tel:02-136-8899"
+              href="tel:02-936-8841"
               className="inline-flex items-center justify-center bg-white/20 hover:bg-white/30 border border-white text-white font-medium py-2 px-4 sm:px-5 rounded-full transition-all duration-300 backdrop-blur-sm text-xs sm:text-sm"
             >
               <FaPhone className="w-3 h-3 mr-2" />
-              โทร 02-136-8899
+              โทร 02-936-8841
             </a>
             <a
               href="https://line.me/R/ti/p/@spkansard"
@@ -637,12 +637,12 @@ export default function Home() {
           <div className="text-center mt-8 sm:mt-12">
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
               <a
-                href="tel:02-136-8899"
+                href="tel:02-936-8841"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold transition-all duration-300 text-white hover:shadow-lg transform hover:-translate-y-1 text-sm sm:text-base"
                 style={{backgroundColor:'var(--brand-600)'}}
               >
                 <FaPhone className="w-4 h-4 mr-2" />
-                โทร 02-136-8899
+                โทร 02-936-8841
               </a>
               <a
                 href="https://line.me/R/ti/p/@spkansard"

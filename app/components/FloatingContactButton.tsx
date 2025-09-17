@@ -75,14 +75,14 @@ export default function FloatingContactButton() {
 
               {/* Phone Option */}
               <a
-                href="tel:02-136-8899"
+                href="tel:02-936-8841"
                 className="flex items-center p-3 rounded-xl hover:bg-blue-50 active:bg-blue-100 transition-all duration-200 group cursor-pointer select-none"
                 onClick={(e) => {
                   e.preventDefault();
                   setIsOpen(false);
                   // รอให้ animation เสร็จก่อนโทร
                   setTimeout(() => {
-                    window.location.href = "tel:02-136-8899";
+                    window.location.href = "tel:02-936-8841";
                   }, 150);
                 }}
               >
@@ -94,7 +94,7 @@ export default function FloatingContactButton() {
                 </div>
                 <div className="ml-3 flex-1">
                   <div className="font-semibold text-gray-800 text-sm">โทรศัพท์</div>
-                  <div className="text-xs text-gray-500">02-136-8899</div>
+                  <div className="text-xs text-gray-500">02-936-8841</div>
                 </div>
                 <div className="text-gray-400 group-hover:text-gray-600 transition-colors">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
