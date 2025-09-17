@@ -1,126 +1,240 @@
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "หน้าแรก - SPK Ansard",
-  description: "เว็บไซต์ที่เน้นความเร็วและ SEO สำหรับธุรกิจของคุณ พร้อมการใช้งาน Prompt font สำหรับภาษาไทย",
-  keywords: "fast website, SEO, Thai business, ความเร็ว, เว็บไซต์, Prompt font",
-  openGraph: {
-    title: "หน้าแรก - SPK Ansard",
-    description: "เว็บไซต์ที่เน้นความเร็วและ SEO สำหรับธุรกิจของคุณ",
-    type: "website",
-  },
-};
+"use client";
+import HeroSection from "./components/HeroSection";
+import PortfolioSection from "./components/PortfolioSection";
+import { useEffect, useRef } from "react";
+import { FaUsers, FaShieldAlt, FaHeart, FaPhone, FaCalculator } from "react-icons/fa";
+import { FaCalendarCheck } from "react-icons/fa6";
+import { SiLine } from "react-icons/si";
 
 export default function Home() {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el || typeof window === "undefined") return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          el.play().catch(() => {});
+        } else {
+          el.pause();
+        }
+      },
+      { threshold: 0.35 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
   return (
-    <div className="font-prompt animate-fade-in">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-        <section className="text-center mb-8 sm:mb-12 lg:mb-16 animate-slide-up">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
-            ยินดีต้อนรับสู่ <span className="text-blue-600">SPK Ansard</span>
-          </h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto">
-            เว็บไซต์ที่เน้น<strong>ความเร็ว</strong>และ<strong>SEO</strong> พร้อมฟอนต์ Prompt สำหรับภาษาไทย
+    <div className="font-prompt">
+      <HeroSection />
+
+      {/* Intro Section: กันสาด */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 text-center">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8" style={{color:'var(--brand-900)'}}>เอสพี กันสาด</h2>
+        <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          SP Kansard ผู้นำด้านกันสาดอันดับ 1 ในกรุงเทพฯและปริมณฑล ด้วยประสบการณ์กว่า 35 ปี และความไว้วางใจจากลูกค้ากว่า 50,000 ครัวเรือนทั่วประเทศ เราสร้างสรรค์กันสาดที่สวยงาม แข็งแรง และใช้งานได้จริง ครบด้วยวัสดุกันสาดมากที่สุดในไทย ทั้ง เมทัลชีท, ไวนิลดรีมรูฟ, อลูมิเนียมรูฟ, โพลีคาร์บอเนต, ชินโคไลท์ และ ระแนง–ฝ้าทุกประเภท ติดตั้งด้วยมาตรฐานสูงสุด พร้อม รับประกันงานสูงสุด 5 ปี เพื่อความมั่นใจในคุณภาพและบริการที่คุณวางใจได้
+        </p>
+
+        {/* Feature Badges */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-6 sm:gap-8 lg:gap-12">
+          {/* 50,000+ Customers */}
+          <div className="flex flex-col items-center text-gray-700">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
+              <FaUsers className="text-[20px] sm:text-[24px]" style={{color:'var(--brand-700)'}} />
+            </div>
+            <div className="mt-2 text-center">
+              <div className="text-lg sm:text-xl font-bold" style={{color:'var(--brand-900)'}}>50,000+</div>
+              <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">ครัวเรือน</div>
+            </div>
+          </div>
+
+          {/* 35+ Years Experience */}
+          <div className="flex flex-col items-center text-gray-700">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
+              <FaCalendarCheck className="text-[20px] sm:text-[24px]" style={{color:'var(--brand-700)'}} />
+            </div>
+            <div className="mt-2 text-center">
+              <div className="text-lg sm:text-xl font-bold" style={{color:'var(--brand-900)'}}>35+</div>
+              <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">ปี ประสบการณ์</div>
+            </div>
+          </div>
+
+          {/* Customer Satisfaction 100% */}
+          <div className="flex flex-col items-center text-gray-700">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
+              <FaHeart className="text-[20px] sm:text-[24px]" style={{color:'var(--brand-700)'}} />
+            </div>
+            <div className="mt-2 text-center">
+              <div className="text-lg sm:text-xl font-bold" style={{color:'var(--brand-900)'}}>100%</div>
+              <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">ความพึงพอใจ</div>
+            </div>
+          </div>
+
+          {/* 5 Years Warranty */}
+          <div className="flex flex-col items-center text-gray-700">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
+              <FaShieldAlt className="text-[20px] sm:text-[24px]" style={{color:'var(--brand-700)'}} />
+            </div>
+            <div className="mt-2 text-center">
+              <div className="text-lg sm:text-xl font-bold" style={{color:'var(--brand-900)'}}>5</div>
+              <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">ปี รับประกัน</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Section (full-bleed) */}
+      <section className="relative">
+        {/* Full-bleed wrapper */}
+        <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen">
+          {/* 16:9 Aspect Ratio Box */}
+          <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
+            <video
+              className="absolute inset-0 w-full h-full object-cover"
+              src="/video.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              ref={videoRef}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ROOVTECT SOLUTION Section */}
+      <section className="relative py-16 sm:py-20 lg:py-24 text-white" style={{backgroundColor: '#314874'}}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold italic mb-6 sm:mb-8">
+            SP KANSARD ปฏิวัติการต่อเติม<br />
+            หลังคาจอดรถให้มีดีไซน์
+          </h2>
+          
+          <p className="text-lg sm:text-xl mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed opacity-90">
+            ความก้าวหน้าของนวัตกรรมกันสาดและโรงจอดรถ ที่จะเปลี่ยนมุมมองการตกแต่งบ้านของคุณ เปลี่ยนบ้านธรรมดาให้กลายเป็นบ้านที่มีสไตล์ 
+            ตอบโจทย์ผู้เชี่ยวชาญ ออกแบบจากสถาปนิกผู้เชี่ยวชาญเรื่องความงามและการใช้งาน
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+
+          <div className="text-left max-w-3xl mx-auto mb-12 space-y-4">
+            <div className="flex items-start">
+              <span className="text-white mr-3 mt-1">•</span>
+              <span className="text-base sm:text-lg">รับติดตั้งหลังคาโรงจอดรถทุกรูปแบบ ป้องกันแสงแดด ป้องกันความร้อนได้อย่างมีประสิทธิภาพ</span>
+            </div>
+            <div className="flex items-start">
+              <span className="text-white mr-3 mt-1">•</span>
+              <span className="text-base sm:text-lg">ต่อเติมกันสาดหน้าบ้านและข้างบ้าน ด้วยดีไซน์ที่สวยงาม ลงตัวกับสถาปัตยกรรมของบ้านคุณ</span>
+            </div>
+            <div className="flex items-start">
+              <span className="text-white mr-3 mt-1">•</span>
+              <span className="text-base sm:text-lg">ใช้วัสดุคุณภาพสูงที่ทนทาน ออกแบบได้ตามความต้องการเฉพาะบุคคล</span>
+            </div>
+            <div className="flex items-start">
+              <span className="text-white mr-3 mt-1">•</span>
+              <span className="text-base sm:text-lg">มีทีมงานมืออาชีพตลอด 35 ปี พร้อมให้คำปรึกษาและบริการที่ดีที่สุดเพื่อคุณ</span>
+            </div>
+          </div>
+
+          {/* Decorative Element */}
+          <div className="mb-8">
+            <div className="w-16 h-1 bg-white mx-auto"></div>
+          </div>
+
+          {/* Service Categories */}
+          <div className="mb-12">
+            <p className="text-lg font-medium mb-6">
+              <span className="mx-4">Prefab Steel Garage & Canopy</span>
+              <span className="text-gray-300">|</span>
+              <span className="mx-4">Aluminum Garage & Canopy</span>
+              <span className="text-gray-300">|</span>
+              <span className="mx-4">Facade</span>
+            </p>
+          </div>
+
+          {/* Call to Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
             <a
-              href="/product"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 sm:py-3 px-6 sm:px-8 rounded-full transition-colors duration-200 text-base sm:text-lg"
+              href="https://line.me/R/ti/p/@spkansard"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gray-200 hover:bg-white text-gray-800 font-semibold py-3 px-8 rounded-full transition-all duration-300 text-base"
             >
-              ดูผลิตภัณฑ์
+              LINE ›
             </a>
             <a
-              href="/contact"
-              className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-medium py-2 sm:py-3 px-6 sm:px-8 rounded-full transition-colors duration-200 text-base sm:text-lg"
+              href="tel:021368899"
+              className="bg-gray-200 hover:bg-white text-gray-800 font-semibold py-3 px-8 rounded-full transition-all duration-300 text-base"
             >
-              ติดต่อเรา
+              CALL ›
+            </a>
+            <a
+              href="/free-service"
+              className="bg-gray-200 hover:bg-white text-gray-800 font-semibold py-3 px-8 rounded-full transition-all duration-300 text-base"
+            >
+              บริการฟรี ›
             </a>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-8 sm:mb-12 lg:mb-16">
-          {/* Desktop: Grid layout */}
-          <div className="hidden md:grid md:grid-cols-3 gap-6 lg:gap-8">
-            <div className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">ความเร็วสูง</h3>
-              <p className="text-gray-600 text-sm sm:text-base">เว็บไซต์โหลดเร็วด้วย Next.js และการปรับแต่งที่เหมาะสม</p>
-            </div>
+      {/* Our Work Portfolio Section - Full Width */}
+      <PortfolioSection />
 
-            <div className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">SEO ที่เป็นเลิศ</h3>
-              <p className="text-gray-600 text-sm sm:text-base">ปรับแต่งเพื่อการค้นหาที่ดีในเสิร์ชเอนจิน</p>
-            </div>
-
-            <div className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
-                </svg>
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">ฟอนต์ Prompt</h3>
-              <p className="text-gray-600 text-sm sm:text-base">สนับสนุนภาษาไทยได้อย่างสมบูรณ์และสวยงาม</p>
-            </div>
-          </div>
-
-          {/* Mobile: Horizontal scroll */}
-          <div className="md:hidden overflow-x-auto">
-            <div className="flex gap-4 pb-4 px-1">
-              <div className="flex-none w-72 text-center p-4 bg-white rounded-lg shadow-md">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold mb-2">ความเร็วสูง</h3>
-                <p className="text-gray-600 text-sm">เว็บไซต์โหลดเร็วด้วย Next.js และการปรับแต่งที่เหมาะสม</p>
-              </div>
-
-              <div className="flex-none w-72 text-center p-4 bg-white rounded-lg shadow-md">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold mb-2">SEO ที่เป็นเลิศ</h3>
-                <p className="text-gray-600 text-sm">ปรับแต่งเพื่อการค้นหาที่ดีในเสิร์ชเอนจิน</p>
-              </div>
-
-              <div className="flex-none w-72 text-center p-4 bg-white rounded-lg shadow-md">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold mb-2">ฟอนต์ Prompt</h3>
-                <p className="text-gray-600 text-sm">สนับสนุนภาษาไทยได้อย่างสมบูรณ์และสวยงาม</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">พร้อมใช้งานแล้ว</h2>
-          <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
-            เริ่มต้นใช้งานเว็บไซต์ที่เร็วและเหมาะสำหรับ SEO วันนี้
+      {/* Price Calculator Section - Full Width Sharp Edges */}
+      <section
+        className="text-center p-8 sm:p-12 lg:p-16 text-white"
+        style={{
+          background: "linear-gradient(to right, #1E2E4F, #31487A)",
+        }}
+      >
+        {/* Main Price Calculator Focus */}
+        <div className="mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3">
+            ประเมินราคากันสาด
+          </h2>
+          <div className="w-16 h-0.5 bg-white mx-auto mb-4"></div>
+          <p className="text-lg sm:text-xl mb-6 max-w-3xl mx-auto">
+            คำนวณราคาทันที ด้วยเครื่องมือออนไลน์ที่แม่นยำ
           </p>
+
+          {/* Main Calculator CTA */}
           <a
-            href="/free-service"
-            className="bg-blue-300 text-blue-900 hover:bg-blue-200 font-medium py-2 sm:py-3 px-6 sm:px-8 rounded-full transition-colors duration-200 text-base sm:text-lg inline-block"
+            href="/calculator"
+            className="inline-flex items-center justify-center bg-white hover:bg-gray-100 font-bold py-4 px-8 rounded-full transition-all duration-300 text-lg shadow-lg transform hover:-translate-y-1 mb-8"
+            style={{ color: "#1E2E4F" }}
           >
-            บริการฟรี
+            <FaCalculator className="w-5 h-5 mr-3" />
+            คำนวณราคาทันที
           </a>
-        </section>
-      </div>
+        </div>
+
+        {/* Compact Consultation Section */}
+        <div className="border-t border-white/20 pt-6">
+          <h3 className="text-xl font-semibold mb-3">ต้องการคำปรึกษา?</h3>
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <a
+              href="tel:02-136-8899"
+              className="inline-flex items-center justify-center bg-white/20 hover:bg-white/30 border border-white text-white font-medium py-2.5 px-6 rounded-full transition-all duration-300 backdrop-blur-sm"
+            >
+              <FaPhone className="w-4 h-4 mr-2" />
+              โทร 02-136-8899
+            </a>
+            <a
+              href="https://line.me/R/ti/p/@spkansard"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center bg-white/20 hover:bg-white/30 border border-white text-white font-medium py-2.5 px-6 rounded-full transition-all duration-300 backdrop-blur-sm"
+            >
+              <SiLine className="w-4 h-4 mr-2" />
+              LINE @spkansard
+            </a>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }

@@ -12,12 +12,12 @@ const prompt = Prompt({
 });
 
 export const metadata: Metadata = {
-  title: "SPK Ansard - Fast & SEO Optimized",
-  description: "เว็บไซต์ที่เน้นความเร็วและ SEO สำหรับธุรกิจของคุณ",
-  keywords: "fast website, SEO, Thai business, ความเร็ว, เว็บไซต์",
+  title: "SP Kansard - ผู้เชี่ยวชาญกันสาดและโรงจอดรถ อันดับ 1 ในไทย",
+  description: "SP Kansard ผู้นำด้านกันสาดและโรงจอดรถมากกว่า 35 ปี ให้บริการครบวงจร ออกแบบติดตั้งกันสาดคุณภาพ รับประกัน 5 ปี ทีมงานมืออาชีพ",
+  keywords: "กันสาด, โรงจอดรถ, SP Kansard, กันสาดบ้าน, โรงจอดรถสำเร็จรูป, กันแดด, กันฝน, ติดตั้งกันสาด",
   openGraph: {
-    title: "SPK Ansard - Fast & SEO Optimized",
-    description: "เว็บไซต์ที่เน้นความเร็วและ SEO สำหรับธุรกิจของคุณ",
+    title: "SP Kansard - ผู้เชี่ยวชาญกันสาดและโรงจอดรถ อันดับ 1 ในไทย",
+    description: "ผู้นำด้านกันสาดและโรงจอดรถมากกว่า 35 ปี บริการครบวงจร คุณภาพมาตรฐาน รับประกัน 5 ปี",
     type: "website",
   },
 };
@@ -33,7 +33,7 @@ export default function RootLayout({
         className={`${prompt.variable} font-sans antialiased flex flex-col min-h-screen`}
       >
         <Header />
-        <main className="flex-1">
+        <main className="flex-1 pt-16 sm:pt-20">
           {children}
         </main>
         <Footer />

@@ -1,3 +1,14 @@
+:root {
+  --brand-900: #022f57;
+  --brand-800: #003a69;
+  --brand-700: #00447c; /* primary brand */
+  --brand-600: #0a5a9a;
+  --brand-500: #0066cc; /* lighter gradient end */
+  --brand-400: #3b8ddd;
+  --brand-300: #74b2ea;
+  --brand-200: #b2d6f6;
+  --brand-100: #e6f1fc;
+}
 @import "tailwindcss";
 
 :root {
@@ -22,9 +33,7 @@ html {
 }
 
 /* Performance optimizations */
-* {
-  scroll-behavior: smooth;
-}
+/* Removed global smooth scrolling to prevent auto scroll animations */
 
 /* SEO optimizations */
 h1, h2, h3, h4, h5, h6 {
@@ -41,4 +50,23 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Horizontal scroll styles for mobile */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.horizontal-scroll {
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.horizontal-scroll > * {
+  scroll-snap-align: start;
 }
