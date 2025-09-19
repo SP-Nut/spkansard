@@ -1,25 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-
-// Since this is now a client component, we'll need to move metadata to a separate file
-// or handle it differently. For now, let's comment it out and handle SEO later.
-
-// Since this is now a client component, we'll need to move metadata to a separate file
-// or handle it differently. For now, let's comment it out and handle SEO later.
-
-/*
-export const metadata: Metadata = {
-  title: "คำถามที่พบบ่อย - SPK Ansard",
-  description: "คำถามและคำตอบที่พบบ่อยเกี่ยวกับกันสาด ประตูรั้ว และงานเหล็ก",
-  keywords: "FAQ, คำถาม, กันสาด, ประตูรั้ว, งานเหล็ก, SPK Ansard",
-  openGraph: {
-    title: "คำถามที่พบบ่อย - SPK Ansard",
-    description: "คำถามและคำตอบที่พบบ่อยเกี่ยวกับกันสาด ประตูรั้ว และงานเหล็ก",
-    type: "website",
-  },
-};
-*/
+import Link from 'next/link';
+import { FaHome, FaChevronRight, FaPhone } from 'react-icons/fa';
+import { SiLine } from 'react-icons/si';
 
 const faqs = [
   {
@@ -125,21 +109,55 @@ const faqs = [
 
 export default function FAQ() {
   const [selectedCategory, setSelectedCategory] = useState('common');
-
-  const currentCategory = faqs.find(cat => cat.id === selectedCategory);
+  const currentCategory = faqs.find((cat) => cat.id === selectedCategory);
 
   return (
-    <div className="font-prompt min-h-screen bg-blue-25">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-100 via-blue-75 to-blue-50 text-gray-700 py-8 sm:py-12 lg:py-16">
+    <div className="font-prompt min-h-screen bg-gray-50">
+      {/* Hero Section with Breadcrumb (match product) */}
+      <section className="relative bg-gradient-to-r from-[#1E2E4F] to-[#31487A] text-white py-10 sm:py-14 lg:py-20">
         <div className="mx-auto px-4 sm:px-6 lg:px-8" style={{ maxWidth: '1800px' }}>
+          {/* Breadcrumb */}
+          <nav className="flex items-center space-x-2 text-sm mb-6 sm:mb-8">
+            <Link href="/" className="hover:text-blue-200 transition-colors">
+              <FaHome className="w-4 h-4" />
+            </Link>
+            <FaChevronRight className="w-3 h-3 text-blue-200" />
+            <span className="text-blue-200">คำถามที่พบบ่อย</span>
+          </nav>
+
+          {/* Title */}
           <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 text-gray-800">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
               FAQ ในการต่อเติมหลังคา กันสาด กับ เอสพี กันสาด
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-blue-100 max-w-3xl mx-auto">
               คำตอบสำหรับคำถามที่พบบ่อยเกี่ยวกับสินค้าและบริการของเรา
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Category Tabs (sticky) */}
+      <section className="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8" style={{ maxWidth: '1800px' }}>
+          <div className="flex items-center justify-between py-2 gap-4">
+            <div className="flex-1 overflow-x-auto scrollbar-hide">
+              <div className="flex space-x-1 min-w-max">
+                {faqs.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                      selectedCategory === category.id
+                        ? 'border-blue-600 text-blue-600 bg-blue-50'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    {category.category}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -147,132 +165,61 @@ export default function FAQ() {
       {/* FAQ Content */}
       <section className="py-8 sm:py-12 lg:py-16">
         <div className="mx-auto px-4 sm:px-6 lg:px-8" style={{ maxWidth: '1800px' }}>
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-            {/* Sidebar Categories */}
-            <div className="lg:w-1/4 mb-6 lg:mb-0">
-              <div className="lg:sticky lg:top-6">
-                <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-3 sm:mb-4">หมวดหมู่</h3>
-                
-                {/* Desktop: Vertical layout */}
-                <div className="hidden lg:block space-y-2">
-                  {faqs.map((category) => (
-                    <button
-                      key={category.id}
-                      onClick={() => setSelectedCategory(category.id)}
-                      className={`w-full text-left px-3 sm:px-4 py-1 sm:py-1.5 rounded-lg border transition-all duration-200 ${
-                        selectedCategory === category.id
-                          ? 'text-white'
-                          : 'border-gray-100 hover:border-blue-100 hover:bg-blue-25'
-                      }`}
-                      style={selectedCategory === category.id ? { backgroundColor: '#00447c', borderColor: '#00447c' } : {}}
-                    >
-                      <div className={`font-medium text-sm sm:text-base ${
-                        selectedCategory === category.id ? 'text-white' : 'text-gray-600'
-                      }`}>
-                        {category.category}
+          <div className="lg:w-3/4 mx-auto">
+            {currentCategory && (
+              <div>
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-700 mb-4 sm:mb-6 lg:mb-8 pb-2 sm:pb-3 border-b-2 border-blue-200">
+                  {currentCategory.title}
+                </h2>
+
+                <div className="space-y-1">
+                  {currentCategory.questions.map((faq, faqIndex) => (
+                    <details key={faqIndex} className="group border-b border-gray-100 py-3 sm:py-4">
+                      <summary className="flex items-center justify-between cursor-pointer hover:bg-blue-25 p-3 sm:p-4 -mx-3 sm:-mx-4 rounded-lg transition-colors">
+                        <div className="flex items-start gap-2 sm:gap-3">
+                          <div className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-75 flex items-center justify-center mt-0.5 sm:mt-1">
+                            <svg className="w-3 h-3 sm:w-4 sm:h-4 text-blue-500 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
+                          <h3 className="text-base sm:text-lg font-semibold text-gray-700 pr-2 sm:pr-4">{faq.question}</h3>
+                        </div>
+                      </summary>
+
+                      <div className="mt-3 sm:mt-4 ml-7 sm:ml-9">
+                        <p className="text-gray-600 leading-relaxed text-sm sm:text-base">{faq.answer}</p>
                       </div>
-                      <div className={`text-xs sm:text-sm mt-0.5 ${
-                        selectedCategory === category.id ? 'text-blue-100' : 'text-gray-400'
-                      }`}>
-                        {category.title}
-                      </div>
-                    </button>
+                    </details>
                   ))}
                 </div>
-
-                {/* Mobile: Horizontal scroll */}
-                <div className="lg:hidden overflow-x-auto">
-                  <div className="flex gap-3 pb-2">
-                    {faqs.map((category) => (
-                      <button
-                        key={category.id}
-                        onClick={() => setSelectedCategory(category.id)}
-                        className={`flex-none px-4 py-1.5 rounded-lg border transition-all duration-200 min-w-32 ${
-                          selectedCategory === category.id
-                            ? 'text-white'
-                            : 'border-gray-100 hover:border-blue-100 hover:bg-blue-25'
-                        }`}
-                        style={selectedCategory === category.id ? { backgroundColor: '#00447c', borderColor: '#00447c' } : {}}
-                      >
-                        <div className={`font-medium text-sm ${
-                          selectedCategory === category.id ? 'text-white' : 'text-gray-600'
-                        }`}>
-                          {category.category}
-                        </div>
-                        <div className={`text-xs mt-0.5 ${
-                          selectedCategory === category.id ? 'text-blue-100' : 'text-gray-400'
-                        }`}>
-                          {category.title}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
               </div>
-            </div>
-
-            {/* FAQ Content */}
-            <div className="lg:w-3/4">
-              {currentCategory && (
-                <div>
-                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-700 mb-4 sm:mb-6 lg:mb-8 pb-2 sm:pb-3 border-b-2 border-blue-200">
-                    {currentCategory.title}
-                  </h2>
-                  
-                  <div className="space-y-1">
-                    {currentCategory.questions.map((faq, faqIndex) => (
-                      <details 
-                        key={faqIndex}
-                        className="group border-b border-gray-100 py-3 sm:py-4"
-                      >
-                        <summary className="flex items-center justify-between cursor-pointer hover:bg-blue-25 p-3 sm:p-4 -mx-3 sm:-mx-4 rounded-lg transition-colors">
-                          <div className="flex items-start gap-2 sm:gap-3">
-                            <div className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-75 flex items-center justify-center mt-0.5 sm:mt-1">
-                              <svg className="w-3 h-3 sm:w-4 sm:h-4 text-blue-500 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                              </svg>
-                            </div>
-                            <h3 className="text-base sm:text-lg font-semibold text-gray-700 pr-2 sm:pr-4">
-                              {faq.question}
-                            </h3>
-                          </div>
-                        </summary>
-                        
-                        <div className="mt-3 sm:mt-4 ml-7 sm:ml-9">
-                          <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
-                            {faq.answer}
-                          </p>
-                        </div>
-                      </details>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+            )}
           </div>
 
           {/* Contact CTA */}
-          <div className="mt-8 sm:mt-12 lg:mt-16 bg-blue-100 rounded-xl p-4 sm:p-6 lg:p-8 text-center">
-            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 sm:mb-4 text-gray-700">
+          <div className="mt-8 sm:mt-12 lg:mt-16 rounded-xl p-6 sm:p-8 lg:p-10 text-center bg-gradient-to-r from-[#1E2E4F] to-[#31487A] text-white">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4">
               ไม่พบคำตอบที่ต้องการ?
             </h2>
-            <p className="text-sm sm:text-base lg:text-lg mb-4 sm:mb-6 text-gray-600">
+            <p className="text-sm sm:text-base lg:text-lg mb-5 sm:mb-6 text-blue-100 max-w-2xl mx-auto">
               ติดต่อเราเพื่อสอบถามข้อมูลเพิ่มเติม ทีมงานพร้อมให้คำปรึกษาฟรี
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <a
                 href="tel:021368899"
-                className="bg-white text-blue-600 hover:bg-blue-25 font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 border border-blue-200 text-sm sm:text-base"
+                className="bg-white text-blue-700 hover:bg-gray-100 font-semibold py-2.5 sm:py-3 px-5 sm:px-6 rounded-lg transition-colors duration-200 text-sm sm:text-base shadow flex items-center justify-center gap-2"
               >
-                📞 โทร 02-136-8899
+                <FaPhone className="h-4 w-4" />
+                <span>โทร 02-136-8899</span>
               </a>
               <a
                 href="https://line.me/R/ti/p/@spkansard"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-green-100 hover:bg-green-200 text-green-700 font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 border border-green-200 text-sm sm:text-base"
+                className="border border-white text-white hover:bg-white hover:text-blue-700 font-semibold py-2.5 sm:py-3 px-5 sm:px-6 rounded-lg transition-colors duration-200 text-sm sm:text-base flex items-center justify-center gap-2"
               >
-                💬 LINE @spkansard
+                <SiLine className="h-4 w-4" />
+                <span>LINE @spkansard</span>
               </a>
             </div>
           </div>

@@ -12,6 +12,8 @@ export default function Home() {
   const reviewsScrollRef = useRef<HTMLDivElement | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+  const autoScrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const el = videoRef.current;
@@ -69,6 +71,63 @@ export default function Home() {
     
     return () => container.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Auto scroll effect
+  useEffect(() => {
+    const startAutoScroll = () => {
+      if (autoScrollIntervalRef.current) {
+        clearInterval(autoScrollIntervalRef.current);
+      }
+      
+      const interval = setInterval(() => {
+        const container = reviewsScrollRef.current;
+        if (!container) return;
+        
+        const cardWidth = 320; // Width of one card plus gap
+        const maxScrollLeft = container.scrollWidth - container.clientWidth;
+        
+        // If we're at the end, scroll back to beginning
+        if (container.scrollLeft >= maxScrollLeft - 10) {
+          container.scrollTo({
+            left: 0,
+            behavior: 'smooth'
+          });
+        } else {
+          // Scroll to next card
+          container.scrollTo({
+            left: container.scrollLeft + cardWidth,
+            behavior: 'smooth'
+          });
+        }
+      }, 3000);
+      
+      autoScrollIntervalRef.current = interval;
+    };
+
+    const stopAutoScroll = () => {
+      if (autoScrollIntervalRef.current) {
+        clearInterval(autoScrollIntervalRef.current);
+        autoScrollIntervalRef.current = null;
+      }
+    };
+
+    if (isAutoScrolling) {
+      startAutoScroll();
+    } else {
+      stopAutoScroll();
+    }
+    
+    return () => stopAutoScroll();
+  }, [isAutoScrolling]);
+
+  // Handle mouse enter/leave for auto scroll pause
+  const handleMouseEnter = () => {
+    setIsAutoScrolling(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsAutoScrolling(true);
+  };
   return (
     <div className="font-prompt bg-blue-50">
       <HeroSection />
@@ -319,7 +378,10 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="overflow-x-auto scrollbar-hide pb-4" ref={reviewsScrollRef}>
+            <div className="overflow-x-auto scrollbar-hide pb-4" 
+                 ref={reviewsScrollRef}
+                 onMouseEnter={handleMouseEnter}
+                 onMouseLeave={handleMouseLeave}>
               <div className="flex space-x-4 sm:space-x-6" style={{ width: 'max-content' }}>
               {/* Review 1 */}
               <div className="w-72 sm:w-80 flex-shrink-0">

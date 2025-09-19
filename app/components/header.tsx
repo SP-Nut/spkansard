@@ -6,7 +6,8 @@ import Image from 'next/image';
 
 const navItems = [
   { name: 'Home', href: '/' },
-  { name: 'Product', href: '/product' },
+  { name: 'Portfolio', href: '/portfolio' },
+  { name: 'Materials', href: '/materials' },
   { name: 'Gallery', href: '/gallery' },
   { name: 'Blog', href: '/blog' },
   { name: 'About Us', href: '/about' },
@@ -24,7 +25,7 @@ export default function Header() {
   }, [isMenuOpen]);
 
   // ทำพื้นหลังโปร่งใสเมื่อ hero แสดงอยู่ในหน้าจอ
-  useEffect(() => {
+  useEffect(() => {                                                                                               
     if (typeof window === 'undefined') return;
     const hero = document.getElementById('hero');
     if (!hero) {
@@ -81,7 +82,7 @@ export default function Header() {
           <div className="hidden lg:flex flex-shrink-0">
             <Link
               href="/free-service"
-              className="bg-blue-300 text-blue-900 hover:bg-blue-200 font-medium py-2 px-6 rounded-full transition-colors duration-200 text-base"
+              className="bg-[#eaf4ff] text-[#1E2E4F] hover:bg-white font-medium py-2 px-6 rounded-full transition-colors duration-200 text-base"
             >
               คำนวณราคาฟรี
             </Link>
@@ -106,7 +107,7 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden fixed top-16 sm:top-20 left-0 w-full h-full bg-[#00447c] z-40 overflow-y-auto">
+          <div className="lg:hidden fixed top-16 sm:top-20 left-0 w-full h-full bg-[#1E2E4F] z-40 overflow-y-auto">
             <div className="px-4 pt-2 pb-3 space-y-1">
               {navItems.map((item) => (
                 <Link
@@ -120,7 +121,7 @@ export default function Header() {
               ))}
               <Link
                 href="/free-service"
-                className="bg-blue-300 text-blue-900 hover:bg-blue-200 font-medium py-2 px-4 rounded-full transition-colors duration-200 text-base inline-block mt-3"
+                className="bg-[#eaf4ff] text-[#1E2E4F] hover:bg-white font-medium py-2 px-4 rounded-full transition-colors duration-200 text-base inline-block mt-3"
                 onClick={() => setIsMenuOpen(false)}
               >
                 คำนวนราคาฟรี
