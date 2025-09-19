@@ -132,7 +132,7 @@ export default function PortfolioSection() {
           {/* ปุ่มเลื่อนซ้าย */}
           <button
             onClick={prevImage}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ease-in-out hover:bg-white hover:scale-105 hover:shadow-xl"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/30 hover:bg-white/50 backdrop-blur-md border border-white/40 shadow-lg flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl"
             style={{ color: BRAND_MID }}
           >
             <svg className="w-6 h-6 transition-transform duration-200 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,7 +160,7 @@ export default function PortfolioSection() {
           {/* ปุ่มเลื่อนขวา */}
           <button
             onClick={nextImage}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ease-in-out hover:bg-white hover:scale-105 hover:shadow-xl"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/30 hover:bg-white/50 backdrop-blur-md border border-white/40 shadow-lg flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl"
             style={{ color: BRAND_MID }}
           >
             <svg className="w-6 h-6 transition-transform duration-200 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -185,12 +185,37 @@ export default function PortfolioSection() {
           </div>
         </div>
 
-        {/* Mobile/Tablet: แสดง 1 รูปเต็มความกว้างของจอ */}
-        <div className="lg:hidden">
-          <div className="overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none]">
-            <div className="flex snap-x snap-mandatory">
+        {/* Mobile/Tablet: แสดง 1 รูปเต็มความกว้างของจอ พร้อมปุ่มเลื่อน */}
+        <div className="lg:hidden relative">
+          {/* ปุ่มเลื่อนซ้าย - มือถือ */}
+          <button
+            onClick={prevImage}
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/30 hover:bg-white/50 backdrop-blur-md border border-white/40 shadow-lg flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105"
+            style={{ color: BRAND_MID }}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          {/* ปุ่มเลื่อนขวา - มือถือ */}
+          <button
+            onClick={nextImage}
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/30 hover:bg-white/50 backdrop-blur-md border border-white/40 shadow-lg flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105"
+            style={{ color: BRAND_MID }}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          <div className="overflow-hidden">
+            <div 
+              className="flex transition-transform duration-300 ease-in-out"
+              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            >
               {portfolioItems.map((item, i) => (
-                <div key={item.id} className="flex-none w-full snap-center">
+                <div key={item.id} className="flex-none w-full">
                   <Card
                     item={item}
                     brandDark={BRAND_DARK}
@@ -202,9 +227,21 @@ export default function PortfolioSection() {
             </div>
           </div>
 
-          <p className="mt-2 text-center text-sm text-gray-500">
-            ← เลื่อนเพื่อดูผลงานเพิ่มเติม →
-          </p>
+          {/* จุดบอกตำแหน่ง - มือถือ */}
+          <div className="flex justify-center mt-4 gap-2">
+            {Array.from({ length: totalItems }).map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentIndex(idx)}
+                className={`h-2 rounded-full transition-all duration-300 ease-in-out hover:scale-125 ${
+                  idx === currentIndex ? 'w-6' : 'w-2'
+                }`}
+                style={{
+                  backgroundColor: idx === currentIndex ? BRAND_MID : '#d1d5db',
+                }}
+              />
+            ))}
+          </div>
         </div>
 
         {/* View All */}

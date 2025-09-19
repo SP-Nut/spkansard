@@ -111,19 +111,21 @@ export default function About() {
               LINE ›
             </a>
             <a
-              href="tel:021368899"
+              href="tel:02-936-8841"
               className="w-full sm:w-auto text-center rounded-full px-6 sm:px-8 py-3 bg-[#314874] hover:bg-[#1E2E4F] text-white font-semibold text-sm sm:text-base transition-colors"
             >
               CALL ›
             </a>
             <a
-              href="/free-service"
+              href="/contact"
               className="w-full sm:w-auto text-center rounded-full px-6 sm:px-8 py-3 bg-[#314874] hover:bg-[#1E2E4F] text-white font-semibold text-sm sm:text-base transition-colors"
             >
               ปรึกษาเรา ›
             </a>
             <a
-              href="/support/quote"
+              href="https://cal-customer.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full sm:w-auto text-center rounded-full px-6 sm:px-8 py-3 bg-[#314874] hover:bg-[#1E2E4F] text-white font-semibold text-sm sm:text-base transition-colors"
             >
               คำนวณราคาฟรี ›

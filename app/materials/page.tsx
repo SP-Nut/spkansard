@@ -51,7 +51,7 @@ export default function MaterialsPage() {
   };
 
   const calculatePrice = () => {
-    window.open('/contact', '_blank');
+    window.open('https://cal-customer.vercel.app/', '_blank');
   };
 
   return (

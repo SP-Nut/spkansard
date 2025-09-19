@@ -25,7 +25,7 @@ const Footer = () => {
   const helpLinks = [
     { label: 'คำถามที่พบบ่อย', href: '/faq' },
     { label: 'ติดต่อเรา', href: '/contact' },
-    { label: 'ประเมินราคา', href: '/contact' },
+    { label: 'ประเมินราคา', href: 'https://cal-customer.vercel.app/' },
   ];
 
   const socials = [
@@ -93,12 +93,23 @@ const Footer = () => {
                   <ul className="space-y-2 sm:space-y-3">
                     {helpLinks.map((l) => (
                       <li key={l.href}>
-                        <Link
-                          href={l.href}
-                          className="text-gray-200 hover:text-white transition-colors duration-200 text-sm sm:text-sm"
-                        >
-                          {l.label}
-                        </Link>
+                        {l.href.startsWith('http') ? (
+                          <a
+                            href={l.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-200 hover:text-white transition-colors duration-200 text-sm sm:text-sm"
+                          >
+                            {l.label}
+                          </a>
+                        ) : (
+                          <Link
+                            href={l.href}
+                            className="text-gray-200 hover:text-white transition-colors duration-200 text-sm sm:text-sm"
+                          >
+                            {l.label}
+                          </Link>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -128,12 +139,23 @@ const Footer = () => {
                 <ul className="space-y-2 sm:space-y-3">
                   {helpLinks.map((l) => (
                     <li key={l.href}>
-                      <Link
-                        href={l.href}
-                        className="text-gray-200 hover:text-white transition-colors duration-200 text-sm sm:text-sm"
-                      >
-                        {l.label}
-                      </Link>
+                      {l.href.startsWith('http') ? (
+                        <a
+                          href={l.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-200 hover:text-white transition-colors duration-200 text-sm sm:text-sm"
+                        >
+                          {l.label}
+                        </a>
+                      ) : (
+                        <Link
+                          href={l.href}
+                          className="text-gray-200 hover:text-white transition-colors duration-200 text-sm sm:text-sm"
+                        >
+                          {l.label}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>

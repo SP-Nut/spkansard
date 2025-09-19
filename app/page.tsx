@@ -262,16 +262,18 @@ export default function Home() {
               LINE ›
             </a>
             <a
-              href="tel:021368899"
+              href="tel:02-936-8841"
               className="bg-gray-200 hover:bg-white text-gray-800 font-semibold py-3 px-6 sm:px-8 rounded-full transition-all duration-300 text-sm sm:text-base"
             >
               CALL ›
             </a>
             <a
-              href="/free-service"
+              href="https://cal-customer.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-gray-200 hover:bg-white text-gray-800 font-semibold py-3 px-6 sm:px-8 rounded-full transition-all duration-300 text-sm sm:text-base"
             >
-              บริการฟรี ›
+              ประเมินราคา ›
             </a>
           </div>
         </div>
@@ -300,7 +302,9 @@ export default function Home() {
 
           {/* Main Calculator CTA */}
           <a
-            href="/calculator"
+            href="https://cal-customer.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center justify-center bg-white hover:bg-gray-100 font-bold py-2.5 sm:py-3 px-5 sm:px-6 rounded-full transition-all duration-300 text-sm sm:text-base shadow-lg transform hover:-translate-y-1 mb-4 sm:mb-5"
             style={{ color: "#1E2E4F" }}
           >
