@@ -9,30 +9,30 @@ import { SiLine } from 'react-icons/si';
 
 const Footer = () => {
   const productLinks = [
-    { label: 'กันสาด', href: '/products/awning' },
-    { label: 'ประตูรั้ว', href: '/products/gate' },
-    { label: 'ระแนง–ฟาซาด', href: '/products/facade' },
-    { label: 'โรงจอดรถ–ซุ้มศาลา', href: '/products/carport' },
-    { label: 'ราวกันตก', href: '/products/railing' },
+    { label: 'กันสาด', href: '/product' },
+    { label: 'โรงจอดรถ', href: '/product' },
+    { label: 'งานฝ้า', href: '/product' },
+    { label: 'งานระแนง', href: '/product' },
+    { label: 'งานเหล็ก', href: '/product' },
   ];
 
   const aboutLinks = [
-    { label: 'เกี่ยวกับเรา', href: '/about/company' },
-    { label: 'ผลงาน', href: '/about/portfolio' },
-    { label: 'ทีมงาน', href: '/about/team' },
+    { label: 'เกี่ยวกับเรา', href: '/about' },
+    { label: 'ผลงาน', href: '/gallery' },
+    { label: 'วัสดุ', href: '/materials' },
   ];
 
   const helpLinks = [
-    { label: 'ประเมินราคา', href: '/support/quote' },
-    { label: 'สอบถาม', href: '/support/inquiry' },
-    { label: 'ติดต่อเรา', href: '/support/contact' },
+    { label: 'คำถามที่พบบ่อย', href: '/faq' },
+    { label: 'ติดต่อเรา', href: '/contact' },
+    { label: 'ประเมินราคา', href: '/contact' },
   ];
 
   const socials = [
-    { label: 'Line', href: '#', Icon: SiLine },
-    { label: 'Facebook', href: '#', Icon: FaFacebookF },
+    { label: 'Line', href: 'https://line.me/R/ti/p/@spkansard', Icon: SiLine },
+    { label: 'Facebook', href: 'https://www.facebook.com/spkansard/', Icon: FaFacebookF },
+    { label: 'YouTube', href: 'https://www.youtube.com/@spkansard', Icon: FaYoutube },
     { label: 'Instagram', href: '#', Icon: FaInstagram },
-    { label: 'YouTube', href: '#', Icon: FaYoutube },
     { label: 'TikTok', href: '#', Icon: FaTiktok },
     { label: 'Pinterest', href: '#', Icon: FaPinterestP },
   ];
@@ -147,8 +147,8 @@ const Footer = () => {
               </h3>
 
               <p className="text-gray-200 text-sm leading-relaxed mb-3">
-                ผู้เชี่ยวชาญด้านกันสาด ประตูรั้ว และงานเหล็กครบวงจร<br className="hidden sm:block" />
-                ออกแบบและติดตั้งด้วยคุณภาพมาตรฐานสูง
+                ผู้เชี่ยวชาญด้านกันสาด โรงจอดรถ งานฝ้า งานระแนง และงานเหล็กครบวงจร<br className="hidden sm:block" />
+                มีประสบการณ์กว่า 35 ปี ลูกค้ามากกว่า 50,000 ราย ตั้งแต่ปี 2547
               </p>
 
               <div className="space-y-1 text-sm">
@@ -203,8 +203,8 @@ const Footer = () => {
             </h3>
 
             <p className="text-gray-200 text-sm leading-relaxed mb-3">
-              ผู้เชี่ยวชาญด้านกันสาด ประตูรั้ว และงานเหล็กครบวงจร<br className="hidden sm:block" />
-              ออกแบบและติดตั้งด้วยคุณภาพมาตรฐานสูง
+              ผู้เชี่ยวชาญด้านกันสาด โรงจอดรถ งานฝ้า งานระแนง และงานเหล็กครบวงจร<br className="hidden sm:block" />
+              มีประสบการณ์กว่า 35 ปี ลูกค้ามากกว่า 50,000 ราย ตั้งแต่ปี 2547
             </p>
 
             <div className="space-y-1 text-sm">

@@ -80,12 +80,14 @@ export default function Header() {
 
           {/* CTA */}
           <div className="hidden lg:flex flex-shrink-0">
-            <Link
-              href="/free-service"
+            <a
+              href="https://cal-customer.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-[#eaf4ff] text-[#1E2E4F] hover:bg-white font-medium py-2 px-6 rounded-full transition-colors duration-200 text-base"
             >
               คำนวณราคาฟรี
-            </Link>
+            </a>
           </div>
 
           {/* Mobile menu button */}
@@ -119,13 +121,15 @@ export default function Header() {
                   {item.name}
                 </Link>
               ))}
-              <Link
-                href="/free-service"
+              <a
+                href="https://cal-customer.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-[#eaf4ff] text-[#1E2E4F] hover:bg-white font-medium py-2 px-4 rounded-full transition-colors duration-200 text-base inline-block mt-3"
                 onClick={() => setIsMenuOpen(false)}
               >
                 คำนวนราคาฟรี
-              </Link>
+              </a>
             </div>
           </div>
         )}
