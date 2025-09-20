@@ -113,16 +113,16 @@ export default function FAQ() {
 
   return (
     <div className="font-prompt min-h-screen bg-gray-50">
-      {/* Hero Section with Breadcrumb (match product) */}
-      <section className="relative bg-gradient-to-r from-[#1E2E4F] to-[#31487A] text-white py-10 sm:py-14 lg:py-20">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8" style={{ maxWidth: '1800px' }}>
+      {/* Hero Section - unified CI */}
+      <section className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-12 sm:py-16 lg:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <nav className="flex items-center space-x-2 text-sm mb-6 sm:mb-8">
-            <Link href="/" className="hover:text-blue-200 transition-colors">
+            <Link href="/" className="hover:text-white/80 transition-colors">
               <FaHome className="w-4 h-4" />
             </Link>
-            <FaChevronRight className="w-3 h-3 text-blue-200" />
-            <span className="text-blue-200">คำถามที่พบบ่อย</span>
+            <FaChevronRight className="w-3 h-3 text-white/70" />
+            <span className="text-white/80">คำถามที่พบบ่อย</span>
           </nav>
 
           {/* Title */}
@@ -130,7 +130,7 @@ export default function FAQ() {
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
               FAQ ในการต่อเติมหลังคา กันสาด กับ เอสพี กันสาด
             </h1>
-            <p className="text-lg sm:text-xl text-blue-100 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-[#eaf4ff] max-w-3xl mx-auto">
               คำตอบสำหรับคำถามที่พบบ่อยเกี่ยวกับสินค้าและบริการของเรา
             </p>
           </div>

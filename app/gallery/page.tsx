@@ -97,7 +97,7 @@ export default function GalleryPage() {
               <FaHome className="w-4 h-4" />
             </Link>
             <FaChevronRight className="w-3 h-3 text-white/70" />
-            <span className="text-white/70">แกลเลอรี</span>
+            <span className="text-white/80">แกลเลอรี</span>
           </nav>
 
           {/* Title + Subtitle + CTAs */}

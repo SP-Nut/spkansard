@@ -228,7 +228,7 @@ export default function PortfolioPage() {
               <FaHome className="w-4 h-4" />
             </Link>
             <FaChevronRight className="w-3 h-3 text-white/70" />
-            <span className="text-white/70">ผลงานของเรา</span>
+            <span className="text-white/80">ผลงานของเรา</span>
           </nav>
 
           {/* Title */}

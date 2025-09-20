@@ -15,6 +15,45 @@ export default function Home() {
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const autoScrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Force light mode - prevent dark mode switching
+  useEffect(() => {
+    // Force light mode by adding class to html element
+    const htmlElement = document.documentElement;
+    htmlElement.classList.remove('dark');
+    htmlElement.style.colorScheme = 'light';
+    
+    // Override any system preference
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = () => {
+      htmlElement.classList.remove('dark');
+      htmlElement.style.colorScheme = 'light';
+    };
+    
+    mediaQuery.addListener(handleChange);
+    
+    // Set up observer to watch for any dark mode changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          if (htmlElement.classList.contains('dark')) {
+            htmlElement.classList.remove('dark');
+            htmlElement.style.colorScheme = 'light';
+          }
+        }
+      });
+    });
+    
+    observer.observe(htmlElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+    
+    return () => {
+      mediaQuery.removeListener(handleChange);
+      observer.disconnect();
+    };
+  }, []);
+
   useEffect(() => {
     const el = videoRef.current;
     if (!el || typeof window === "undefined") return;
@@ -129,7 +168,27 @@ export default function Home() {
     setIsAutoScrolling(true);
   };
   return (
-    <div className="font-prompt bg-blue-50">
+    <div className="font-prompt bg-blue-50 light-mode-only" style={{ colorScheme: 'light' }}>
+      <style jsx global>{`
+        * {
+          color-scheme: light !important;
+        }
+        html {
+          color-scheme: light !important;
+        }
+        html.dark,
+        html[data-theme="dark"],
+        .dark {
+          color-scheme: light !important;
+          background: white !important;
+          color: black !important;
+        }
+        @media (prefers-color-scheme: dark) {
+          * {
+            color-scheme: light !important;
+          }
+        }
+      `}</style>
       <HeroSection />
 
       {/* Intro Section: กันสาด */}
@@ -286,17 +345,25 @@ export default function Home() {
       
       {/* Price Calculator Section - Full Width Sharp Edges */}
       <section
-        className="text-center p-4 sm:p-6 lg:p-8 text-white"
+        className="relative text-center py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 text-white"
         style={{
-          background: "linear-gradient(to right, #1E2E4F, #31487A)",
+          backgroundImage: "url('/bg-contact.webp')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       >
-        {/* Main Price Calculator Focus */}
-        <div className="mb-3 sm:mb-4">
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/50"></div>
+        
+        {/* Content with relative positioning */}
+        <div className="relative z-10">
+          {/* Main Price Calculator Focus */}
+          <div className="mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 sm:mb-6">
             ประเมินราคากันสาด
           </h2>
-          <p className="text-sm sm:text-base lg:text-lg mb-4 max-w-2xl mx-auto px-2">
+          <p className="text-base sm:text-lg lg:text-xl xl:text-2xl mb-6 sm:mb-8 max-w-3xl mx-auto px-2 leading-relaxed">
             คำนวณราคาทันที ด้วยเครื่องมือออนไลน์ที่แม่นยำ
           </p>
 
@@ -305,36 +372,37 @@ export default function Home() {
             href="https://cal-customer.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center bg-white hover:bg-gray-100 font-bold py-2.5 sm:py-3 px-5 sm:px-6 rounded-full transition-all duration-300 text-sm sm:text-base shadow-lg transform hover:-translate-y-1 mb-4 sm:mb-5"
+            className="inline-flex items-center justify-center bg-white hover:bg-gray-100 font-bold py-4 sm:py-5 px-8 sm:px-10 rounded-full transition-all duration-300 text-base sm:text-lg lg:text-xl shadow-lg transform hover:-translate-y-1 mb-6 sm:mb-8"
             style={{ color: "#1E2E4F" }}
           >
-            <FaCalculator className="w-4 h-4 mr-2" />
+            <FaCalculator className="w-5 h-5 sm:w-6 sm:h-6 mr-3" />
             คำนวณราคาทันที
           </a>
         </div>
 
         {/* Compact Consultation Section */}
-        <div className="border-t border-white/20 pt-3 sm:pt-4">
-          <h3 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3">ต้องการคำปรึกษา?</h3>
+        <div className="border-t border-white/20 pt-6 sm:pt-8">
+          <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-4 sm:mb-6">ต้องการคำปรึกษา?</h3>
 
-          <div className="flex flex-col space-y-2 sm:space-y-0 sm:flex-row sm:gap-3 justify-center px-2">
+          <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:gap-4 lg:gap-6 justify-center px-2">
             <a
               href="tel:02-936-8841"
-              className="inline-flex items-center justify-center bg-white/20 hover:bg-white/30 border border-white text-white font-medium py-2 px-4 sm:px-5 rounded-full transition-all duration-300 backdrop-blur-sm text-xs sm:text-sm"
+              className="inline-flex items-center justify-center bg-white/20 hover:bg-white/30 border border-white text-white font-medium py-3 px-6 sm:px-7 rounded-full transition-all duration-300 backdrop-blur-sm text-sm sm:text-base lg:text-lg"
             >
-              <FaPhone className="w-3 h-3 mr-2" />
+              <FaPhone className="w-4 h-4 sm:w-5 sm:h-5 mr-3" />
               โทร 02-936-8841
             </a>
             <a
               href="https://line.me/R/ti/p/@spkansard"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center bg-white/20 hover:bg-white/30 border border-white text-white font-medium py-2 px-4 sm:px-5 rounded-full transition-all duration-300 backdrop-blur-sm text-xs sm:text-sm"
+              className="inline-flex items-center justify-center bg-white/20 hover:bg-white/30 border border-white text-white font-medium py-3 px-6 sm:px-7 rounded-full transition-all duration-300 backdrop-blur-sm text-sm sm:text-base lg:text-lg"
             >
-              <SiLine className="w-3 h-3 mr-2" />
+              <SiLine className="w-4 h-4 sm:w-5 sm:h-5 mr-3" />
               LINE @spkansard
             </a>
           </div>
+        </div>
         </div>
       </section>
 
@@ -596,9 +664,6 @@ export default function Home() {
                 <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
                   <FaPhoneAlt className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
                 </div>
-                <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full text-white text-xs sm:text-sm font-bold flex items-center justify-center" style={{backgroundColor:'var(--brand-600)'}}>
-                  1
-                </div>
               </div>
               <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3" style={{color:'var(--brand-900)'}}>
                 ติดต่อเรา
@@ -613,9 +678,6 @@ export default function Home() {
               <div className="relative mb-4 sm:mb-5">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
                   <FaFileAlt className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
-                </div>
-                <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full text-white text-xs sm:text-sm font-bold flex items-center justify-center" style={{backgroundColor:'var(--brand-600)'}}>
-                  2
                 </div>
               </div>
               <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3" style={{color:'var(--brand-900)'}}>
@@ -632,9 +694,6 @@ export default function Home() {
                 <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
                   <FaCheckCircle className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
                 </div>
-                <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full text-white text-xs sm:text-sm font-bold flex items-center justify-center" style={{backgroundColor:'var(--brand-600)'}}>
-                  3
-                </div>
               </div>
               <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3" style={{color:'var(--brand-900)'}}>
                 เสนอราคา
@@ -649,9 +708,6 @@ export default function Home() {
               <div className="relative mb-4 sm:mb-5">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
                   <FaTools className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
-                </div>
-                <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full text-white text-xs sm:text-sm font-bold flex items-center justify-center" style={{backgroundColor:'var(--brand-600)'}}>
-                  4
                 </div>
               </div>
               <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3" style={{color:'var(--brand-900)'}}>
@@ -668,9 +724,6 @@ export default function Home() {
                 <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
                   <FaClock className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
                 </div>
-                <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full text-white text-xs sm:text-sm font-bold flex items-center justify-center" style={{backgroundColor:'var(--brand-600)'}}>
-                  5
-                </div>
               </div>
               <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3" style={{color:'var(--brand-900)'}}>
                 ติดตั้ง
@@ -686,9 +739,6 @@ export default function Home() {
                 <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
                   <FaHome className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
                 </div>
-                <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full text-white text-xs sm:text-sm font-bold flex items-center justify-center" style={{backgroundColor:'var(--brand-600)'}}>
-                  6
-                </div>
               </div>
               <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3" style={{color:'var(--brand-900)'}}>
                 ส่งมอบงาน
@@ -698,28 +748,71 @@ export default function Home() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Call to Action */}
-          <div className="text-center mt-8 sm:mt-12">
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
-              <a
-                href="tel:02-936-8841"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold transition-all duration-300 text-white hover:shadow-lg transform hover:-translate-y-1 text-sm sm:text-base"
-                style={{backgroundColor:'var(--brand-600)'}}
-              >
-                <FaPhone className="w-4 h-4 mr-2" />
-                โทร 02-936-8841
-              </a>
-              <a
-                href="https://line.me/R/ti/p/@spkansard"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-full border-2 font-semibold transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 text-sm sm:text-base"
-                style={{borderColor:'var(--brand-600)', color:'var(--brand-600)'}}
-              >
-                <SiLine className="w-4 h-4 mr-2" />
-                LINE @spkansard
-              </a>
+      {/* Visit Sale Gallery Section */}
+      <section className="relative h-96 sm:h-[500px] lg:h-[600px] overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('/herosection/01.jpg')", // ใช้รูปจาก herosection หรือเพิ่มรูปใหม่
+          }}
+        >
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/40"></div>
+        </div>
+        
+        {/* Content */}
+        <div className="relative z-10 h-full flex items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="max-w-2xl">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
+                Visit SP Kansard
+              </h2>
+              
+              <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8 text-white">
+                <p className="text-base sm:text-lg font-medium">
+                  บริษัท เอสพี กันสาด จำกัด
+                </p>
+                <p className="text-base sm:text-lg">
+                  28/101 ถ.รัชดา-รามอินทรา แขวงคลองกุ่ม
+                </p>
+                <p className="text-base sm:text-lg">
+                  เขตบึงกุ่ม กรุงเทพมหานคร 10230
+                </p>
+                <p className="text-sm sm:text-base text-white/80">
+                  *ผู้เชี่ยวชาญด้านกันสาด โรงจอดรถ งานฝ้า งานระแนง และงานเหล็กครบวงจร
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <a
+                  href="https://maps.google.com/?q=28/101+ถ.รัชดา-รามอินทรา+แขวงคลองกุ่ม+เขตบึงกุ่ม+กรุงเทพมหานคร+10230"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-gray-900 transition-all duration-300 text-sm sm:text-base"
+                >
+                  Get Direction →
+                </a>
+                <div className="flex gap-3">
+                  <a
+                    href="tel:02-936-8841"
+                    className="inline-flex items-center justify-center px-4 sm:px-6 py-3 bg-white/20 hover:bg-white/30 border border-white/40 text-white font-medium rounded-lg backdrop-blur-sm transition-all duration-300 text-sm sm:text-base"
+                  >
+                    โทร. 02-936-8841
+                  </a>
+                  <a
+                    href="https://line.me/R/ti/p/@spkansard"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center px-4 sm:px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-300 text-sm sm:text-base"
+                  >
+                    LINE @spkansard
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

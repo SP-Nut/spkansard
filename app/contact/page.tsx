@@ -40,33 +40,23 @@ export default function Contact() {
 
   return (
     <div className="font-prompt min-h-screen bg-gray-50">
-      {/* Hero Section with background image retained + gradient like product */}
-      <section 
-        className="relative py-12 sm:py-16 min-h-[250px] sm:min-h-[350px] flex items-center"
-        style={{
-          backgroundImage: 'url("/images/bg-contact.webp")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
-        {/* Subtle dark overlay for better readability */}
-        <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
-
-        <div className="w-full relative z-10">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8" style={{ maxWidth: '1800px' }}>
+      {/* Hero Section - unified CI (gradient like other pages) */}
+      <section className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-12 sm:py-16 lg:py-20">
+        <div className="w-full">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Breadcrumb */}
-            <nav className="flex items-center space-x-2 text-sm mb-4 sm:mb-6 text-white">
-              <Link href="/" className="hover:text-white transition-colors">
+            <nav className="flex items-center space-x-2 text-sm mb-6 sm:mb-8">
+              <Link href="/" className="hover:text-white/80 transition-colors">
                 <FaHome className="w-4 h-4" />
               </Link>
-              <FaChevronRight className="w-3 h-3" />
-              <span>ติดต่อเรา</span>
+              <FaChevronRight className="w-3 h-3 text-white/70" />
+              <span className="text-white/80">ติดต่อเรา</span>
             </nav>
 
             {/* Title */}
-            <div className="text-white">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 drop-shadow-lg">ติดต่อเรา</h1>
-              <p className="text-white/90 text-lg drop-shadow">มีคำถามเกี่ยวกับงานหรือราคา เรายินดีช่วยเหลือ</p>
+            <div className="text-center">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">ติดต่อเรา</h1>
+              <p className="text-lg sm:text-xl text-[#eaf4ff] max-w-3xl mx-auto">มีคำถามเกี่ยวกับงานหรือราคา เรายินดีช่วยเหลือ</p>
             </div>
           </div>
         </div>
@@ -326,61 +316,263 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Google Map Section */}
-          <div className="mt-12 lg:mt-16">
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">
-              แผนที่เดินทาง
-            </h2>
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <div className="p-4 sm:p-6 bg-gray-50 border-b">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  บริษัท เอสพี กันสาด จำกัด (สำนักงานใหญ่)
-                </h3>
-                <p className="text-gray-600 text-sm sm:text-base">
-                  เลขที่ 28/101 ถ.รัชดา-รามอินทรา แขวงคลองกุ่ม เขตบึงกุ่ม กรุงเทพมหานคร 10230
-                </p>
+          {/* Branch Locations Section */}
+          <div className="mt-12 lg:mt-16 bg-gray-50 rounded-2xl p-6 sm:p-8">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
+                สาขาของเรา
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                เลือกสาขาที่ใกล้ที่สุดกับท่าน เพื่อรับคำปรึกษาและบริการที่ดีที่สุด
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8 sm:mb-12">
+              {/* สำนักงานใหญ่ */}
+              <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-gray-100">
+                <div className="p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="bg-gradient-to-r from-[#314874] to-[#1E2E4F] p-3 rounded-lg">
+                      <FaHome className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-800 ml-3">สำนักงานใหญ่</h3>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <FaMapMarkerAlt className="h-5 w-5 text-[#314874] mt-1" />
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        28/101 ถ.รัชดา-รามอินทรา แขวงคลองกุ่ม เขตบึงกุ่ม กทม. 10230
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3">
+                      <FaPhone className="h-5 w-5 text-[#314874]" />
+                      <p className="text-gray-600 text-sm">02-936-8841-2</p>
+                    </div>
+
+                    <div className="flex items-center space-x-3">
+                      <SiLine className="h-5 w-5 text-[#314874]" />
+                      <p className="text-gray-600 text-sm">@spkansard</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 space-y-2">
+                    <a 
+                      href="tel:029368841" 
+                      className="w-full bg-gradient-to-r from-[#314874] to-[#1E2E4F] hover:from-[#1E2E4F] hover:to-[#0F1829] text-white py-2.5 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-sm font-medium"
+                    >
+                      <FaPhone className="h-4 w-4" />
+                      <span>โทรเลย</span>
+                    </a>
+                    
+                    <a 
+                      href="https://www.google.com/maps/search/28%2F101+ถ.รัชดา-รามอินทรา+แขวงคลองกุ่ม+เขตบึงกุ่ม+กทม.+10230" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-full bg-white hover:bg-gray-50 border-2 border-[#314874] text-[#314874] py-2.5 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-sm font-medium"
+                    >
+                      <FaRoute className="h-4 w-4" />
+                      <span>นำทาง</span>
+                    </a>
+                  </div>
+                </div>
               </div>
-              
-              {/* Google Map Embed */}
-              <div className="relative h-64 sm:h-80 lg:h-96">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3872.1234567890!2d100.6234567890123!3d13.8234567890123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d6032280d61f7%3A0x10100b25de24820!2z4LiX4LiFLuC4o4C4seC4leC4lOC4suC4o-C4seC4oeC4reC4tOC4meC4l-C4o-C4sw!5e0!3m2!1sth!2sth!4v1234567890123!5m2!1sth!2sth"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="แผนที่ เอสพี กันสาด"
-                  className="w-full h-full"
-                />
+
+              {/* สาขาบางแวก */}
+              <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-gray-100">
+                <div className="p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="bg-gradient-to-r from-[#314874] to-[#1E2E4F] p-3 rounded-lg">
+                      <FaHome className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-800 ml-3">สาขาบางแวก</h3>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <FaMapMarkerAlt className="h-5 w-5 text-[#314874] mt-1" />
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        209/12 หมู่ 1 ถ.พุทธมณฑลสาย 2 ต.ศาลายา อ.พุทธมณฑล นครปฐม 73170
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3">
+                      <FaPhone className="h-5 w-5 text-[#314874]" />
+                      <p className="text-gray-600 text-sm">034-109-633</p>
+                    </div>
+
+                    <div className="flex items-center space-x-3">
+                      <SiLine className="h-5 w-5 text-[#314874]" />
+                      <p className="text-gray-600 text-sm">@spkansard</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 space-y-2">
+                    <a 
+                      href="tel:034109633" 
+                      className="w-full bg-gradient-to-r from-[#314874] to-[#1E2E4F] hover:from-[#1E2E4F] hover:to-[#0F1829] text-white py-2.5 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-sm font-medium"
+                    >
+                      <FaPhone className="h-4 w-4" />
+                      <span>โทรเลย</span>
+                    </a>
+                    
+                    <a 
+                      href="https://www.google.com/maps/search/209%2F12+หมู่+1+ถ.พุทธมณฑลสาย+2+ต.ศาลายา+อ.พุทธมณฑล+นครปฐม+73170" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-full bg-white hover:bg-gray-50 border-2 border-[#314874] text-[#314874] py-2.5 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-sm font-medium"
+                    >
+                      <FaRoute className="h-4 w-4" />
+                      <span>นำทาง</span>
+                    </a>
+                  </div>
+                </div>
               </div>
-              
-              {/* Map Actions */}
-              <div className="p-4 sm:p-6 bg-gray-50 border-t">
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                  <a
-                    href="https://maps.google.com/?q=28/101+ถ.รัชดา-รามอินทรา+แขวงคลองกุ่ม+เขตบึงกุ่ม+กรุงเทพมหานคร+10230"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center px-4 py-2 bg-[#314874] hover:bg-[#1E2E4F] text-white font-medium rounded-lg transition-colors text-sm sm:text-base"
-                  >
-                    <FaMapMarkerAlt className="w-4 h-4 mr-2" />
-                     เปิดใน Google Maps
-                   </a>
-                  <a
-                    href="https://maps.google.com/?q=28/101+ถ.รัชดา-รามอินทรา+แขวงคลองกุ่ม+เขตบึงกุ่ม+กรุงเทพมหานคร+10230&dirflg=d"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center px-4 py-2 border border-[#314874] text-[#314874] hover:bg-[#eaf4ff] font-medium rounded-lg transition-colors text-sm sm:text-base"
-                  >
-                    <FaRoute className="w-4 h-4 mr-2" />
-                     เส้นทางการเดินทาง
-                   </a>
+
+              {/* สาขาราชพฤกษ์ */}
+              <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-gray-100">
+                <div className="p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="bg-gradient-to-r from-[#314874] to-[#1E2E4F] p-3 rounded-lg">
+                      <FaHome className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-800 ml-3">สาขาราชพฤกษ์</h3>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <FaMapMarkerAlt className="h-5 w-5 text-[#314874] mt-1" />
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        25/145 หมู่ 8 ถ.ราชพฤกษ์ ต.บางรักพัฒนา อ.บางบัวทอง นนทบุรี 11110
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3">
+                      <FaPhone className="h-5 w-5 text-[#314874]" />
+                      <p className="text-gray-600 text-sm">02-191-6892</p>
+                    </div>
+
+                    <div className="flex items-center space-x-3">
+                      <SiLine className="h-5 w-5 text-[#314874]" />
+                      <p className="text-gray-600 text-sm">@spkansard</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 space-y-2">
+                    <a 
+                      href="tel:021916892" 
+                      className="w-full bg-gradient-to-r from-[#314874] to-[#1E2E4F] hover:from-[#1E2E4F] hover:to-[#0F1829] text-white py-2.5 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-sm font-medium"
+                    >
+                      <FaPhone className="h-4 w-4" />
+                      <span>โทรเลย</span>
+                    </a>
+                    
+                    <a 
+                      href="https://www.google.com/maps/search/25%2F145+หมู่+8+ถ.ราชพฤกษ์+ต.บางรักพัฒนา+อ.บางบัวทอง+นนทบุรี+11110" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-full bg-white hover:bg-gray-50 border-2 border-[#314874] text-[#314874] py-2.5 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-sm font-medium"
+                    >
+                      <FaRoute className="h-4 w-4" />
+                      <span>นำทาง</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* สาขาสามโคก */}
+              <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-gray-100">
+                <div className="p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="bg-gradient-to-r from-[#314874] to-[#1E2E4F] p-3 rounded-lg">
+                      <FaHome className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-800 ml-3">สาขาสามโคก</h3>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <FaMapMarkerAlt className="h-5 w-5 text-[#314874] mt-1" />
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        89/1 หมู่ 4 ต.สามโคก อ.สามโคก จ.ปทุมธานี 12160
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3">
+                      <FaPhone className="h-5 w-5 text-[#314874]" />
+                      <p className="text-gray-600 text-sm">02-181-1866</p>
+                    </div>
+
+                    <div className="flex items-center space-x-3">
+                      <SiLine className="h-5 w-5 text-[#314874]" />
+                      <p className="text-gray-600 text-sm">@spkansard</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 space-y-2">
+                    <a 
+                      href="tel:021811866" 
+                      className="w-full bg-gradient-to-r from-[#314874] to-[#1E2E4F] hover:from-[#1E2E4F] hover:to-[#0F1829] text-white py-2.5 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-sm font-medium"
+                    >
+                      <FaPhone className="h-4 w-4" />
+                      <span>โทรเลย</span>
+                    </a>
+                    
+                    <a 
+                      href="https://www.google.com/maps/search/89%2F1+หมู่+4+ต.สามโคก+อ.สามโคก+จ.ปทุมธานี+12160" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-full bg-white hover:bg-gray-50 border-2 border-[#314874] text-[#314874] py-2.5 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-sm font-medium"
+                    >
+                      <FaRoute className="h-4 w-4" />
+                      <span>นำทาง</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
+
+            {/* Quick Contact Section */}
+            <div className="bg-gradient-to-r from-[#314874] to-[#1E2E4F] rounded-2xl p-6 sm:p-8 text-center">
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">
+                ติดต่อเราง่ายๆ ผ่านช่องทางที่สะดวกสำหรับคุณ
+              </h3>
+              <p className="text-blue-100 mb-6 text-lg">
+                ทีมงานผู้เชี่ยวชาญพร้อมให้คำปรึกษาและบริการที่ดีที่สุด
+              </p>
+              
+              <div className="flex flex-wrap justify-center gap-4">
+                <a 
+                  href="tel:029368841" 
+                  className="bg-white hover:bg-gray-100 text-[#314874] font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center space-x-2"
+                >
+                  <FaPhone className="h-5 w-5" />
+                  <span>02-936-8841</span>
+                </a>
+                
+                <a 
+                  href="https://line.me/R/ti/p/@spkansard" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-[#06C755] hover:bg-[#05B34D] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center space-x-2"
+                >
+                  <SiLine className="h-5 w-5" />
+                  <span>@spkansard</span>
+                </a>
+                
+                <a 
+                  href="mailto:spkansards@gmail.com" 
+                  className="bg-[#EA4335] hover:bg-[#D93025] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center space-x-2"
+                >
+                  <FaEnvelope className="h-5 w-5" />
+                  <span>Email</span>
+                </a>
+              </div>
+            </div>
           </div>
+
+       
         </div>
       </section>
     </div>
