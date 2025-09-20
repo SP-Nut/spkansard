@@ -36,8 +36,9 @@ export default function HeroSection() {
                 alt="SP Kansard กันสาดโรงจอดรถ"
                 fill
                 priority
-                sizes="100vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover object-center"
+                quality={85}
               />
             </div>
             <div className="slide w-1/5 h-full relative flex-shrink-0">
@@ -45,8 +46,10 @@ export default function HeroSection() {
                 src="/herosection/02.jpg"
                 alt="SP Kansard กันสาดบ้าน"
                 fill
-                sizes="100vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover object-center"
+                quality={85}
+                loading="lazy"
               />
             </div>
             <div className="slide w-1/5 h-full relative flex-shrink-0">
@@ -54,8 +57,10 @@ export default function HeroSection() {
                 src="/herosection/03.jpg"
                 alt="SP Kansard โรงจอดรถสำเร็จรูป"
                 fill
-                sizes="100vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover object-center"
+                quality={85}
+                loading="lazy"
               />
             </div>
             <div className="slide w-1/5 h-full relative flex-shrink-0">
@@ -63,8 +68,10 @@ export default function HeroSection() {
                 src="/herosection/04.jpg"
                 alt="SP Kansard กันสาดอลูมิเนียม"
                 fill
-                sizes="100vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover object-center"
+                quality={85}
+                loading="lazy"
               />
             </div>
             <div className="slide w-1/5 h-full relative flex-shrink-0">
@@ -72,8 +79,10 @@ export default function HeroSection() {
                 src="/herosection/05.jpg"
                 alt="SP Kansard งานติดตั้งกันสาด"
                 fill
-                sizes="100vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover object-center"
+                quality={85}
+                loading="lazy"
               />
             </div>
           </div>

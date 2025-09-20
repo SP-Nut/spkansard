@@ -1,11 +1,21 @@
 "use client";
-import HeroSection from "./components/HeroSection";
-import PortfolioSection from "./components/PortfolioSection";
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { FaUsers, FaShieldAlt, FaHeart, FaPhone, FaCalculator, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FaCalendarCheck } from "react-icons/fa6";
 import { SiLine } from "react-icons/si";
 import { FaPhoneAlt, FaFileAlt, FaTools, FaHome, FaClock, FaCheckCircle } from "react-icons/fa";
+
+// Dynamic imports for better code splitting
+const HeroSection = dynamic(() => import("./components/HeroSection"), {
+  ssr: true,
+  loading: () => <div className="h-screen bg-gradient-to-r from-[#1E2E4F] to-[#314874]" />
+});
+
+const PortfolioSection = dynamic(() => import("./components/PortfolioSection"), {
+  ssr: false,
+  loading: () => <div className="h-64 bg-gray-100 animate-pulse" />
+});
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -15,43 +25,10 @@ export default function Home() {
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const autoScrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Force light mode - prevent dark mode switching
+  // Simplified light mode enforcement
   useEffect(() => {
-    // Force light mode by adding class to html element
-    const htmlElement = document.documentElement;
-    htmlElement.classList.remove('dark');
-    htmlElement.style.colorScheme = 'light';
-    
-    // Override any system preference
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = () => {
-      htmlElement.classList.remove('dark');
-      htmlElement.style.colorScheme = 'light';
-    };
-    
-    mediaQuery.addListener(handleChange);
-    
-    // Set up observer to watch for any dark mode changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          if (htmlElement.classList.contains('dark')) {
-            htmlElement.classList.remove('dark');
-            htmlElement.style.colorScheme = 'light';
-          }
-        }
-      });
-    });
-    
-    observer.observe(htmlElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-    
-    return () => {
-      mediaQuery.removeListener(handleChange);
-      observer.disconnect();
-    };
+    document.documentElement.classList.remove('dark');
+    document.documentElement.style.colorScheme = 'light';
   }, []);
 
   useEffect(() => {

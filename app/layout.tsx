@@ -43,6 +43,11 @@ export default function RootLayout({
         <link rel="icon" href="/images/logo.png" type="image/png" />
         <link rel="shortcut icon" href="/images/logo.png" type="image/png" />
         <link rel="apple-touch-icon" href="/images/logo.png" />
+        {/* Preload critical resources */}
+        <link rel="preload" href="/herosection/01.jpg" as="image" />
+        <link rel="preload" href="/images/logo.png" as="image" />
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       </head>
       <body
         className={`${prompt.variable} font-sans antialiased flex flex-col min-h-screen`}

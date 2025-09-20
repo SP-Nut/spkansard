@@ -28,4 +28,13 @@ module.exports = {
     },
   },
   plugins: [],
+  corePlugins: {
+    // Disable unused plugins to reduce CSS size
+    container: false,
+    backgroundOpacity: false,
+    borderOpacity: false,
+    divideOpacity: false,
+    placeholderOpacity: false,
+    textOpacity: false,
+  },
 }
