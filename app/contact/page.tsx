@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { FaHome, FaChevronRight, FaPhone, FaEnvelope, FaFax, FaGlobe, FaMapMarkerAlt, FaRoute } from 'react-icons/fa';
 import { SiLine } from 'react-icons/si';
+import StructuredData from '../components/StructuredData';
+import InternalLinks from '../components/InternalLinks';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -40,6 +42,7 @@ export default function Contact() {
 
   return (
     <div className="font-prompt min-h-screen bg-gray-50">
+      <StructuredData type="localBusiness" />
       {/* Hero Section - unified CI (gradient like other pages) */}
       <section className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-12 sm:py-16 lg:py-20">
         <div className="w-full">
@@ -575,6 +578,9 @@ export default function Contact() {
        
         </div>
       </section>
+
+      {/* Internal Links */}
+      <InternalLinks currentPage="/contact" />
     </div>
   );
 }

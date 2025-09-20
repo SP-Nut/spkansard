@@ -16,6 +16,8 @@ import {
   FaExpand
 } from "react-icons/fa";
 import { SiLine } from "react-icons/si";
+import StructuredData from "../components/StructuredData";
+import InternalLinks from "../components/InternalLinks";
 
 // Types for portfolio projects
 interface Project {
@@ -219,6 +221,10 @@ export default function PortfolioPage() {
 
   return (
     <div className="font-prompt bg-gray-50">
+      <StructuredData type="service" data={{
+        name: "ผลงานกันสาดและโรงจอดรถ SP Kansard",
+        description: "ชมผลงานกันสาดและโรงจอดรถคุณภาพสูงจาก SP Kansard ผู้เชี่ยวชาญมากกว่า 35 ปี"
+      }} />
       {/* Hero Section with Breadcrumb */}
       <section className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -519,6 +525,9 @@ export default function PortfolioPage() {
           </div>
         </div>
       </section>
+
+      {/* Internal Links */}
+      <InternalLinks currentPage="/portfolio" />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { FaHome, FaChevronRight, FaPhone } from 'react-icons/fa';
 import { SiLine } from 'react-icons/si';
+import StructuredData from '../components/StructuredData';
 
 const faqs = [
   {
@@ -113,6 +114,7 @@ export default function FAQ() {
 
   return (
     <div className="font-prompt min-h-screen bg-gray-50">
+      <StructuredData type="faq" />
       {/* Hero Section - unified CI */}
       <section className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
