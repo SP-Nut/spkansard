@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { FaHome, FaChevronRight, FaPhone, FaEnvelope, FaFax, FaGlobe, FaMapMarkerAlt, FaRoute } from 'react-icons/fa';
 import { SiLine } from 'react-icons/si';
 import StructuredData from '../components/StructuredData';
-import InternalLinks from '../components/InternalLinks';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -59,7 +58,9 @@ export default function Contact() {
             {/* Title */}
             <div className="text-center">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">ติดต่อเรา</h1>
-              <p className="text-lg sm:text-xl text-[#eaf4ff] max-w-3xl mx-auto">มีคำถามเกี่ยวกับงานหรือราคา เรายินดีช่วยเหลือ</p>
+              <p className="text-lg sm:text-xl text-[#eaf4ff] max-w-3xl mx-auto">
+                มีคำถามเกี่ยวกับ<Link href="/portfolio" className="underline hover:text-white transition-colors">งานกันสาด</Link>หรือ<Link href="/materials" className="underline hover:text-white transition-colors">วัสดุ</Link> เรายินดีช่วยเหลือ
+              </p>
             </div>
           </div>
         </div>
@@ -159,17 +160,17 @@ export default function Contact() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-4">
-                    บริการที่สนใจ
+                    บริการที่สนใจ (ดู<Link href="/portfolio" className="text-blue-600 hover:text-blue-800 underline">ผลงาน</Link>เพิ่มเติม)
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 gap-3 sm:gap-4">
                     {[
-                      { id: 'awning', label: 'วัสดุกันแสง' },
-                      { id: 'carport', label: 'วัสดุโรงรถ' },
-                      { id: 'roof', label: 'ระแนง/ฟ้า' },
-                      { id: 'facade', label: 'หลังคาโรงรถ' },
-                      { id: 'other', label: 'อื่นๆ' }
+                      { id: 'awning', label: 'วัสดุกันแสง', link: '/materials' },
+                      { id: 'carport', label: 'วัสดุโรงรถ', link: '/materials' },
+                      { id: 'roof', label: 'ระแนง/ฟ้า', link: '/portfolio' },
+                      { id: 'facade', label: 'หลังคาโรงรถ', link: '/gallery' },
+                      { id: 'other', label: 'อื่นๆ', link: '/faq' }
                     ].map((service) => (
-                      <label key={service.id} className="flex items-center space-x-2 cursor-pointer py-1">
+                      <label key={service.id} className="flex items-center space-x-2 cursor-pointer py-1 group">
                         <input
                           type="checkbox"
                           value={service.id}
@@ -178,6 +179,9 @@ export default function Contact() {
                           className="w-4 h-4 text-[#314874] border-gray-300 rounded focus:ring-[#314874]"
                         />
                         <span className="text-sm text-gray-700">{service.label}</span>
+                        <Link href={service.link} className="text-xs text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity hover:underline ml-1">
+                          ดูเพิ่มเติม
+                        </Link>
                       </label>
                     ))}
                   </div>
@@ -185,7 +189,7 @@ export default function Contact() {
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                    รายละเอียด
+                    รายละเอียด <span className="text-xs text-gray-500">(หากมีคำถาม ดู<Link href="/faq" className="text-blue-600 hover:text-blue-800 underline">FAQ</Link>ก่อนได้)</span>
                   </label>
                   <textarea
                     id="message"
@@ -578,9 +582,7 @@ export default function Contact() {
        
         </div>
       </section>
-
-      {/* Internal Links */}
-      <InternalLinks currentPage="/contact" />
+     
     </div>
   );
 }

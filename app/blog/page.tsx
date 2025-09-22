@@ -23,7 +23,8 @@ const BlogPage = () => {
               บทความและเคล็ดลับ
             </h1>
             <p className="text-lg sm:text-xl text-white/90">
-              ความรู้และข้อมูลเกี่ยวกับกันสาด โรงจอดรถ และงานเหล็กจากผู้เชี่ยวชาญ
+              ความรู้และข้อมูลเกี่ยวกับกันสาด โรงจอดรถ และงานเหล็กจากผู้เชี่ยวชาญ<br />
+              ในขณะเดียวกันสามารถดู<Link href="/materials" className="underline hover:text-white transition-colors mx-1">วัสดุคุณภาพ</Link>และ<Link href="/gallery" className="underline hover:text-white transition-colors mx-1">ผลงานจริง</Link>ของเราได้
             </p>
           </div>
         </div>
@@ -79,7 +80,7 @@ const BlogPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-[#314874] rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-gray-600">เทคนิคการเลือกกันสาดที่เหมาะสม</span>
+                <span className="text-gray-600">เทคนิคการเลือก<Link href="/materials" className="text-[#314874] hover:underline font-medium ml-1">กันสาดที่เหมาะสม</Link></span>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-[#314874] rounded-full mt-2 flex-shrink-0"></div>
@@ -91,7 +92,7 @@ const BlogPage = () => {
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-[#314874] rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-gray-600">เคล็ดลับจากผู้เชี่ยวชาญ</span>
+                <span className="text-gray-600">เคล็ดลับจาก<Link href="/portfolio" className="text-[#314874] hover:underline font-medium ml-1">ผู้เชี่ยวชาญ</Link></span>
               </div>
             </div>
           </div>

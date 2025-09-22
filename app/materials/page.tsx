@@ -72,7 +72,9 @@ export default function MaterialsPage() {
           <div className="text-center">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">วัสดุหลังคาคุณภาพ</h1>
             <p className="text-lg sm:text-xl text-[#eaf4ff] max-w-3xl mx-auto">
-              เลือกวัสดุหลังคาที่เหมาะกับงานของคุณ ทั้งโปร่งแสงและทึบแสง พร้อมราคายุติธรรม
+              เลือกวัสดุหลังคาที่เหมาะกับงานของคุณ ทั้งโปร่งแสงและทึบแสง พร้อมราคายุติธรรม 
+              <br className="hidden sm:block" />
+              ดู<Link href="/portfolio" className="underline hover:text-white transition-colors mx-1">ผลงานการใช้งาน</Link>และ<Link href="/gallery" className="underline hover:text-white transition-colors mx-1">ภาพจริง</Link>
             </p>
 
             {/* Optional CTAs (keep functions) */}

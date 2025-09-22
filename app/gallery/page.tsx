@@ -104,7 +104,9 @@ export default function GalleryPage() {
           <div className="text-center">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">แกลเลอรีผลงาน</h1>
             <p className="text-lg sm:text-xl text-[#eaf4ff] max-w-3xl mx-auto">
-              รวมภาพผลงานติดตั้งจริงจากทีมงานของเรา ทั้งกันสาดหน้าบ้าน หลังบ้าน ข้างบ้าน และโรงจอดรถ
+              รวมภาพผลงานติดตั้งจริงจากทีมงานของเรา ทั้งกันสาดหน้าบ้าน หลังบ้าน ข้างบ้าน และโรงจอดรถ 
+              <br className="hidden sm:block" />
+              ดู<Link href="/portfolio" className="underline hover:text-white transition-colors mx-1">รายละเอียดงาน</Link>และ<Link href="/materials" className="underline hover:text-white transition-colors mx-1">วัสดุที่ใช้</Link>
             </p>
 
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">

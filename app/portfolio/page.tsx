@@ -17,7 +17,6 @@ import {
 } from "react-icons/fa";
 import { SiLine } from "react-icons/si";
 import StructuredData from "../components/StructuredData";
-import InternalLinks from "../components/InternalLinks";
 
 // Types for portfolio projects
 interface Project {
@@ -240,7 +239,11 @@ export default function PortfolioPage() {
           {/* Title */}
           <div className="text-center">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">ผลงานติดตั้ง</h1>
-            <p className="text-lg sm:text-xl text-[#eaf4ff] max-w-3xl mx-auto">รวมตัวอย่างงานจริง กันสาด โรงรถ และระแนง จากหน้างานลูกค้า</p>
+            <p className="text-lg sm:text-xl text-[#eaf4ff] max-w-3xl mx-auto">
+              รวมตัวอย่างงานจริง กันสาด โรงรถ และระแนง จากหน้างานลูกค้า 
+              <br className="hidden sm:block" />
+              ดู<Link href="/materials" className="underline hover:text-white transition-colors mx-1">วัสดุ</Link>และ<Link href="/gallery" className="underline hover:text-white transition-colors mx-1">ภาพเพิ่มเติม</Link>
+            </p>
           </div>
         </div>
       </section>
@@ -477,7 +480,8 @@ export default function PortfolioPage() {
             พร้อมเริ่มโปรเจคท์ของคุณแล้วใช่ไหม?
           </h2>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            ติดต่อเราเพื่อรับคำปรึกษาฟรี และใบเสนอราคาที่ชัดเจน โปร่งใส
+            ติดต่อเราเพื่อรับคำปรึกษาฟรี และใบเสนอราคาที่ชัดเจน โปร่งใส 
+            หากมีคำถาม ดู<Link href="/faq" className="text-blue-600 hover:text-blue-800 underline mx-1">คำถามที่พบบ่อย</Link>ก่อนได้
           </p>
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto mb-8">
@@ -525,9 +529,6 @@ export default function PortfolioPage() {
           </div>
         </div>
       </section>
-
-      {/* Internal Links */}
-      <InternalLinks currentPage="/portfolio" />
     </div>
   );
 }
