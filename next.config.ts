@@ -6,7 +6,12 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   experimental: {
     optimizePackageImports: ['react-icons'],
+    optimizeServerReact: false,
+    serverComponentsExternalPackages: [],
   },
+  
+  // Build optimizations
+  swcMinify: true,
   
   // Image optimization
   images: {
@@ -25,18 +30,36 @@ const nextConfig: NextConfig = {
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         chunks: 'all',
+        minSize: 20000,
+        maxSize: 250000,
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
             name: 'vendors',
             chunks: 'all',
+            priority: 10,
           },
           react: {
             test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
             name: 'react',
             chunks: 'all',
+            priority: 20,
+          },
+          icons: {
+            test: /[\\/]node_modules[\\/]react-icons[\\/]/,
+            name: 'icons',
+            chunks: 'all',
+            priority: 15,
           },
         },
+      };
+      
+      // Exclude polyfills that are not needed
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
       };
     }
     return config;

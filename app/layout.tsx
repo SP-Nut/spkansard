@@ -11,6 +11,8 @@ const prompt = Prompt({
   weight: ["300", "400", "500", "600", "700"],
   display: 'swap',
   variable: "--font-prompt",
+  preload: true,
+  fallback: ['system-ui', 'arial'],
 });
 
 export const metadata: Metadata = {
@@ -146,11 +148,18 @@ export default function RootLayout({
         <link rel="icon" href="/images/logo.png" type="image/png" />
         <link rel="shortcut icon" href="/images/logo.png" type="image/png" />
         <link rel="apple-touch-icon" href="/images/logo.png" />
-        {/* Preload critical resources */}
-        <link rel="preload" href="/herosection/01.jpg" as="image" />
-        <link rel="preload" href="/images/logo.png" as="image" />
+        {/* Preload critical resources for faster LCP */}
+        <link rel="preload" href="/herosection/01.jpg" as="image" type="image/jpeg" />
+        <link rel="preload" href="/images/logo.png" as="image" type="image/png" />
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        
+        {/* Performance hints */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
       </head>
       <body
         className={`${prompt.variable} font-sans antialiased flex flex-col min-h-screen`}

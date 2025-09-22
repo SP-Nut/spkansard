@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import Link from 'next/link';
 import { FaHome, FaChevronRight, FaPhone } from 'react-icons/fa';
 import { SiLine } from 'react-icons/si';
-import StructuredData from '../components/StructuredData';
+
+// Dynamic import for non-critical component
+const StructuredData = lazy(() => import('../components/StructuredData'));
 
 const faqs = [
   {
@@ -114,7 +116,9 @@ export default function FAQ() {
 
   return (
     <div className="font-prompt min-h-screen bg-gray-50">
-      <StructuredData type="faq" />
+      <Suspense fallback={<div style={{ display: 'none' }}></div>}>
+        <StructuredData type="faq" />
+      </Suspense>
       {/* Hero Section - unified CI */}
       <section className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -189,7 +193,10 @@ export default function FAQ() {
                       </summary>
 
                       <div className="mt-3 sm:mt-4 ml-7 sm:ml-9">
-                        <p className="text-gray-600 leading-relaxed text-sm sm:text-base">{faq.answer}</p>
+                        <div 
+                          className="text-gray-600 leading-relaxed text-sm sm:text-base"
+                          dangerouslySetInnerHTML={{ __html: faq.answer }}
+                        />
                       </div>
                     </details>
                   ))}
