@@ -3,12 +3,13 @@ import { Prompt } from "next/font/google";
 import "./globals.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
-import FloatingContactButton from "./components/FloatingContactButton";
+import dynamic from "next/dynamic";
+const FloatingContactButton = dynamic(() => import("./components/FloatingContactButton"), { ssr: false });
 import StructuredData from "./components/StructuredData";
 
 const prompt = Prompt({
   subsets: ["latin", "thai"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "700"],
   display: 'swap',
   variable: "--font-prompt",
   preload: true,
@@ -148,8 +149,8 @@ export default function RootLayout({
         <link rel="icon" href="/images/logo.png" type="image/png" />
         <link rel="shortcut icon" href="/images/logo.png" type="image/png" />
         <link rel="apple-touch-icon" href="/images/logo.png" />
-        {/* Preload critical resources for faster LCP */}
-        <link rel="preload" href="/herosection/01.jpg" as="image" type="image/jpeg" />
+  {/* Preload critical resources for faster LCP */}
+  <link rel="preload" href="/herosection/กันสาดหรู.webp" as="image" type="image/webp" />
         <link rel="preload" href="/images/logo.png" as="image" type="image/png" />
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

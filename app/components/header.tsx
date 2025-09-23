@@ -70,6 +70,7 @@ export default function Header() {
               <div key={item.name} className="relative">
                 <Link
                   href={item.href}
+                  prefetch={false}
                   className="text-white hover:text-gray-200 px-3 py-2 text-base font-medium flex items-center transition-colors duration-200"
                 >
                   {item.name}
@@ -94,9 +95,12 @@ export default function Header() {
           <div className="lg:hidden flex-shrink-0">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-white hover:text-gray-200 focus:outline-none focus:text-gray-200 p-2"
+              className="text-white hover:text-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 p-2 rounded-md"
+              aria-label={isMenuOpen ? 'ปิดเมนูนำทาง' : 'เปิดเมนูนำทาง'}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-nav"
             >
-              <svg className="h-8 w-8 sm:h-8 sm:w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-8 w-8 sm:h-8 sm:w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 {isMenuOpen ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 ) : (
@@ -109,7 +113,7 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden fixed top-16 sm:top-20 left-0 w-full h-full bg-[#1E2E4F] z-40 overflow-y-auto">
+          <div id="mobile-nav" className="lg:hidden fixed top-16 sm:top-20 left-0 w-full h-full bg-[#1E2E4F] z-40 overflow-y-auto" role="dialog" aria-modal="true">
             <div className="px-4 pt-2 pb-3 space-y-1">
               {navItems.map((item) => (
                 <Link
