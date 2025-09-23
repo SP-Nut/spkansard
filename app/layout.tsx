@@ -3,8 +3,7 @@ import { Prompt } from "next/font/google";
 import "./globals.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
-import dynamic from "next/dynamic";
-const FloatingContactButton = dynamic(() => import("./components/FloatingContactButton"), { ssr: false });
+import FloatingContactClient from "./components/FloatingContactClient";
 import StructuredData from "./components/StructuredData";
 
 const prompt = Prompt({
@@ -170,8 +169,8 @@ export default function RootLayout({
         <main className="flex-1 pt-16 sm:pt-20">
           {children}
         </main>
-        <Footer />
-        <FloatingContactButton />
+  <Footer />
+  <FloatingContactClient />
       </body>
     </html>
   );
