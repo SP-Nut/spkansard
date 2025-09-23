@@ -149,7 +149,7 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/images/logo.png" type="image/png" />
         <link rel="apple-touch-icon" href="/images/logo.png" />
   {/* Preload critical resources for faster LCP */}
-  <link rel="preload" href="/herosection/กันสาดหรู.webp" as="image" type="image/webp" />
+  <link rel="preload" href="/herosection/กันสาดหรู โมเดิร์น.webp" as="image" type="image/webp" />
         <link rel="preload" href="/images/logo.png" as="image" type="image/png" />
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
