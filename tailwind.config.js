@@ -7,6 +7,13 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        brand: {
+          DEFAULT: '#2B3C6B',
+          dark: '#1E2E4F',
+          light: '#3A4D82',
+        }
+      },
       fontFamily: {
         sans: ['var(--font-prompt)', 'Prompt', 'sans-serif'],
         prompt: ['var(--font-prompt)', 'Prompt', 'sans-serif'],

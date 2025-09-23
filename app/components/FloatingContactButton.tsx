@@ -1,11 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { FaPhone, FaTimes, FaHeadset } from "react-icons/fa";
 import { SiLine } from "react-icons/si";
 
 export default function FloatingContactButton() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // ถ้าอยู่ในหน้าแรก ให้แสดงปุ่มเมื่อเลื่อนลงจาก Hero Section (มากกว่า 80% ของ viewport height)
+      // ถ้าอยู่ในหน้าอื่นๆ ให้แสดงปุ่มทันที
+      if (pathname === '/') {
+        const scrollY = window.scrollY;
+        const viewportHeight = window.innerHeight;
+        const shouldShow = scrollY > viewportHeight * 0.8;
+        setIsVisible(shouldShow);
+      } else {
+        setIsVisible(true);
+      }
+      
+      // ปิดเมนูเมื่อเลื่อน
+      if (isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    
+    // เช็คตำแหน่งเริ่มต้น
+    handleScroll();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isOpen, pathname]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -22,7 +52,9 @@ export default function FloatingContactButton() {
       )}
 
       {/* Floating Contact Button */}
-      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
+      <div className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 transition-all duration-500 ease-in-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16 pointer-events-none'
+      }`}>
         {/* Contact Options Menu */}
         <div
           className={`absolute bottom-14 right-0 sm:bottom-16 transition-all duration-300 ease-in-out transform ${
