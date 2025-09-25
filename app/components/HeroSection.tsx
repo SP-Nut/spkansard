@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 
 export default function HeroSection() {
@@ -10,39 +9,39 @@ export default function HeroSection() {
   const [startX, setStartX] = useState(0);
   const [currentX, setCurrentX] = useState(0);
 
-  // ข้อความสำหรับแต่ละสไลด์
+  // ข้อความสำหรับแต่ละสไลด์ (ปรับด้วยข้อความการตลาดใหม่)
   const slideContent = [
     {
       title: "เอสพี กันสาด",
-      subtitle: "ผู้เชี่ยวชาญกันสาดและโรงจอดรถ\nคุณภาพระดับพรีเมียม มาตรฐานสากล",
+      subtitle: "ประสบการณ์กว่า 35 ปี\nลูกค้าไว้วางใจกว่า 50,000 ครัวเรือน",
       buttons: [
         { text: "ดูแกลเลอรี่", href: "/gallery", primary: true, external: false }
       ]
     },
     {
-      title: "กันสาดบ้านหรูหรา",
-      subtitle: "ออกแบบเฉพาะ สวยงาม ทนทาน\nเพิ่มมูลค่าให้บ้านคุณ",
+      title: "ผู้นำกันสาดกรุงเทพฯ",
+      subtitle: "ผู้ให้บริการงานกันสาดอันดับ 1\nครอบคลุมกรุงเทพฯ และปริมณฑล",
       buttons: [
         { text: "ดูผลงาน", href: "/portfolio", primary: true, external: false }
       ]
     },
     {
-      title: "โรงจอดรถสำเร็จรูป",
-      subtitle: "โครงสร้างเหล็กแข็งแรง\nติดตั้งเร็ว ราคาประหยัด",
+      title: "โครงสร้างโรงจอดรถ",
+      subtitle: "โครงสร้างเหล็กมาตรฐาน\nผลิต–ติดตั้งโดยทีมงานเฉพาะทาง",
       buttons: [
         { text: "ประเมินราคา", href: "https://cal-customer.vercel.app/", primary: true, external: true }
       ]
     },
     {
-      title: "วัสดุอลูมิเนียมคุณภาพ",
-      subtitle: "นำเข้าจากต่างประเทศ\nไม่เป็นสนิม ใช้ได้นาน 20+ ปี",
+      title: "วัสดุกันสาดหลากที่สุด*",
+      subtitle: "เมทัลชีท ไวนิล อลูมิเนียม โพลี ชินโคไลท์\nระแนง–ฝ้าหลายประเภท ให้เลือกครบ",
       buttons: [
         { text: "ดูวัสดุ", href: "/materials", primary: true, external: false }
       ]
     },
     {
-      title: "บริการติดตั้งมืออาชีพ",
-      subtitle: "ทีมช่างผู้เชี่ยวชาญ 15+ ปี\nรับประกันผลงาน 5 ปี",
+      title: "ติดตั้งเร็ว รับประกัน 5 ปี",
+      subtitle: "ติดตั้งงานมาตรฐาน ภายใน 1 วัน**\nรับประกันโครงสร้างสูงสุด 5 ปี",
       buttons: [
         { text: "นัดหมาย", href: "https://cal-customer.vercel.app/", primary: true, external: true }
       ]
@@ -105,28 +104,22 @@ export default function HeroSection() {
             onTouchEnd={handleDragEnd}
           >
             <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <Image
+              <img
                 src="/herosection/กันสาดหรู โมเดิร์น.webp"
                 alt="SP Kansard กันสาดโรงจอดรถหรู"
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 100vw"
-                className="object-cover object-center"
-                quality={70}
-                placeholder="blur"
-                fetchPriority="high"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRseHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/2wBDAR"
+                className="absolute inset-0 w-full h-full object-cover object-center"
+                loading="eager"
               />
               {/* Content overlay for slide 1 */}
               <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
                 {/* Gradient overlay for better text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none"></div>
-                <div className="relative z-10 max-w-4xl mx-auto pb-12 sm:pb-16 lg:pb-20">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 sm:mb-4 leading-tight" 
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none"></div>
+                <div className="relative z-10 max-w-4xl mx-auto pb-16 sm:pb-20 lg:pb-24">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight" 
                       style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}>
                     {slideContent[0]?.title}
                   </h1>
-                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 font-normal mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto" 
+                  <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-white/90 font-normal mb-4 sm:mb-6 md:mb-8 leading-relaxed max-w-2xl mx-auto" 
                      style={{textShadow: '1px 1px 2px rgba(0,0,0,0.8)'}}>
                     {slideContent[0]?.subtitle?.split('\n').map((line, index) => (
                       <span key={index}>
@@ -138,7 +131,7 @@ export default function HeroSection() {
                   <div className="flex justify-center">
                     <a
                       href={slideContent[0]?.buttons[0]?.href}
-                      className="inline-flex items-center text-white font-medium py-3 px-6 rounded-md transition-all duration-300 text-base transform hover:scale-105 shadow-lg bg-brand hover:bg-brand-dark"
+                      className="inline-flex items-center text-white font-medium py-2.5 px-5 sm:py-3 sm:px-6 rounded-md transition-all duration-300 text-sm sm:text-base transform hover:scale-105 shadow-lg bg-brand hover:bg-brand-dark"
                     >
                       {slideContent[0]?.buttons[0]?.text}
                       <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,16 +143,11 @@ export default function HeroSection() {
               </div>
             </div>
             <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <Image
+              <img
                 src="/herosection/กันสาดเรียบๆ ทันสมัย.webp"
                 alt="SP Kansard กันสาดบ้านสไตล์โมเดิร์น"
-                fill
-                sizes="(max-width: 768px) 100vw, 100vw"
-                className="object-cover object-center"
-                quality={75}
-                placeholder="blur"
-                loading="lazy"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRseHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/2wBDAR"
+                className="absolute inset-0 w-full h-full object-cover object-center"
+                loading="eager"
               />
               {/* Content overlay for slide 2 */}
               <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
@@ -194,15 +182,10 @@ export default function HeroSection() {
               </div>
             </div>
             <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <Image
+              <img
                 src="/herosection/กันสาด บ้านสไตล์โมเดิร์น.webp"
                 alt="SP Kansard กันสาดเรียบทันสมัย"
-                fill
-                sizes="(max-width: 768px) 100vw, 100vw"
-                className="object-cover object-center"
-                quality={75}
-                placeholder="blur"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRseHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/2wBDAR"
+                className="absolute inset-0 w-full h-full object-cover object-center"
                 loading="lazy"
               />
               {/* Content overlay for slide 3 */}
@@ -240,16 +223,11 @@ export default function HeroSection() {
               </div>
             </div>
             <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <Image
+              <img
                 src="/herosection/กันสาด มินิมอล.webp"
                 alt="SP Kansard กันสาดมินิมอล"
-                fill
-                sizes="(max-width: 768px) 100vw, 100vw"
-                className="object-cover object-center"
-                quality={75}
-                placeholder="blur"
+                className="absolute inset-0 w-full h-full object-cover object-center"
                 loading="lazy"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRseHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/2wBDAR"
               />
               {/* Content overlay for slide 4 */}
               <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
@@ -284,16 +262,11 @@ export default function HeroSection() {
               </div>
             </div>
             <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <Image
+              <img
                 src="/herosection/กันสาด มูจิ.webp"
                 alt="SP Kansard กันสาดสไตล์มูจิ"
-                fill
-                sizes="(max-width: 768px) 100vw, 100vw"
-                className="object-cover object-center"
-                quality={75}
-                placeholder="blur"
+                className="absolute inset-0 w-full h-full object-cover object-center"
                 loading="lazy"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRseHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/2wBDAR"
               />
               {/* Content overlay for slide 5 */}
               <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
@@ -358,6 +331,24 @@ export default function HeroSection() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
+      </div>
+
+      {/* Dots navigation - Visible on all devices */}
+      <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-20">
+        <div className="flex space-x-2">
+          {Array.from({ length: totalSlides }, (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => setCurrentSlide(i + 1)}
+              className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-200 ${
+                currentSlide === i + 1
+                  ? 'bg-white scale-110'
+                  : 'bg-white/50 hover:bg-white/75'
+              }`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
