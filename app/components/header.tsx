@@ -119,6 +119,7 @@ export default function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
+                  prefetch={false}
                   className="text-white hover:text-gray-200 block px-3 py-2 text-base font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >

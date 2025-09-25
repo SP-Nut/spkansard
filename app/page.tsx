@@ -1,5 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { FaUsers, FaShieldAlt, FaHeart, FaPhone, FaCalculator, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FaCalendarCheck } from "react-icons/fa6";
@@ -223,8 +224,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Video Section (full-bleed) */}
-      <section className="relative">
+  {/* Video Section (full-bleed) */}
+  <section className="relative" style={{ contentVisibility: 'auto', containIntrinsicSize: '56.25vw' }}>
         {/* Full-bleed wrapper */}
         <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen">
           {/* 16:9 Aspect Ratio Box */}
@@ -236,7 +237,8 @@ export default function Home() {
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="none"
+              poster="/herosection/01.jpg"
               ref={videoRef}
             />
           </div>
@@ -328,6 +330,8 @@ export default function Home() {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
+          contentVisibility: 'auto',
+          containIntrinsicSize: '600px',
         }}
       >
         {/* Dark overlay for better text readability */}
@@ -729,14 +733,19 @@ export default function Home() {
       </section>
 
       {/* Visit Sale Gallery Section */}
-      <section className="relative h-96 sm:h-[500px] lg:h-[600px] overflow-hidden">
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url('/herosection/01.jpg')", // ใช้รูปจาก herosection หรือเพิ่มรูปใหม่
-          }}
-        >
+      <section className="relative h-96 sm:h-[500px] lg:h-[600px] overflow-hidden" style={{ contentVisibility: 'auto', containIntrinsicSize: '600px' }}>
+        {/* Background Image: use lazy-loaded img to avoid CSS eager fetch */}
+        <div className="absolute inset-0">
+          <Image
+            src="/herosection/01.jpg"
+            alt="SP Kansard showroom background"
+            fill
+            sizes="100vw"
+            quality={70}
+            priority={false}
+            loading="lazy"
+            className="object-cover object-center"
+          />
           {/* Overlay */}
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
