@@ -1,204 +1,231 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { FaPhone, FaTimes, FaHeadset } from "react-icons/fa";
+import { FaPhone, FaTimes, FaHeadset, FaCalculator } from "react-icons/fa";
 import { SiLine } from "react-icons/si";
 
 export default function FloatingContactButton() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const pathname = usePathname();
+  const btnRef = useRef<HTMLButtonElement | null>(null);
 
+  // หน้า Home โผล่เมื่อเลื่อนเกิน 80% ของ viewport
   useEffect(() => {
     const handleScroll = () => {
-      // ถ้าอยู่ในหน้าแรก ให้แสดงปุ่มเมื่อเลื่อนลงจาก Hero Section (มากกว่า 80% ของ viewport height)
-      // ถ้าอยู่ในหน้าอื่นๆ ให้แสดงปุ่มทันที
-      if (pathname === '/') {
-        const scrollY = window.scrollY;
-        const viewportHeight = window.innerHeight;
-        const shouldShow = scrollY > viewportHeight * 0.8;
-        setIsVisible(shouldShow);
+      if (pathname === "/") {
+        const y = window.scrollY;
+        const vh = window.innerHeight || 0;
+        setIsVisible(y > vh * 0.8);
       } else {
         setIsVisible(true);
       }
-      
-      // ปิดเมนูเมื่อเลื่อน
-      if (isOpen) {
-        setIsOpen(false);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [pathname]);
+
+  // ปิดเมนูเมื่อเปลี่ยนหน้า
+  useEffect(() => {
+    if (isOpen) setIsOpen(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  // ปิดเมนูเมื่อคลิกนอกพื้นที่
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    const handleClickOutside = (event: MouseEvent) => {
+      if (btnRef.current && !btnRef.current.contains(event.target as Node)) {
+        const target = event.target as Element;
+        if (!target.closest('[data-floating-menu]')) {
+          setIsOpen(false);
+        }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    
-    // เช็คตำแหน่งเริ่มต้น
-    handleScroll();
-    
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isOpen, pathname]);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+
+  // ปิดด้วย ESC
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+        btnRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [isOpen]);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    // Haptic feedback on supported devices
+    if ('vibrate' in navigator) {
+      navigator.vibrate(50);
+    }
+    setIsOpen((v) => !v);
   };
+  
+  const handleLinkClick = () => {
+    setIsOpen(false);
+  };
+  
+  if (!isVisible) return null;
+
+  const items = [
+    {
+      key: "line",
+      href: "https://line.me/R/ti/p/@spkansard",
+      label: "LINE @spkansard",
+      bg: "bg-green-500",
+      hoverBg: "hover:bg-green-600",
+      icon: <SiLine className="w-5 h-5 text-white" />,
+      rel: "noopener nofollow",
+      target: "_blank",
+      aria: "ติดต่อผ่าน LINE @spkansard (เปิดแท็บใหม่)",
+    },
+    {
+      key: "phone",
+      href: "tel:084-909-7777",
+      label: "โทร 084-909-7777",
+      bg: "bg-[var(--brand-600)]",
+      hoverBg: "hover:bg-[var(--brand-700)]",
+      icon: <FaPhone className="w-5 h-5 text-white" />,
+      rel: undefined,
+      target: undefined,
+      aria: "โทร 084-909-7777",
+    },
+    {
+      key: "calculator",
+      href: "https://cal-customer.vercel.app/",
+      label: "ประเมินราคา",
+      bg: "bg-[var(--brand-500)]",
+      hoverBg: "hover:bg-[var(--brand-600)]",
+      icon: <FaCalculator className="w-5 h-5 text-white" />,
+      rel: "noopener nofollow",
+      target: "_blank",
+      aria: "ประเมินราคากันสาด (เปิดแท็บใหม่)",
+    },
+  ];
 
   return (
     <>
-      {/* Backdrop/Overlay */}
+      {/* Screen reader announcements */}
+      <div 
+        aria-live="polite" 
+        aria-atomic="true" 
+        className="sr-only"
+      >
+        {isOpen ? "เมนูติดต่อเปิดแล้ว" : ""}
+      </div>
+
+      {/* Backdrop (มือถือ) */}
       {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/20 z-40 lg:hidden"
+        <button
+          aria-label="ปิดเมนูติดต่อ"
+          className="fixed inset-0 bg-black/20 z-[49] lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
 
-      {/* Floating Contact Button */}
-      <div className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 transition-all duration-500 ease-in-out ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16 pointer-events-none'
-      }`}>
-        {/* Contact Options Menu */}
-        <div
-          className={`absolute bottom-14 right-0 sm:bottom-16 transition-all duration-300 ease-in-out transform ${
-            isOpen
-              ? "opacity-100 translate-y-0 scale-100"
-              : "opacity-0 translate-y-4 scale-95 pointer-events-none"
-          }`}
-        >
-          <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-5 min-w-[200px] sm:min-w-[220px] border border-gray-100 backdrop-blur-sm"
-               style={{
-                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.8)'
-               }}
-          >
-            {/* Header */}
-            <div className="text-center mb-4">
-              <h3 className="font-semibold text-gray-800 text-sm">ติดต่อเรา</h3>
-              <p className="text-xs text-gray-500 mt-1">เลือกช่องทางที่สะดวก</p>
-            </div>
-
-            {/* Contact Options */}
-            <div className="space-y-3">
-              {/* LINE Option */}
-              <a
-                href="https://line.me/R/ti/p/@spkansard"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-3 rounded-xl hover:bg-green-50 active:bg-green-100 transition-all duration-200 group cursor-pointer select-none"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsOpen(false);
-                  // รอให้ animation เสร็จก่อนเปิด LINE
-                  setTimeout(() => {
-                    window.open("https://line.me/R/ti/p/@spkansard", "_blank");
-                  }, 150);
-                }}
+      {/* กล่องมุมขวาล่าง */}
+      <div className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 md:bottom-6 md:right-6 z-50">
+        {/* Speed-Dial: ไอคอนสไลด์ขึ้นทีละปุ่ม */}
+        <div className="absolute bottom-16 sm:bottom-18 right-0 flex flex-col items-end space-y-2 sm:space-y-3" data-floating-menu>
+          {items.map((it, idx) => (
+            <a
+              key={it.key}
+              href={it.href}
+              rel={it.rel}
+              target={it.target}
+              onClick={handleLinkClick}
+              aria-label={it.aria}
+              className={[
+                "group relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full shadow-lg flex items-center justify-center",
+                "ring-2 ring-white/20 hover:ring-white/40",
+                it.bg,
+                it.hoverBg,
+                "transition-all duration-300 ease-out transform",
+                // สถานะเปิด/ปิด + สไลด์ขึ้น + หน่วงเวลาแบบสเต็ป
+                isOpen
+                  ? "opacity-100 translate-y-0 pointer-events-auto scale-100"
+                  : "opacity-0 translate-y-4 pointer-events-none scale-90",
+                // Responsive hover effects
+                "hover:scale-110 active:scale-95 hover:shadow-xl",
+              ].join(" ")}
+              style={{ 
+                transitionDelay: isOpen ? `${idx * 80}ms` : "0ms",
+                minWidth: "3rem",
+                minHeight: "3rem"
+              }}
+            >
+              {it.icon}
+              {/* Tooltip (เดสก์ท็อป) */}
+              <span
+                className={[
+                  "hidden md:block absolute right-full mr-3 whitespace-nowrap z-10",
+                  "px-3 py-2 rounded-lg text-sm font-medium shadow-lg",
+                  "bg-gray-900 text-white border border-gray-700",
+                  "opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0",
+                  "transition-all duration-200 pointer-events-none",
+                  // Arrow pointing to button
+                  "after:absolute after:left-full after:top-1/2 after:-translate-y-1/2",
+                  "after:w-0 after:h-0 after:border-4 after:border-transparent after:border-l-gray-900"
+                ].join(" ")}
               >
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500 rounded-xl flex items-center justify-center group-hover:scale-110 group-active:scale-95 transition-transform duration-200 shadow-md">
-                  <SiLine className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
-                </div>
-                <div className="ml-3 flex-1">
-                  <div className="font-semibold text-gray-800 text-sm">LINE</div>
-                  <div className="text-xs text-gray-500">@spkansard</div>
-                </div>
-                <div className="text-gray-400 group-hover:text-gray-600 transition-colors">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </a>
-
-              {/* Phone Option */}
-              <a
-                href="tel:02-936-8841"
-                className="flex items-center p-3 rounded-xl hover:bg-blue-50 active:bg-blue-100 transition-all duration-200 group cursor-pointer select-none"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsOpen(false);
-                  // รอให้ animation เสร็จก่อนโทร
-                  setTimeout(() => {
-                    window.location.href = "tel:02-936-8841";
-                  }, 150);
-                }}
-              >
-                <div 
-                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center group-hover:scale-110 group-active:scale-95 transition-transform duration-200 shadow-md"
-                  style={{backgroundColor: 'var(--brand-600)'}}
-                >
-                  <FaPhone className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                </div>
-                <div className="ml-3 flex-1">
-                  <div className="font-semibold text-gray-800 text-sm">โทรศัพท์</div>
-                  <div className="text-xs text-gray-500">02-936-8841</div>
-                </div>
-                <div className="text-gray-400 group-hover:text-gray-600 transition-colors">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </a>
-            </div>
-          </div>
+                {it.label}
+              </span>
+            </a>
+          ))}
         </div>
 
-        {/* Main Floating Button */}
+        {/* ปุ่มหลัก (FAB) */}
         <button
+          ref={btnRef}
           onClick={toggleMenu}
-          className={`relative w-12 h-12 sm:w-16 sm:h-16 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-300/50`}
+          className={[
+            "relative w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full shadow-xl flex items-center justify-center",
+            "bg-gradient-to-br from-[var(--brand-600)] via-[var(--brand-700)] to-[var(--brand-800)]",
+            "ring-2 ring-white/30 hover:ring-white/50",
+            "transition-all duration-300 ease-out transform",
+            "focus:outline-none focus:ring-4 focus:ring-[var(--brand-300)]/50",
+            'hover:scale-110 hover:shadow-2xl active:scale-95 hover:-translate-y-1'
+          ].join(" ")}
           style={{
-            background: isOpen 
-              ? "linear-gradient(135deg, #ef4444, #dc2626)" 
-              : "linear-gradient(135deg, var(--brand-600), var(--brand-700))",
+            minWidth: "3.5rem",
+            minHeight: "3.5rem",
+            boxShadow: "0 8px 32px rgba(0, 68, 124, 0.3)"
           }}
+          aria-expanded={isOpen}
           aria-label={isOpen ? "ปิดเมนูติดต่อ" : "เปิดเมนูติดต่อ"}
         >
-          <div className="relative z-10">
-            {isOpen ? (
-              <FaTimes className="w-5 h-5 sm:w-6 sm:h-6 text-white drop-shadow-sm" />
-            ) : (
-              <FaHeadset className="w-5 h-5 sm:w-6 sm:h-6 text-white drop-shadow-sm" />
-            )}
-          </div>
+          {isOpen ? (
+            <FaTimes className="w-6 h-6 text-white transition-transform duration-300 rotate-0 hover:rotate-90" />
+          ) : (
+            <FaHeadset className="w-6 h-6 text-white transition-transform duration-300 group-hover:rotate-12" />
+          )}
+          
+          {!isOpen && (
+            <>
+              <span 
+                className="absolute inset-0 rounded-full bg-[var(--brand-400)] animate-ping opacity-40" 
+                style={{ animationDuration: "2s" }}
+              />
+              <span 
+                className="absolute inset-0 rounded-full bg-[var(--brand-300)] animate-pulse opacity-20" 
+                style={{ 
+                  animationDelay: '1s',
+                  animationDuration: "3s"
+                }}
+              />
+            </>
+          )}
         </button>
-
-        {/* Pulsing Ring Animation */}
-        {!isOpen && (
-          <div
-            className="absolute inset-0 rounded-full ping-animation pointer-events-none"
-            style={{
-              background: "linear-gradient(135deg, var(--brand-600), var(--brand-700))",
-              opacity: 0.4,
-            }}
-          />
-        )}
       </div>
-
-      {/* Global Styles for Animations */}
-      <style jsx global>{`
-        @keyframes pingAnimation {
-          0% {
-            transform: scale(1);
-            opacity: 0.7;
-          }
-          75% {
-            transform: scale(1.3);
-            opacity: 0.1;
-          }
-          100% {
-            transform: scale(1.4);
-            opacity: 0;
-          }
-        }
-        
-        .ping-animation {
-          animation: pingAnimation 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-        }
-        
-        .shadow-3xl {
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
-        }
-        
-        .hover\\:shadow-3xl:hover {
-          box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.5);
-        }
-      `}</style>
     </>
   );
 }
