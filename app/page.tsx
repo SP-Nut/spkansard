@@ -26,6 +26,25 @@ export default function Home() {
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const autoScrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Preload critical hero images
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const preloadImages = [
+        '/herosection/กันสาดหรู โมเดิร์น.webp',
+        '/herosection/กันสาดเรียบๆ ทันสมัย.webp'
+      ];
+      
+      preloadImages.forEach(src => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = src;
+        link.type = 'image/webp';
+        document.head.appendChild(link);
+      });
+    }
+  }, []);
+
   // Simplified light mode enforcement
   useEffect(() => {
     document.documentElement.classList.remove('dark');
@@ -741,9 +760,7 @@ export default function Home() {
             alt="SP Kansard showroom background"
             fill
             sizes="100vw"
-            quality={70}
-            priority={false}
-            loading="lazy"
+            quality={80}
             className="object-cover object-center"
           />
           {/* Overlay */}

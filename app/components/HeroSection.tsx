@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 export default function HeroSection() {
   const totalSlides = 5;
@@ -104,11 +105,14 @@ export default function HeroSection() {
             onTouchEnd={handleDragEnd}
           >
             <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <img
+              <Image
                 src="/herosection/กันสาดหรู โมเดิร์น.webp"
                 alt="SP Kansard กันสาดโรงจอดรถหรู"
-                className="absolute inset-0 w-full h-full object-cover object-center"
-                loading="eager"
+                fill
+                className="object-cover object-center"
+                priority
+                quality={90}
+                sizes="(max-width: 768px) 100vw, 100vw"
               />
               {/* Content overlay for slide 1 */}
               <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
@@ -143,11 +147,14 @@ export default function HeroSection() {
               </div>
             </div>
             <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <img
+              <Image
                 src="/herosection/กันสาดเรียบๆ ทันสมัย.webp"
                 alt="SP Kansard กันสาดบ้านสไตล์โมเดิร์น"
-                className="absolute inset-0 w-full h-full object-cover object-center"
-                loading="eager"
+                fill
+                className="object-cover object-center"
+                priority={currentSlide === 2}
+                quality={85}
+                sizes="(max-width: 768px) 100vw, 100vw"
               />
               {/* Content overlay for slide 2 */}
               <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
@@ -182,11 +189,14 @@ export default function HeroSection() {
               </div>
             </div>
             <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <img
+              <Image
                 src="/herosection/กันสาด บ้านสไตล์โมเดิร์น.webp"
                 alt="SP Kansard กันสาดเรียบทันสมัย"
-                className="absolute inset-0 w-full h-full object-cover object-center"
-                loading="lazy"
+                fill
+                className="object-cover object-center"
+                priority={currentSlide === 3}
+                quality={85}
+                sizes="(max-width: 768px) 100vw, 100vw"
               />
               {/* Content overlay for slide 3 */}
               <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
@@ -223,11 +233,14 @@ export default function HeroSection() {
               </div>
             </div>
             <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <img
+              <Image
                 src="/herosection/กันสาด มินิมอล.webp"
                 alt="SP Kansard กันสาดมินิมอล"
-                className="absolute inset-0 w-full h-full object-cover object-center"
-                loading="lazy"
+                fill
+                className="object-cover object-center"
+                priority={currentSlide === 4}
+                quality={85}
+                sizes="(max-width: 768px) 100vw, 100vw"
               />
               {/* Content overlay for slide 4 */}
               <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
@@ -262,11 +275,14 @@ export default function HeroSection() {
               </div>
             </div>
             <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <img
+              <Image
                 src="/herosection/กันสาด มูจิ.webp"
                 alt="SP Kansard กันสาดสไตล์มูจิ"
-                className="absolute inset-0 w-full h-full object-cover object-center"
-                loading="lazy"
+                fill
+                className="object-cover object-center"
+                priority={currentSlide === 5}
+                quality={85}
+                sizes="(max-width: 768px) 100vw, 100vw"
               />
               {/* Content overlay for slide 5 */}
               <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">

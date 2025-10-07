@@ -4,51 +4,54 @@ import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
 import { FaHome, FaChevronRight, FaEye, FaPhone, FaTimes, FaChevronLeft, FaChevronRight as FaChevronRightIcon } from "react-icons/fa";
 
-type Category = "หน้าบ้าน" | "หลังบ้าน" | "ข้างบ้าน" | "โรงจอดรถ";
-
 type GalleryItem = {
   id: string;
   image: string;
   alt?: string;
-  category: Category;
   w?: number;
   h?: number;
 };
 
 const galleryData: GalleryItem[] = [
-  { id: "img-1", image: "/herosection/01.jpg", alt: "กันสาดหน้าบ้าน", category: "หน้าบ้าน", w: 1080, h: 1350 },
-  { id: "img-2", image: "/herosection/02.jpg", alt: "กันสาดหลังบ้าน", category: "หลังบ้าน", w: 1080, h: 1350 },
-  { id: "img-3", image: "/herosection/03.jpg", alt: "กันสาดข้างบ้าน", category: "ข้างบ้าน", w: 1080, h: 1350 },
-  { id: "img-4", image: "/herosection/04.jpg", alt: "กันสาดโรงจอดรถ", category: "โรงจอดรถ", w: 1080, h: 1350 },
-  { id: "img-5", image: "/herosection/05.jpg", alt: "กันสาดหน้าบ้าน", category: "หน้าบ้าน", w: 1080, h: 1350 },
-  { id: "img-6", image: "/herosection/02.jpg", alt: "กันสาดหลังบ้าน", category: "หลังบ้าน", w: 1080, h: 1350 },
-  { id: "img-7", image: "/herosection/03.jpg", alt: "กันสาดข้างบ้าน", category: "ข้างบ้าน", w: 1080, h: 1350 },
-  { id: "img-8", image: "/herosection/01.jpg", alt: "กันสาดโรงจอดรถ", category: "โรงจอดรถ", w: 1080, h: 1350 },
-  // เพิ่มรูปเพิ่มเติม
-  { id: "img-9", image: "/herosection/04.jpg", alt: "กันสาดหลังบ้าน", category: "หลังบ้าน", w: 1080, h: 1350 },
-  { id: "img-10", image: "/herosection/05.jpg", alt: "กันสาดข้างบ้าน", category: "ข้างบ้าน", w: 1080, h: 1350 },
-  { id: "img-11", image: "/herosection/02.jpg", alt: "กันสาดโรงจอดรถ", category: "โรงจอดรถ", w: 1080, h: 1350 },
-  { id: "img-12", image: "/herosection/03.jpg", alt: "กันสาดหน้าบ้าน", category: "หน้าบ้าน", w: 1080, h: 1350 },
-  { id: "img-13", image: "/herosection/01.jpg", alt: "กันสาดหลังบ้าน", category: "หลังบ้าน", w: 1080, h: 1350 },
-  { id: "img-14", image: "/herosection/04.jpg", alt: "กันสาดข้างบ้าน", category: "ข้างบ้าน", w: 1080, h: 1350 },
-  { id: "img-15", image: "/herosection/05.jpg", alt: "กันสาดโรงจอดรถ", category: "โรงจอดรถ", w: 1080, h: 1350 },
-  { id: "img-16", image: "/herosection/03.jpg", alt: "กันสาดหน้าบ้าน", category: "หน้าบ้าน", w: 1080, h: 1350 },
+  { id: "img-1", image: "/gallery/sp-kansard-กันสาดไวนิลหน้าบ้าน.webp", alt: "กันสาดไวนิลหน้าบ้าน", w: 1200, h: 900 },
+  { id: "img-2", image: "/gallery/sp-kansard-กันสาดโปร่งแสงหน้าบ้าน.webp", alt: "กันสาดโปร่งแสงหน้าบ้าน", w: 1200, h: 900 },
+  { id: "img-3", image: "/gallery/sp-kansard-กันสาดไวนิลบ้านสวย.webp", alt: "กันสาดไวนิลบ้านสวย", w: 1200, h: 900 },
+  { id: "img-4", image: "/gallery/sp-kansard-กันสาดโปร่งแสงบ้านสวย.webp", alt: "กันสาดโปร่งแสงบ้านสวย", w: 1200, h: 900 },
+  { id: "img-5", image: "/gallery/sp-kansard-กันสาดไวนิลโมเดิร์น.webp", alt: "กันสาดไวนิลโมเดิร์น", w: 1200, h: 900 },
+  { id: "img-6", image: "/gallery/sp-kansard-กันสาดโปร่งแสงโมเดิร์น.webp", alt: "กันสาดโปร่งแสงโมเดิร์น", w: 1200, h: 900 },
+  { id: "img-7", image: "/gallery/sp-kansard-กันสาดเมทัลชีท.webp", alt: "กันสาดเมทัลชีท", w: 1200, h: 900 },
+  { id: "img-8", image: "/gallery/sp-kansard-กันสาดเมทัลชีทคุณภาพ.webp", alt: "กันสาดเมทัลชีทคุณภาพ", w: 1200, h: 900 },
+  { id: "img-9", image: "/gallery/sp-kansard-กันสาดเมทัลชีทดีไซน์สวย.webp", alt: "กันสาดเมทัลชีทดีไซน์สวย", w: 1200, h: 900 },
+  { id: "img-10", image: "/gallery/sp-kansard-กันสาดเมทัลชีททนแดดฝน.webp", alt: "กันสาดเมทัลชีททนแดดฝน", w: 1200, h: 900 },
+  { id: "img-11", image: "/gallery/sp-kansard-กันสาดอลูมิเนียมดีไซน์สวย.webp", alt: "กันสาดอลูมิเนียมดีไซน์สวย", w: 1200, h: 900 },
+  { id: "img-12", image: "/gallery/sp-kansard-กันสาดอลูมิเนียมติดตั้งเร็ว.webp", alt: "กันสาดอลูมิเนียมติดตั้งเร็ว", w: 1200, h: 900 },
+  { id: "img-13", image: "/gallery/sp-kansard-กันสาดและระแนงไม้.webp", alt: "กันสาดและระแนงไม้", w: 1200, h: 900 },
+  { id: "img-14", image: "/gallery/sp-kansard-กันสาดเมทัลชีทมาตรฐานมอกระแนงไม้.webp", alt: "กันสาดเมทัลชีทมาตรฐานมอกระแนงไม้", w: 1200, h: 900 },
+  { id: "img-15", image: "/gallery/sp-kansard-กันสาดมาตรฐานมอกฝ้าระแนง.webp", alt: "กันสาดมาตรฐานมอกฝ้าระแนง", w: 1200, h: 900 },
+  { id: "img-16", image: "/gallery/sp-kansard-กันสาดโครงสร้างแข็งแรง.webp", alt: "กันสาดโครงสร้างแข็งแรง", w: 1200, h: 900 },
+  { id: "img-17", image: "/gallery/sp-kansard-กันสาดมาตรฐานมืออาชีพ.webp", alt: "กันสาดมาตรฐานมืออาชีพ", w: 1200, h: 900 },
+  { id: "img-18", image: "/gallery/sp-kansard-กันสาดไวนิลโรงรถ.webp", alt: "กันสาดไวนิลโรงรถ", w: 1200, h: 900 },
+  { id: "img-19", image: "/gallery/sp-kansard-กันสาดโปร่งแสง.webp", alt: "กันสาดโปร่งแสง", w: 1200, h: 900 },
+  { id: "img-20", image: "/gallery/sp-kansard-กันสาดโปร่งแสงกันฝน.webp", alt: "กันสาดโปร่งแสงกันฝน", w: 1200, h: 900 },
+  { id: "img-21", image: "/gallery/sp-kansard-กันสาดโปร่งแสงคุณภาพ.webp", alt: "กันสาดโปร่งแสงคุณภาพ", w: 1200, h: 900 },
+  { id: "img-22", image: "/gallery/sp-kansard-กันสาดโปร่งแสงมาตรฐาน.webp", alt: "กันสาดโปร่งแสงมาตรฐาน", w: 1200, h: 900 },
+  { id: "img-23", image: "/gallery/sp-kansard-กันสาดโปร่งแสงสวยงาม.webp", alt: "กันสาดโปร่งแสงสวยงาม", w: 1200, h: 900 },
+  { id: "img-24", image: "/gallery/sp-kansard-กันสาดบ้านและออฟฟิศ.webp", alt: "กันสาดบ้านและออฟฟิศ", w: 1200, h: 900 },
+  { id: "img-25", image: "/gallery/sp-kansard-กันสาดราคาดีคุ้มค่า.webp", alt: "กันสาดราคาดีคุ้มค่า", w: 1200, h: 900 },
+  { id: "img-26", image: "/gallery/sp-kansard-กันสาดไวนิล.webp", alt: "กันสาดไวนิล", w: 1200, h: 900 },
+  { id: "img-27", image: "/gallery/sp-kansard-กันสาดไวนิลคุณภาพสูง.webp", alt: "กันสาดไวนิลคุณภาพสูง", w: 1200, h: 900 },
+  { id: "img-28", image: "/gallery/sp-kansard-กันสาดไวนิลดีไซน์สวย.webp", alt: "กันสาดไวนิลดีไซน์สวย", w: 1200, h: 900 },
+  { id: "img-29", image: "/gallery/sp-kansard-กันสาดไวนิลติดตั้งเร็ว.webp", alt: "กันสาดไวนิลติดตั้งเร็ว", w: 1200, h: 900 },
+  { id: "img-30", image: "/gallery/sp-kansard-กันสาดไวนิลรีวิวผลงาน.webp", alt: "กันสาดไวนิลรีวิวผลงาน", w: 1200, h: 900 },
 ];
 
 export default function GalleryPage() {
-  const [selectedCategory, setSelectedCategory] = useState<Category | "ทั้งหมด">("ทั้งหมด");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
   // โทนสีจากรูป (เข้ม/กลาง) - เหมือน Portfolio
   const BRAND_DARK = "#1E2E4F";
   const BRAND_MID = "#314874";
-  
-  const categories: (Category | "ทั้งหมด")[] = ["ทั้งหมด", "หน้าบ้าน", "หลังบ้าน", "ข้างบ้าน", "โรงจอดรถ"];
-  
-  const filteredData = selectedCategory === "ทั้งหมด" 
-    ? galleryData 
-    : galleryData.filter(item => item.category === selectedCategory);
 
   const openLightbox = (index: number) => {
     setCurrentImageIndex(index);
@@ -60,12 +63,12 @@ export default function GalleryPage() {
   }, []);
 
   const nextImage = useCallback(() => {
-    setCurrentImageIndex((prev) => (prev + 1) % filteredData.length);
-  }, [filteredData.length]);
+    setCurrentImageIndex((prev) => (prev + 1) % galleryData.length);
+  }, []);
 
   const prevImage = useCallback(() => {
-    setCurrentImageIndex((prev) => (prev - 1 + filteredData.length) % filteredData.length);
-  }, [filteredData.length]);
+    setCurrentImageIndex((prev) => (prev - 1 + galleryData.length) % galleryData.length);
+  }, []);
 
   // Handle keyboard events
   useEffect(() => {
@@ -129,43 +132,12 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      {/* Filter & Search Section - เหมือน Materials */}
-      <section className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Category Tabs */}
-          <div className="flex items-center justify-between py-2 gap-4">
-            <div className="flex-1 overflow-x-auto scrollbar-hide">
-              <div className="flex space-x-1 min-w-max">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
-                      selectedCategory === category
-                        ? 'border-[#314874] text-[#314874] bg-[#eaf4ff]'
-                        : 'border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300'
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Info Row */}
-          <div className="pb-3">
-            <div className="text-xs text-gray-500">พบผลงาน {filteredData.length} รายการ</div>
-          </div>
-        </div>
-      </section>
-
-      <section id="gallery-grid" className="pt-0 pb-12 sm:pb-16 lg:pb-20 bg-gray-50">
+      <section id="gallery-grid" className="pt-12 sm:pt-16 lg:pt-20 pb-12 sm:pb-16 lg:pb-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-1 sm:px-2 lg:px-4">
           
           {/* Responsive grid: 1 column on mobile, 2 on tablet, 3 on desktop */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 sm:gap-2 lg:gap-3">
-            {filteredData.map((item, index) => (
+            {galleryData.map((item, index) => (
               <div key={item.id} className="group w-full cursor-pointer" onClick={() => openLightbox(index)}>
                 <div className="relative w-full overflow-hidden" style={{ aspectRatio: "4/3" }}>
                   <Image
@@ -259,10 +231,10 @@ export default function GalleryPage() {
             {/* Main image */}
             <div className="relative w-full h-full">
               <Image
-                src={filteredData[currentImageIndex]?.image || ""}
-                alt={filteredData[currentImageIndex]?.alt || "รูปผลงาน"}
-                width={1080}
-                height={1350}
+                src={galleryData[currentImageIndex]?.image || ""}
+                alt={galleryData[currentImageIndex]?.alt || "รูปผลงาน"}
+                width={1200}
+                height={900}
                 className="max-w-full max-h-[80vh] object-contain mx-auto"
                 priority
               />
@@ -271,10 +243,10 @@ export default function GalleryPage() {
             {/* Image info */}
             <div className="absolute bottom-4 left-4 right-4 text-center">
               <p className="text-white text-lg font-medium mb-2">
-                {filteredData[currentImageIndex]?.alt || "ผลงานติดตั้งกันสาด"}
+                {galleryData[currentImageIndex]?.alt || "ผลงานติดตั้งกันสาด"}
               </p>
               <p className="text-white/70 text-sm">
-                {currentImageIndex + 1} / {filteredData.length}
+                {currentImageIndex + 1} / {galleryData.length}
               </p>
             </div>
           </div>
