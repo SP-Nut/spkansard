@@ -105,7 +105,7 @@ export default function FloatingContactButton() {
 
       {/* ปุ่มเมนูล่างกึ่งกลาง */}
       <div className="fixed bottom-2 left-1/2 transform -translate-x-1/2 z-50">
-        <div className="flex items-center space-x-2 sm:space-x-3">
+        <div className="flex items-center space-x-1 sm:space-x-1.5">
           {items.map((it) => (
             <a
               key={it.key}
