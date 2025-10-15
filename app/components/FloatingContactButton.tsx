@@ -103,9 +103,9 @@ export default function FloatingContactButton() {
         </div>
       )}
 
-      {/* แถบเมนูล่างกึ่งกลาง */}
+      {/* ปุ่มเมนูล่างกึ่งกลาง */}
       <div className="fixed bottom-2 left-1/2 transform -translate-x-1/2 z-50">
-        <div className="flex items-center space-x-2 sm:space-x-3 bg-white/15 backdrop-blur-md rounded-full px-3 py-2 sm:px-4 sm:py-3 shadow-lg border border-white/30">
+        <div className="flex items-center space-x-2 sm:space-x-3">
           {items.map((it) => (
             <a
               key={it.key}
@@ -115,12 +115,12 @@ export default function FloatingContactButton() {
               onClick={handleLinkClick}
               aria-label={it.aria}
               className={[
-                "floating-contact-item group relative w-10 h-10 sm:w-12 sm:h-12 rounded-full shadow-md flex items-center justify-center",
-                "ring-1 ring-white/30 hover:ring-white/50",
+                "floating-contact-item group relative w-10 h-10 sm:w-12 sm:h-12 rounded-full shadow-lg flex items-center justify-center",
+                "ring-2 ring-white/40 hover:ring-white/60",
                 it.bg,
                 it.hoverBg,
                 "transition-all duration-300 ease-out transform",
-                "hover:scale-110 active:scale-95 hover:shadow-lg",
+                "hover:scale-110 active:scale-95 hover:shadow-xl",
               ].join(" ")}
             >
               <div className="w-4 h-4 sm:w-5 sm:h-5 text-white flex items-center justify-center">
