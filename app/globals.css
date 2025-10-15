@@ -16,6 +16,10 @@
   --foreground: #171717;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -92,4 +96,25 @@ h1, h2, h3, h4, h5, h6 {
   .review-scroll > * {
     scroll-snap-align: center;
   }
+}
+
+/* Floating button styles */
+.floating-contact-btn {
+  min-width: 3.5rem;
+  min-height: 3.5rem;
+  box-shadow: 0 8px 32px rgba(0, 68, 124, 0.3);
+}
+
+.floating-contact-item {
+  min-width: 3rem;
+  min-height: 3rem;
+}
+
+.ping-slow {
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.pulse-slow {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation-delay: 1s;
 }

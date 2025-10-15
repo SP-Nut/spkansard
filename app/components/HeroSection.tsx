@@ -23,7 +23,7 @@ export default function HeroSection() {
       title: "ผู้นำกันสาดกรุงเทพฯ",
       subtitle: "ผู้ให้บริการงานกันสาดอันดับ 1\nครอบคลุมกรุงเทพฯ และปริมณฑล",
       buttons: [
-        { text: "ดูผลงาน", href: "/portfolio", primary: true, external: false }
+        { text: "ดูแกลเลอรี", href: "/gallery", primary: true, external: false }
       ]
     },
     {

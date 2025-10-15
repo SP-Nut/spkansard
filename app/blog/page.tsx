@@ -92,7 +92,7 @@ const BlogPage = () => {
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-[#314874] rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-gray-600">เคล็ดลับจาก<Link href="/portfolio" className="text-[#314874] hover:underline font-medium ml-1">ผู้เชี่ยวชาญ</Link></span>
+                <span className="text-gray-600">เคล็ดลับจาก<Link href="/about" className="text-[#314874] hover:underline font-medium ml-1">ผู้เชี่ยวชาญ</Link></span>
               </div>
             </div>
           </div>

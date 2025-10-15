@@ -13,10 +13,7 @@ const HeroSection = dynamic(() => import("./components/HeroSection"), {
   loading: () => <div className="h-screen bg-gradient-to-r from-[#1E2E4F] to-[#314874]" />
 });
 
-const PortfolioSection = dynamic(() => import("./components/PortfolioSection"), {
-  ssr: false,
-  loading: () => <div className="h-64 bg-gray-100 animate-pulse" />
-});
+
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -336,11 +333,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Our Work Portfolio Section - Full Width */}
-      <PortfolioSection />
-
-
-      
       {/* Price Calculator Section - Full Width Sharp Edges */}
       <section
         className="relative text-center py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 text-white"

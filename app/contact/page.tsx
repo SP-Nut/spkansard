@@ -59,7 +59,7 @@ export default function Contact() {
             <div className="text-center">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">ติดต่อเรา</h1>
               <p className="text-lg sm:text-xl text-[#eaf4ff] max-w-3xl mx-auto">
-                มีคำถามเกี่ยวกับ<Link href="/portfolio" className="underline hover:text-white transition-colors">งานกันสาด</Link>หรือ<Link href="/materials" className="underline hover:text-white transition-colors">วัสดุ</Link> เรายินดีช่วยเหลือ
+                มีคำถามเกี่ยวกับ<Link href="/materials" className="underline hover:text-white transition-colors">วัสดุ</Link>หรือ<Link href="/gallery" className="underline hover:text-white transition-colors">ผลงาน</Link> เรายินดีช่วยเหลือ
               </p>
             </div>
           </div>
@@ -160,13 +160,13 @@ export default function Contact() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-4">
-                    บริการที่สนใจ (ดู<Link href="/portfolio" className="text-blue-600 hover:text-blue-800 underline">ผลงาน</Link>เพิ่มเติม)
+                    บริการที่สนใจ (ดู<Link href="/gallery" className="text-blue-600 hover:text-blue-800 underline">ผลงาน</Link>เพิ่มเติม)
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 gap-3 sm:gap-4">
                     {[
                       { id: 'awning', label: 'วัสดุกันแสง', link: '/materials' },
                       { id: 'carport', label: 'วัสดุโรงรถ', link: '/materials' },
-                      { id: 'roof', label: 'ระแนง/ฟ้า', link: '/portfolio' },
+                      { id: 'roof', label: 'ระแนง/ฟ้า', link: '/gallery' },
                       { id: 'facade', label: 'หลังคาโรงรถ', link: '/gallery' },
                       { id: 'other', label: 'อื่นๆ', link: '/faq' }
                     ].map((service) => (

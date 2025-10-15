@@ -16,7 +16,7 @@ const faqs = [
     questions: [
       {
         question: "บริษัทของเราให้บริการอะไรบ้าง?",
-        answer: "เราเป็นผู้เชี่ยวชาญด้านงานเหล็กครบวงจร ให้บริการกันสาด โรงจอดรถ งานฝ้า งานระแนง ประตูรั้ว และงานเหล็กอื่นๆ ด้วยคุณภาพมาตรฐานสูง ดู<a href='/portfolio' class='text-blue-600 hover:text-blue-800 underline'>ผลงาน</a>ของเราหรือ<a href='/about' class='text-blue-600 hover:text-blue-800 underline'>เรียนรู้เพิ่มเติม</a>เกี่ยวกับเรา"
+        answer: "เราเป็นผู้เชี่ยวชาญด้านงานเหล็กครบวงจร ให้บริการกันสาด โรงจอดรถ งานฝ้า งานระแนง ประตูรั้ว และงานเหล็กอื่นๆ ด้วยคุณภาพมาตรฐานสูง ดู<a href='/gallery' class='text-blue-600 hover:text-blue-800 underline'>ผลงาน</a>ของเราหรือ<a href='/about' class='text-blue-600 hover:text-blue-800 underline'>เรียนรู้เพิ่มเติม</a>เกี่ยวกับเรา"
       },
       {
         question: "มีการรับประกันงานไหม?",
@@ -47,7 +47,7 @@ const faqs = [
       },
       {
         question: "ราคากันสาดเริ่มต้นเท่าไหร่?",
-        answer: "ราคาขึ้นอยู่กับขนาด วัสดุ และความซับซ้อนของงาน โดยประมาณเริ่มต้นที่ 3,000-5,000 บาทต่อตารางเมตร สามารถ<a href='/contact' class='text-blue-600 hover:text-blue-800 underline'>ติดต่อ</a>เพื่อประเมินราคาฟรี หรือดู<a href='/portfolio' class='text-blue-600 hover:text-blue-800 underline'>ผลงาน</a>ของเราก่อน"
+        answer: "ราคาขึ้นอยู่กับขนาด วัสดุ และความซับซ้อนของงาน โดยประมาณเริ่มต้นที่ 3,000-5,000 บาทต่อตารางเมตร สามารถ<a href='/contact' class='text-blue-600 hover:text-blue-800 underline'>ติดต่อ</a>เพื่อประเมินราคาฟรี หรือดู<a href='/gallery' class='text-blue-600 hover:text-blue-800 underline'>ผลงาน</a>ของเราก่อน"
       }
     ]
   },
@@ -58,7 +58,7 @@ const faqs = [
     questions: [
       {
         question: "โรงจอดรถสามารถจอดรถได้กี่คัน?",
-        answer: "ขึ้นอยู่กับขนาดที่ออกแบบ เราสามารถทำโรงจอดรถได้ตั้งแต่ 1 คัน จนถึงโรงจอดรถขนาดใหญ่หลายสิบคัน ตามความต้องการของลูกค้า ดู<a href='/portfolio' class='text-blue-600 hover:text-blue-800 underline'>ผลงานโรงจอดรถ</a>ขนาดต่างๆ ของเรา"
+        answer: "ขึ้นอยู่กับขนาดที่ออกแบบ เราสามารถทำโรงจอดรถได้ตั้งแต่ 1 คัน จนถึงโรงจอดรถขนาดใหญ่หลายสิบคัน ตามความต้องการของลูกค้า ดู<a href='/gallery' class='text-blue-600 hover:text-blue-800 underline'>ผลงานโรงจอดรถ</a>ขนาดต่างๆ ของเรา"
       },
       {
         question: "วัสดุหลังคาโรงจอดรถมีอะไรให้เลือกบ้าง?",
@@ -85,7 +85,7 @@ const faqs = [
       },
       {
         question: "ฝ้าเพดานสามารถซ่อนสายไฟได้ไหม?",
-        answer: "ได้ครับ งานฝ้าช่วยซ่อนสายไฟ ท่อแอร์ และระบบต่างๆ ทำให้เพดานดูสวยงามและเรียบร้อย ดู<a href='/portfolio' class='text-blue-600 hover:text-blue-800 underline'>ผลงานฝ้าเพดาน</a>ที่เราได้ทำไว้"
+        answer: "ได้ครับ งานฝ้าช่วยซ่อนสายไฟ ท่อแอร์ และระบบต่างๆ ทำให้เพดานดูสวยงามและเรียบร้อย ดู<a href='/gallery' class='text-blue-600 hover:text-blue-800 underline'>ผลงานฝ้าเพดาน</a>ที่เราได้ทำไว้"
       }
     ]
   },
@@ -137,7 +137,7 @@ export default function FAQ() {
               FAQ ในการต่อเติมหลังคา กันสาด กับ เอสพี กันสาด
             </h1>
             <p className="text-lg sm:text-xl text-[#eaf4ff] max-w-3xl mx-auto">
-              คำตอบสำหรับคำถามที่พบบ่อยเกี่ยวกับสินค้าและบริการของเรา หรือดู<a href='/portfolio' className='text-white hover:text-blue-200 underline transition-colors'>ผลงานการติดตั้ง</a>และ<a href='/materials' className='text-white hover:text-blue-200 underline transition-colors'>วัสดุคุณภาพ</a>ที่เราใช้
+              คำตอบสำหรับคำถามที่พบบ่อยเกี่ยวกับสินค้าและบริการของเรา หรือดู<a href='/gallery' className='text-white hover:text-blue-200 underline transition-colors'>ผลงานการติดตั้ง</a>และ<a href='/materials' className='text-white hover:text-blue-200 underline transition-colors'>วัสดุคุณภาพ</a>ที่เราใช้
             </p>
           </div>
         </div>

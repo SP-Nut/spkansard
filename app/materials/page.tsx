@@ -74,7 +74,7 @@ export default function MaterialsPage() {
             <p className="text-lg sm:text-xl text-[#eaf4ff] max-w-3xl mx-auto">
               เลือกวัสดุหลังคาที่เหมาะกับงานของคุณ ทั้งโปร่งแสงและทึบแสง พร้อมราคายุติธรรม 
               <br className="hidden sm:block" />
-              ดู<Link href="/portfolio" className="underline hover:text-white transition-colors mx-1">ผลงานการใช้งาน</Link>และ<Link href="/gallery" className="underline hover:text-white transition-colors mx-1">ภาพจริง</Link>
+              ดู<Link href="/gallery" className="underline hover:text-white transition-colors mx-1">ภาพการใช้งานจริง</Link>และ<Link href="/contact" className="underline hover:text-white transition-colors mx-1">ปรึกษาฟรี</Link>
             </p>
 
             {/* Optional CTAs (keep functions) */}

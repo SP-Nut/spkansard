@@ -53,6 +53,18 @@ export default function GalleryPage() {
   const BRAND_DARK = "#1E2E4F";
   const BRAND_MID = "#314874";
 
+  // Smooth scroll function
+  const scrollToGallery = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const gallerySection = document.getElementById('gallery-grid');
+    if (gallerySection) {
+      gallerySection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   const openLightbox = (index: number) => {
     setCurrentImageIndex(index);
     setLightboxOpen(true);
@@ -109,12 +121,13 @@ export default function GalleryPage() {
             <p className="text-lg sm:text-xl text-[#eaf4ff] max-w-3xl mx-auto">
               รวมภาพผลงานติดตั้งจริงจากทีมงานของเรา ทั้งกันสาดหน้าบ้าน หลังบ้าน ข้างบ้าน และโรงจอดรถ 
               <br className="hidden sm:block" />
-              ดู<Link href="/portfolio" className="underline hover:text-white transition-colors mx-1">รายละเอียดงาน</Link>และ<Link href="/materials" className="underline hover:text-white transition-colors mx-1">วัสดุที่ใช้</Link>
+              ดู<Link href="/materials" className="underline hover:text-white transition-colors mx-1">วัสดุที่ใช้งาน</Link>และ<Link href="/contact" className="underline hover:text-white transition-colors mx-1">ติดต่อสอบถาม</Link>
             </p>
 
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
               <a
                 href="#gallery-grid"
+                onClick={scrollToGallery}
                 className="bg-white text-[#1E2E4F] hover:bg-gray-100 px-6 py-3 rounded-lg text-sm sm:text-base font-semibold transition-colors inline-flex items-center justify-center gap-2"
               >
                 <FaEye className="h-4 w-4" />
@@ -174,13 +187,13 @@ export default function GalleryPage() {
           {/* View All Button */}
           <div className="mt-10 text-center">
             <a
-              href="/portfolio"
+              href="/contact"
               className="group relative inline-flex items-center justify-center rounded-full px-8 py-3 font-semibold text-white shadow-lg transition-all duration-300"
               style={{
                 backgroundImage: `linear-gradient(90deg, ${BRAND_MID}, ${BRAND_DARK})`,
               }}
             >
-              <span className="relative z-10 mr-2">ดูผลงานเพิ่มเติม</span>
+              <span className="relative z-10 mr-2">ปรึกษางานฟรี</span>
               <svg
                 className="relative z-10 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-1"
                 fill="none"
