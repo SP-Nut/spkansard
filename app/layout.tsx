@@ -5,6 +5,7 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import FloatingContactButton from "./components/FloatingContactButton";
 import StructuredData from "./components/StructuredData";
+import { headers } from 'next/headers';
 
 const prompt = Prompt({
   subsets: ["latin", "thai"],
@@ -137,11 +138,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // ตรวจสอบว่าอยู่ในหน้า admin หรือไม่
+  const headersList = await headers();
+  const pathname = headersList.get('x-pathname') || '';
+  const isAdminPage = pathname.startsWith('/admin');
+
   return (
     <html lang="th">
       <head>
@@ -164,13 +170,13 @@ export default function RootLayout({
       <body
         className={`${prompt.variable} font-sans antialiased flex flex-col min-h-screen`}
       >
-        <StructuredData type="organization" />
-        <Header />
-        <main className="flex-1 pt-16 sm:pt-20">
+        {!isAdminPage && <StructuredData type="organization" />}
+        {!isAdminPage && <Header />}
+        <main className={isAdminPage ? "flex-1" : "flex-1 pt-16 sm:pt-20"}>
           {children}
         </main>
-  <Footer />
-  <FloatingContactButton />
+        {!isAdminPage && <Footer />}
+        {!isAdminPage && <FloatingContactButton />}
       </body>
     </html>
   );

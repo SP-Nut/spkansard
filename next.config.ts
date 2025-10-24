@@ -18,6 +18,13 @@ const nextConfig: NextConfig = {
     qualities: [80, 85, 90, 95, 98], // เริ่มจาก quality สูงขึ้น
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cqezrbvsppgponmupoyt.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
+    ],
   },
   
   // Bundle analyzer for optimization

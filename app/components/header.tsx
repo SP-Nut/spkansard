@@ -86,7 +86,7 @@ export default function Header() {
               rel="noopener noreferrer"
               className="bg-[#eaf4ff] text-[#1E2E4F] hover:bg-white font-medium py-2 px-6 rounded-full transition-colors duration-200 text-base"
             >
-              คำนวณราคาฟรี
+              คำนวนราคาเบื้องต้น
             </a>
           </div>
 
@@ -132,7 +132,7 @@ export default function Header() {
                 className="bg-[#eaf4ff] text-[#1E2E4F] hover:bg-white font-medium py-2 px-4 rounded-full transition-colors duration-200 text-base inline-block mt-3"
                 onClick={() => setIsMenuOpen(false)}
               >
-                คำนวนราคาฟรี
+                คำนวนราคาเบื้องต้น
               </a>
             </div>
           </div>

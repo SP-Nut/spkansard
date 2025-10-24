@@ -2,26 +2,78 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import { FaSearch, FaEye, FaShoppingCart, FaPhone, FaCompressArrowsAlt, FaHome, FaChevronRight, FaCheckCircle } from 'react-icons/fa';
-import { materialsData, Material } from './data';
+import { supabase } from '@/lib/supabase';
+
+interface Material {
+  id: string;
+  name: string;
+  description: string;
+  image_url: string;
+  features: string[];
+  price_range?: string;
+  category: string;
+  created_at: string;
+  updated_at: string;
+}
 
 export default function MaterialsPage() {
   const heroRef = useRef<HTMLElement | null>(null);
   const materialsRef = useRef<HTMLElement | null>(null);
 
+  const [materials, setMaterials] = useState<Material[]>([]);
+  const [categories, setCategories] = useState<string[]>(['ทั้งหมด']);
   const [selectedCategory, setSelectedCategory] = useState<string>('ทั้งหมด');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null);
   const [showComparison, setShowComparison] = useState<boolean>(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
-  const categories = ['ทั้งหมด', 'โปร่งแสง', 'ทึบแสง', 'ระแนง', 'ฝ้า', 'รางน้ำ'];
+  // Fetch categories from Supabase
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('categories')
+          .select('name')
+          .eq('is_active', true)
+          .order('display_order', { ascending: true });
+
+        if (error) throw error;
+        
+        const categoryNames = data?.map((cat) => cat.name) || [];
+        setCategories(['ทั้งหมด', ...categoryNames]);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Fetch materials from Supabase
+  useEffect(() => {
+    const fetchMaterials = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('materials')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        setMaterials(data || []);
+      } catch (error) {
+        console.error('Error fetching materials:', error);
+      }
+    };
+
+    fetchMaterials();
+  }, []);
 
   const filteredMaterials = useMemo<Material[]>(() => {
-    return materialsData.filter((material: Material) => {
+    return materials.filter((material: Material) => {
       const categoryMatch = selectedCategory === 'ทั้งหมด' || material.category === selectedCategory;
       const term = searchTerm.toLowerCase();
       const searchMatch =
@@ -30,7 +82,7 @@ export default function MaterialsPage() {
         material.features.some((feature: string) => feature.toLowerCase().includes(term));
       return categoryMatch && searchMatch;
     });
-  }, [selectedCategory, searchTerm]);
+  }, [materials, selectedCategory, searchTerm]);
 
   const toggleMaterialSelection = (materialId: string) => {
     setSelectedMaterials((prev: string[]) => {
@@ -47,7 +99,6 @@ export default function MaterialsPage() {
   const openMaterialDetail = (material: Material) => {
     setSelectedMaterial(material);
     setShowDetail(true);
-    setCurrentImageIndex(0);
   };
 
   const calculatePrice = () => {
@@ -164,8 +215,8 @@ export default function MaterialsPage() {
                 <div className="col-span-1">เลือก</div>
                 <div className="col-span-1">รูป</div>
                 <div className="col-span-5">วัสดุ</div>
-                <div className="col-span-2">ราคาเริ่มต้น (S)</div>
-                <div className="col-span-1">ราคา M+</div>
+                <div className="col-span-2">ราคา</div>
+                <div className="col-span-1">หมวดหมู่</div>
                 <div className="col-span-2 text-right">การทำงาน</div>
               </div>
               <div className="hidden md:block h-px bg-gray-200 my-2" />
@@ -189,13 +240,19 @@ export default function MaterialsPage() {
                       {/* Thumbnail */}
                       <div className="col-span-3 sm:col-span-2 md:col-span-1">
                         <div className="w-20 h-14 rounded-lg overflow-hidden bg-gray-100">
-                          <Image
-                            src={material.images[0]}
-                            alt={material.name}
-                            width={80}
-                            height={56}
-                            className="w-full h-full object-cover"
-                          />
+                          {material.image_url ? (
+                            <Image
+                              src={material.image_url}
+                              alt={material.name}
+                              width={80}
+                              height={56}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                              <span className="text-xs text-gray-400">ไม่มีรูป</span>
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -205,17 +262,9 @@ export default function MaterialsPage() {
                           <h3 className="text-base md:text-sm font-semibold text-gray-900 break-words truncate sm:whitespace-normal sm:truncate-none">
                             {material.name}
                           </h3>
-                          {material.isPopular && (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-[#eaf4ff] text-[#1E2E4F]">ยอดนิยม</span>
-                          )}
                         </div>
                         <div className="text-xs text-gray-500 mt-1 break-words">
                           หมวดหมู่: {material.category}
-                          {material.thickness || material.specifications['หนา'] ? (
-                            <>
-                              {' '}• หนา: {material.thickness || material.specifications['หนา']}
-                            </>
-                          ) : null}
                         </div>
                         <div className="hidden md:flex flex-wrap gap-1 mt-2">
                           {material.features.slice(0, 2).map((feature: string, idx: number) => (
@@ -224,11 +273,13 @@ export default function MaterialsPage() {
                         </div>
                       </div>
 
-                      {/* Price S + Mobile actions in one column */}
+                      {/* Price Range */}
                       <div className="col-span-12 md:col-span-2 min-w-0">
-                        <div className="text-sm text-gray-500 md:hidden">เริ่มต้น (S)</div>
+                        <div className="text-sm text-gray-500 md:hidden">ราคา</div>
                         <div className="flex items-center gap-2">
-                          <div className="text-lg md:text-base font-semibold text-[#314874] flex-shrink-0">฿{material.pricePerSqm.S.toLocaleString()}</div>
+                          <div className="text-lg md:text-base font-semibold text-[#314874] flex-shrink-0">
+                            {material.price_range || 'สอบถามราคา'}
+                          </div>
                           <div className="ml-auto md:hidden flex items-center gap-2">
                             <button
                               onClick={() => openMaterialDetail(material)}
@@ -247,12 +298,11 @@ export default function MaterialsPage() {
                             </button>
                           </div>
                         </div>
-                        <div className="hidden md:block text-xs text-gray-500">ต่อตารางเมตร</div>
                       </div>
 
-                      {/* Price M+ */}
+                      {/* Category */}
                       <div className="hidden md:block col-span-1 text-gray-900 font-medium">
-                        {material.pricePerSqm.M_Plus ? `฿${material.pricePerSqm.M_Plus.toLocaleString()}` : '-'}
+                        {material.category}
                       </div>
 
                       {/* Actions (desktop only) */}
@@ -289,7 +339,7 @@ export default function MaterialsPage() {
             /* Detail View like product */
             <div className="max-w-6xl mx-auto">
               <button
-                onClick={() => { setShowDetail(false); setSelectedMaterial(null); setCurrentImageIndex(0); }}
+                onClick={() => { setShowDetail(false); setSelectedMaterial(null); }}
                 className="flex items-center text-[#314874] hover:text-[#1E2E4F] mb-6 font-medium"
               >
                 <FaChevronRight className="w-4 h-4 mr-2 rotate-180" />
@@ -299,29 +349,18 @@ export default function MaterialsPage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
                 {/* Images */}
                 <div className="space-y-4">
-                  <div className="relative aspect-[4/3] bg-gray-100 rounded-xl overflow-hidden">
-                    {selectedMaterial && (
+                  {selectedMaterial?.image_url ? (
+                    <div className="relative aspect-[4/3] bg-gray-100 rounded-xl overflow-hidden">
                       <Image
-                        src={selectedMaterial.images[currentImageIndex]}
+                        src={selectedMaterial.image_url}
                         alt={selectedMaterial.name}
                         fill
                         className="object-cover"
                       />
-                    )}
-                  </div>
-                  {selectedMaterial && (
-                    <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
-                      {selectedMaterial.images.map((image, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setCurrentImageIndex(index)}
-                          className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 ${
-                            currentImageIndex === index ? 'border-[#314874]' : 'border-gray-200'
-                          }`}
-                        >
-                          <Image src={image} alt={`${selectedMaterial.name} ${index + 1}`} width={80} height={80} className="w-full h-full object-cover" />
-                        </button>
-                      ))}
+                    </div>
+                  ) : (
+                    <div className="relative aspect-[4/3] bg-gray-200 rounded-xl flex items-center justify-center">
+                      <span className="text-gray-400">ไม่มีรูปภาพ</span>
                     </div>
                   )}
                 </div>
@@ -331,9 +370,6 @@ export default function MaterialsPage() {
                   {selectedMaterial && (
                     <>
                       <div>
-                        {selectedMaterial.isPopular && (
-                          <span className="bg-[#eaf4ff] text-[#1E2E4F] px-2 py-1 text-xs font-medium rounded mr-2">ยอดนิยม</span>
-                        )}
                         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4" style={{color:'var(--brand-900)'}}>
                           {selectedMaterial.name}
                         </h1>
@@ -342,31 +378,14 @@ export default function MaterialsPage() {
 
                       <div>
                         <h3 className="text-lg font-bold mb-3" style={{color:'var(--brand-900)'}}>
-                          ราคาต่อตารางเมตร
+                          ราคา
                         </h3>
-                        <div className="bg-gray-50 rounded-lg p-4 grid grid-cols-2 gap-2 text-sm">
-                          <div className="text-gray-600">ขนาด S:</div>
-                          <div className="text-[#314874] font-semibold">฿{selectedMaterial.pricePerSqm.S.toLocaleString()}</div>
-                          <div className="text-gray-600">ขนาด M:</div>
-                          <div className="text-[#314874] font-semibold">฿{selectedMaterial.pricePerSqm.M.toLocaleString()}</div>
-                          <div className="text-gray-600">ขนาด L:</div>
-                          <div className="text-[#314874] font-semibold">฿{selectedMaterial.pricePerSqm.L.toLocaleString()}</div>
-                          <div className="text-gray-600">ขนาด XL:</div>
-                          <div className="text-[#314874] font-semibold">฿{selectedMaterial.pricePerSqm.XL.toLocaleString()}</div>
-                          {selectedMaterial.pricePerSqm.XXL && (
-                            <>
-                              <div className="text-gray-600">ขนาด XXL:</div>
-                              <div className="text-[#314874] font-semibold">฿{selectedMaterial.pricePerSqm.XXL.toLocaleString()}</div>
-                            </>
-                          )}
-                          {selectedMaterial.pricePerSqm.M_Plus && (
-                            <>
-                              <div className="text-gray-600">ขนาด M+:</div>
-                              <div className="text-[#314874] font-semibold">฿{selectedMaterial.pricePerSqm.M_Plus.toLocaleString()}</div>
-                            </>
-                          )}
+                        <div className="bg-gray-50 rounded-lg p-4 text-center">
+                          <div className="text-2xl font-bold text-[#314874]">
+                            {selectedMaterial.price_range || 'สอบถามราคา'}
+                          </div>
+                          <div className="text-sm text-gray-500 mt-2">*ราคาอาจแตกต่างตามขนาดและปริมาณ</div>
                         </div>
-                        <div className="text-xs text-gray-500 mt-2">*ราคาไม่รวมภาษีมูลค่าเพิ่ม</div>
                       </div>
 
                       <div>
@@ -383,39 +402,12 @@ export default function MaterialsPage() {
                         </div>
                       </div>
 
-                      <div>
-                        <h3 className="text-lg font-bold mb-3" style={{color:'var(--brand-900)'}}>
-                          ข้อมูลเชิงเทคนิค
-                        </h3>
-                        <div className="bg-gray-50 rounded-lg p-4 space-y-3">
-                          {Object.entries(selectedMaterial.specifications).map(([key, value]) => (
-                            <div key={key} className="flex justify-between">
-                              <span className="text-gray-600">{key}:</span>
-                              <span className="font-medium">{String(value)}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="text-lg font-bold mb-3" style={{color:'var(--brand-900)'}}>
-                          สีที่มีจำหน่าย
-                        </h3>
-                        <div className="flex flex-wrap gap-2">
-                          {selectedMaterial.colors.map((color, index) => (
-                            <span key={index} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
-                              {color}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
                       <div className="flex flex-col sm:flex-row gap-3 pt-2">
                         <button
                           onClick={calculatePrice}
                           className="bg-[#314874] hover:bg-[#1E2E4F] text-white px-6 py-3 rounded-lg font-semibold"
                         >
-                          คำนวณราคาสำหรับวัสดุนี้
+                          สอบถามราคาและรายละเอียด
                         </button>
                         <button
                           onClick={() => {
@@ -493,18 +485,20 @@ export default function MaterialsPage() {
                   <tr className="border-b border-gray-200">
                     <th className="text-left py-4 px-2 font-semibold">รายการ</th>
                     {selectedMaterials.map((materialId: string) => {
-                      const material = materialsData.find((m: Material) => m.id === materialId);
+                      const material = materials.find((m: Material) => m.id === materialId);
                       return (
                         <th key={materialId} className="text-center py-4 px-2 font-semibold min-w-[180px]">
                           <div className="space-y-2">
-                            <div className="relative h-24 rounded-lg overflow-hidden">
-                              <Image
-                                src={material?.images[0] || '/herosection/01.jpg'}
-                                alt={material?.name || ''}
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
+                            {material?.image_url && (
+                              <div className="relative h-24 rounded-lg overflow-hidden">
+                                <Image
+                                  src={material.image_url}
+                                  alt={material.name}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            )}
                             <div className="text-sm break-words">{material?.name}</div>
                           </div>
                         </th>
@@ -516,7 +510,7 @@ export default function MaterialsPage() {
                   <tr className="border-b border-gray-100">
                     <td className="py-3 px-2 font-medium">หมวดหมู่</td>
                     {selectedMaterials.map((materialId: string) => {
-                      const material = materialsData.find((m: Material) => m.id === materialId);
+                      const material = materials.find((m: Material) => m.id === materialId);
                       return (
                         <td key={materialId} className="py-3 px-2 text-center break-words">
                           {material?.category}
@@ -525,74 +519,38 @@ export default function MaterialsPage() {
                     })}
                   </tr>
                   <tr className="border-b border-gray-100">
-                    <td className="py-3 px-2 font-medium">ราคาเริ่มต้น (S)</td>
+                    <td className="py-3 px-2 font-medium">ราคา</td>
                     {selectedMaterials.map((materialId: string) => {
-                      const material = materialsData.find((m: Material) => m.id === materialId);
+                      const material = materials.find((m: Material) => m.id === materialId);
                       return (
                         <td key={materialId} className="py-3 px-2 text-center text-[#314874] font-semibold break-words">
-                          ฿{material?.pricePerSqm.S.toLocaleString()}
+                          {material?.price_range || 'สอบถามราคา'}
                         </td>
                       );
                     })}
                   </tr>
                   <tr className="border-b border-gray-100">
-                    <td className="py-3 px-2 font-medium">ราคา M+</td>
+                    <td className="py-3 px-2 font-medium">คำอธิบาย</td>
                     {selectedMaterials.map((materialId: string) => {
-                      const material = materialsData.find((m: Material) => m.id === materialId);
+                      const material = materials.find((m: Material) => m.id === materialId);
                       return (
-                        <td key={materialId} className="py-3 px-2 text-center text-[#314874] font-semibold break-words">
-                          {material?.pricePerSqm.M_Plus ? `฿${material.pricePerSqm.M_Plus.toLocaleString()}` : '-'}
+                        <td key={materialId} className="py-3 px-2 text-sm break-words">
+                          {material?.description}
                         </td>
                       );
                     })}
                   </tr>
                   <tr className="border-b border-gray-100">
-                    <td className="py-3 px-2 font-medium">หนา</td>
+                    <td className="py-3 px-2 font-medium">คุณสมบัติ</td>
                     {selectedMaterials.map((materialId: string) => {
-                      const material = materialsData.find((m: Material) => m.id === materialId);
-                      return (
-                        <td key={materialId} className="py-3 px-2 text-center break-words">
-                          {material?.thickness || material?.specifications['หนา'] || '-'}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                  <tr className="border-b border-gray-100">
-                    <td className="py-3 px-2 font-medium">น้ำหนัก</td>
-                    {selectedMaterials.map((materialId: string) => {
-                      const material = materialsData.find((m: Material) => m.id === materialId);
-                      return (
-                        <td key={materialId} className="py-3 px-2 text-center break-words">
-                          {material?.specifications['น้ำหนัก'] || '-'}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                  <tr className="border-b border-gray-100">
-                    <td className="py-3 px-2 font-medium">คุณสมบัติหลัก</td>
-                    {selectedMaterials.map((materialId: string) => {
-                      const material = materialsData.find((m: Material) => m.id === materialId);
+                      const material = materials.find((m: Material) => m.id === materialId);
                       return (
                         <td key={materialId} className="py-3 px-2 break-words">
                           <ul className="text-sm space-y-1">
-                            {material?.features.slice(0, 3).map((feature: string, index: number) => (
+                            {material?.features.map((feature: string, index: number) => (
                               <li key={index}>• {feature}</li>
                             ))}
                           </ul>
-                        </td>
-                      );
-                    })}
-                  </tr>
-                  <tr className="border-b border-gray-100">
-                    <td className="py-3 px-2 font-medium">สี</td>
-                    {selectedMaterials.map((materialId: string) => {
-                      const material = materialsData.find((m: Material) => m.id === materialId);
-                      return (
-                        <td key={materialId} className="py-3 px-2 text-center break-words">
-                          <div className="text-sm break-words">
-                            {material?.colors.slice(0, 3).join(', ')}
-                            {material && material.colors.length > 3 && '...'}
-                          </div>
                         </td>
                       );
                     })}

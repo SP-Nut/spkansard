@@ -211,7 +211,7 @@ export default function FAQ() {
               ไม่พบคำตอบที่ต้องการ?
             </h2>
             <p className="text-sm sm:text-base lg:text-lg mb-5 sm:mb-6 text-blue-100 max-w-2xl mx-auto">
-              ติดต่อเราเพื่อสอบถามข้อมูลเพิ่มเติม ทีมงานพร้อมให้คำปรึกษาฟรี หรือ<a href='/blog' className='text-white hover:text-blue-200 underline transition-colors'>อ่านบทความ</a>เพื่อข้อมูลเพิ่มเติม
+              ติดต่อเราเพื่อสอบถามข้อมูลเพิ่มเติม ทีมงานพร้อมให้คำปรึกษาฟรี หรือ<Link href='/blog' className='text-white hover:text-blue-200 underline transition-colors'>อ่านบทความ</Link>เพื่อข้อมูลเพิ่มเติม
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <a
