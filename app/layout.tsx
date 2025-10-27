@@ -6,6 +6,7 @@ import Footer from "./components/footer";
 import FloatingContactButton from "./components/FloatingContactButton";
 import StructuredData from "./components/StructuredData";
 import { headers } from 'next/headers';
+import { Analytics } from "@vercel/analytics/next";
 
 const prompt = Prompt({
   subsets: ["latin", "thai"],
@@ -177,6 +178,7 @@ export default async function RootLayout({
         </main>
         {!isAdminPage && <Footer />}
         {!isAdminPage && <FloatingContactButton />}
+        <Analytics />
       </body>
     </html>
   );
