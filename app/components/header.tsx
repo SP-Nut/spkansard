@@ -44,8 +44,9 @@ export default function Header() {
 
   return (
     <header
-      className="w-full fixed top-0 z-50 transition-colors duration-300"
-      style={{ backgroundColor: overHero && !isMenuOpen ? 'transparent' : '#1E2E4F' }}
+      className={`w-full fixed top-0 z-50 transition-colors duration-300 ${
+        overHero && !isMenuOpen ? 'bg-transparent' : 'bg-[#1E2E4F]'
+      }`}
     >
       <nav className="mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ maxWidth: '1800px' }}>
         <div className="flex justify-between items-center h-16 sm:h-20 w-full">
