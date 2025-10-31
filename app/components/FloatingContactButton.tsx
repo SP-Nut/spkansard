@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { FaPhone, FaCalculator, FaArrowUp } from "react-icons/fa";
+import { FaPhone, FaCalculator, FaArrowUp, FaFacebook } from "react-icons/fa";
 import { SiLine } from "react-icons/si";
 
 export default function FloatingContactButton() {
@@ -54,6 +54,17 @@ export default function FloatingContactButton() {
       rel: "noopener nofollow",
       target: "_blank",
       aria: "ติดต่อผ่าน LINE @spkansard (เปิดแท็บใหม่)",
+    },
+    {
+      key: "facebook",
+      href: "https://www.facebook.com/spkansard",
+      label: "Facebook",
+      bg: "bg-blue-600",
+      hoverBg: "hover:bg-blue-700",
+      icon: <FaFacebook className="w-4 h-4 sm:w-5 sm:h-5" />,
+      rel: "noopener nofollow",
+      target: "_blank",
+      aria: "ติดต่อผ่าน Facebook (เปิดแท็บใหม่)",
     },
     {
       key: "phone",

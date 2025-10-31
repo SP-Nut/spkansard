@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function HeroSection() {
@@ -9,6 +9,17 @@ export default function HeroSection() {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [currentX, setCurrentX] = useState(0);
+
+  // Auto-slide every 2.5 seconds (pause when dragging)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isDragging) {
+        setCurrentSlide((s) => (s >= totalSlides ? 1 : s + 1));
+      }
+    }, 2500);
+    
+    return () => clearInterval(interval);
+  }, [isDragging]);
 
   // ข้อความสำหรับแต่ละสไลด์
   const slideContent = [
@@ -137,7 +148,7 @@ export default function HeroSection() {
                   alt={`${slide.alt} - เดสก์ท็อป`}
                   fill
                   className="hidden md:block object-cover object-center"
-                  priority={currentSlide === index + 1 || index === 0}
+                  priority={index === 0}
                   sizes="(min-width: 768px) 100vw, 0vw"
                 />
                 {/* Mobile Image */}
@@ -146,7 +157,7 @@ export default function HeroSection() {
                   alt={`${slide.alt} - มือถือ`}
                   fill
                   className="block md:hidden object-cover object-center"
-                  priority={currentSlide === index + 1 || index === 0}
+                  priority={index === 0}
                   sizes="(max-width: 767px) 100vw, 0vw"
                 />
                 {/* Content overlay - ใช้สไตล์เดียวกันทั้งหมด */}
