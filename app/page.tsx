@@ -519,7 +519,6 @@ export default function Home() {
             alt="SP Kansard showroom background"
             fill
             sizes="100vw"
-            quality={80}
             className="object-cover object-center"
           />
           {/* Overlay */}

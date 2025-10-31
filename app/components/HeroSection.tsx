@@ -10,7 +10,7 @@ export default function HeroSection() {
   const [startX, setStartX] = useState(0);
   const [currentX, setCurrentX] = useState(0);
 
-  // ข้อความสำหรับแต่ละสไลด์ (ปรับด้วยข้อความการตลาดใหม่)
+  // ข้อความสำหรับแต่ละสไลด์
   const slideContent = [
     {
       title: "เอสพี กันสาด",
@@ -49,7 +49,34 @@ export default function HeroSection() {
     }
   ];
 
-  // Removed auto-slide for better user control
+  // รูปภาพสำหรับแต่ละสไลด์ (ใช้ชื่อไฟล์ที่มีจริงในโฟลเดอร์)
+  const slideImages = [
+    {
+      desktop: "/herosection/กันสาดหรู โมเดิร์น.webp",
+      mobile: "/heroMobile/kansard-mobile-slide-1.webp",
+      alt: "SP Kansard กันสาดโรงจอดรถหรู"
+    },
+    {
+      desktop: "/herosection/กันสาดเรียบๆ ทันสมัย.webp",
+      mobile: "/heroMobile/kansard-mobile-slide-2.webp",
+      alt: "SP Kansard กันสาดบ้านสไตล์โมเดิร์น"
+    },
+    {
+      desktop: "/herosection/กันสาด บ้านสไตล์โมเดิร์น.webp",
+      mobile: "/heroMobile/kansard-mobile-slide-3.webp",
+      alt: "SP Kansard กันสาดเรียบทันสมัย"
+    },
+    {
+      desktop: "/herosection/กันสาด มินิมอล.webp",
+      mobile: "/heroMobile/kansard-mobile-slide-6.webp",
+      alt: "SP Kansard กันสาดมินิมอล"
+    },
+    {
+      desktop: "/herosection/กันสาด มูจิ.webp",
+      mobile: "/heroMobile/kansard-mobile-slide-7.webp",
+      alt: "SP Kansard กันสาดสไตล์มูจิ"
+    }
+  ];
 
   // Handle touch/mouse drag events
   const handleDragStart = (clientX: number) => {
@@ -68,14 +95,12 @@ export default function HeroSection() {
     setIsDragging(false);
     
     const deltaX = currentX - startX;
-    const threshold = 50; // minimum distance to trigger slide change
+    const threshold = 50;
     
     if (Math.abs(deltaX) > threshold) {
       if (deltaX > 0) {
-        // Dragged right - go to previous slide
         setCurrentSlide((s) => (s <= 1 ? totalSlides : s - 1));
       } else {
-        // Dragged left - go to next slide
         setCurrentSlide((s) => (s >= totalSlides ? 1 : s + 1));
       }
     }
@@ -104,224 +129,63 @@ export default function HeroSection() {
             onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
             onTouchEnd={handleDragEnd}
           >
-            <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <Image
-                src="/herosection/กันสาดหรู โมเดิร์น.webp"
-                alt="SP Kansard กันสาดโรงจอดรถหรู"
-                fill
-                className="object-cover object-center"
-                priority
-                quality={90}
-                sizes="(max-width: 768px) 100vw, 100vw"
-              />
-              {/* Content overlay for slide 1 */}
-              <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
-                {/* Gradient overlay for better text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none"></div>
-                <div className="relative z-10 max-w-4xl mx-auto pb-16 sm:pb-20 lg:pb-24">
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight" 
-                      style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}>
-                    {slideContent[0]?.title}
-                  </h1>
-                  <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-white/90 font-normal mb-4 sm:mb-6 md:mb-8 leading-relaxed max-w-2xl mx-auto" 
-                     style={{textShadow: '1px 1px 2px rgba(0,0,0,0.8)'}}>
-                    {slideContent[0]?.subtitle?.split('\n').map((line, index) => (
-                      <span key={index}>
-                        {line}
-                        {index < slideContent[0]?.subtitle?.split('\n').length - 1 && <br />}
-                      </span>
-                    ))}
-                  </p>
-                  <div className="flex justify-center">
-                    <a
-                      href={slideContent[0]?.buttons[0]?.href}
-                      className="inline-flex items-center text-white font-medium py-2.5 px-5 sm:py-3 sm:px-6 rounded-md transition-all duration-300 text-sm sm:text-base transform hover:scale-105 shadow-lg bg-brand hover:bg-brand-dark"
-                    >
-                      {slideContent[0]?.buttons[0]?.text}
-                      <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </a>
+            {slideImages.map((slide, index) => (
+              <div key={index} className="slide w-1/5 h-full relative flex-shrink-0">
+                {/* Desktop Image */}
+                <Image
+                  src={slide.desktop}
+                  alt={`${slide.alt} - เดสก์ท็อป`}
+                  fill
+                  className="hidden md:block object-cover object-center"
+                  priority={currentSlide === index + 1 || index === 0}
+                  sizes="(min-width: 768px) 100vw, 0vw"
+                />
+                {/* Mobile Image */}
+                <Image
+                  src={slide.mobile}
+                  alt={`${slide.alt} - มือถือ`}
+                  fill
+                  className="block md:hidden object-cover object-center"
+                  priority={currentSlide === index + 1 || index === 0}
+                  sizes="(max-width: 767px) 100vw, 0vw"
+                />
+                {/* Content overlay - ใช้สไตล์เดียวกันทั้งหมด */}
+                <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
+                  {/* Gradient overlay for better text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none"></div>
+                  <div className="relative z-10 max-w-4xl mx-auto pb-16 sm:pb-20 lg:pb-24">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight" 
+                        style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}>
+                      {slideContent[index]?.title}
+                    </h1>
+                    <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-white/90 font-normal mb-4 sm:mb-6 md:mb-8 leading-relaxed max-w-2xl mx-auto" 
+                       style={{textShadow: '1px 1px 2px rgba(0,0,0,0.8)'}}>
+                      {slideContent[index]?.subtitle?.split('\n').map((line, lineIndex) => (
+                        <span key={lineIndex}>
+                          {line}
+                          {lineIndex < slideContent[index]?.subtitle?.split('\n').length - 1 && <br />}
+                        </span>
+                      ))}
+                    </p>
+                    <div className="flex justify-center">
+                      <a
+                        href={slideContent[index]?.buttons[0]?.href}
+                        target={slideContent[index]?.buttons[0]?.external ? "_blank" : undefined}
+                        rel={slideContent[index]?.buttons[0]?.external ? "noopener noreferrer" : undefined}
+                        className="inline-flex items-center text-white font-medium py-2.5 px-5 sm:py-3 sm:px-6 rounded-md transition-all duration-300 text-sm sm:text-base transform hover:scale-105 bg-brand hover:bg-brand-dark"
+                      >
+                        {slideContent[index]?.buttons[0]?.text}
+                        <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <Image
-                src="/herosection/กันสาดเรียบๆ ทันสมัย.webp"
-                alt="SP Kansard กันสาดบ้านสไตล์โมเดิร์น"
-                fill
-                className="object-cover object-center"
-                priority={currentSlide === 2}
-                quality={85}
-                sizes="(max-width: 768px) 100vw, 100vw"
-              />
-              {/* Content overlay for slide 2 */}
-              <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
-                {/* Gradient overlay for better text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none"></div>
-                <div className="relative z-10 max-w-4xl mx-auto pb-12 sm:pb-16 lg:pb-20">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 sm:mb-4 leading-tight" 
-                      style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}>
-                    {slideContent[1]?.title}
-                  </h1>
-                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 font-normal mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto" 
-                     style={{textShadow: '1px 1px 2px rgba(0,0,0,0.8)'}}>
-                    {slideContent[1]?.subtitle?.split('\n').map((line, index) => (
-                      <span key={index}>
-                        {line}
-                        {index < slideContent[1]?.subtitle?.split('\n').length - 1 && <br />}
-                      </span>
-                    ))}
-                  </p>
-                  <div className="flex justify-center">
-                    <a
-                      href={slideContent[1]?.buttons[0]?.href}
-                      className="inline-flex items-center text-white font-medium py-3 px-6 rounded-md transition-all duration-300 text-base transform hover:scale-105 shadow-lg bg-brand hover:bg-brand-dark"
-                    >
-                      {slideContent[1]?.buttons[0]?.text}
-                      <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <Image
-                src="/herosection/กันสาด บ้านสไตล์โมเดิร์น.webp"
-                alt="SP Kansard กันสาดเรียบทันสมัย"
-                fill
-                className="object-cover object-center"
-                priority={currentSlide === 3}
-                quality={85}
-                sizes="(max-width: 768px) 100vw, 100vw"
-              />
-              {/* Content overlay for slide 3 */}
-              <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
-                {/* Gradient overlay for better text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none"></div>
-                <div className="relative z-10 max-w-4xl mx-auto pb-12 sm:pb-16 lg:pb-20">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 sm:mb-4 leading-tight" 
-                      style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}>
-                    {slideContent[2]?.title}
-                  </h1>
-                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 font-normal mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto" 
-                     style={{textShadow: '1px 1px 2px rgba(0,0,0,0.8)'}}>
-                    {slideContent[2]?.subtitle?.split('\n').map((line, index) => (
-                      <span key={index}>
-                        {line}
-                        {index < slideContent[2]?.subtitle?.split('\n').length - 1 && <br />}
-                      </span>
-                    ))}
-                  </p>
-                  <div className="flex justify-center">
-                    <a
-                      href={slideContent[2]?.buttons[0]?.href}
-                      target={slideContent[2]?.buttons[0]?.external ? "_blank" : undefined}
-                      rel={slideContent[2]?.buttons[0]?.external ? "noopener noreferrer" : undefined}
-                      className="inline-flex items-center text-white font-medium py-3 px-6 rounded-md transition-all duration-300 text-base transform hover:scale-105 shadow-lg bg-brand hover:bg-brand-dark"
-                    >
-                      {slideContent[2]?.buttons[0]?.text}
-                      <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <Image
-                src="/herosection/กันสาด มินิมอล.webp"
-                alt="SP Kansard กันสาดมินิมอล"
-                fill
-                className="object-cover object-center"
-                priority={currentSlide === 4}
-                quality={85}
-                sizes="(max-width: 768px) 100vw, 100vw"
-              />
-              {/* Content overlay for slide 4 */}
-              <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
-                {/* Gradient overlay for better text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none"></div>
-                <div className="relative z-10 max-w-4xl mx-auto pb-12 sm:pb-16 lg:pb-20">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 sm:mb-4 leading-tight" 
-                      style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}>
-                    {slideContent[3]?.title}
-                  </h1>
-                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 font-normal mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto" 
-                     style={{textShadow: '1px 1px 2px rgba(0,0,0,0.8)'}}>
-                    {slideContent[3]?.subtitle?.split('\n').map((line, index) => (
-                      <span key={index}>
-                        {line}
-                        {index < slideContent[3]?.subtitle?.split('\n').length - 1 && <br />}
-                      </span>
-                    ))}
-                  </p>
-                  <div className="flex justify-center">
-                    <a
-                      href={slideContent[3]?.buttons[0]?.href}
-                      className="inline-flex items-center text-white font-medium py-3 px-6 rounded-md transition-all duration-300 text-base transform hover:scale-105 shadow-lg bg-brand hover:bg-brand-dark"
-                    >
-                      {slideContent[3]?.buttons[0]?.text}
-                      <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="slide w-1/5 h-full relative flex-shrink-0">
-              <Image
-                src="/herosection/กันสาด มูจิ.webp"
-                alt="SP Kansard กันสาดสไตล์มูจิ"
-                fill
-                className="object-cover object-center"
-                priority={currentSlide === 5}
-                quality={85}
-                sizes="(max-width: 768px) 100vw, 100vw"
-              />
-              {/* Content overlay for slide 5 */}
-              <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
-                {/* Gradient overlay for better text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none"></div>
-                <div className="relative z-10 max-w-4xl mx-auto pb-12 sm:pb-16 lg:pb-20">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 sm:mb-4 leading-tight" 
-                      style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}>
-                    {slideContent[4]?.title}
-                  </h1>
-                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 font-normal mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto" 
-                     style={{textShadow: '1px 1px 2px rgba(0,0,0,0.8)'}}>
-                    {slideContent[4]?.subtitle?.split('\n').map((line, index) => (
-                      <span key={index}>
-                        {line}
-                        {index < slideContent[4]?.subtitle?.split('\n').length - 1 && <br />}
-                      </span>
-                    ))}
-                  </p>
-                  <div className="flex justify-center">
-                    <a
-                      href={slideContent[4]?.buttons[0]?.href}
-                      target={slideContent[4]?.buttons[0]?.external ? "_blank" : undefined}
-                      rel={slideContent[4]?.buttons[0]?.external ? "noopener noreferrer" : undefined}
-                      className="inline-flex items-center text-white font-medium py-3 px-6 rounded-md transition-all duration-300 text-base transform hover:scale-105 shadow-lg bg-brand hover:bg-brand-dark"
-                    >
-                      {slideContent[4]?.buttons[0]?.text}
-                      <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
-
-        {/* removed injected script; carousel is controlled via React state */}
       </div>
 
       {/* Centered side arrows for navigation - Hidden on mobile */}

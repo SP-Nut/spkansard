@@ -257,7 +257,6 @@ export default function About() {
             fill
             priority
             sizes="(max-width: 640px) 100vw, 100vw"
-            quality={95}
             className="object-cover object-[45%_20%] sm:object-center select-none scale-[1.15] sm:scale-100"
           />
           <div className="absolute inset-0 bg-black/70 sm:bg-black/60" />
