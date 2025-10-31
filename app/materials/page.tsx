@@ -221,11 +221,95 @@ export default function MaterialsPage() {
               </div>
               <div className="hidden md:block h-px bg-gray-200 my-2" />
 
-              {/* Rows */}
-              <div className="divide-y divide-gray-200">
+              {/* Mobile List (md-) */}
+              <div className="md:hidden divide-y divide-gray-200">
+                {filteredMaterials.map((material: Material) => (
+                  <div key={material.id} className="py-4">
+                    <div className="flex gap-3">
+                      {/* Checkbox */}
+                      <div className="flex-shrink-0 pt-1">
+                        <input
+                          type="checkbox"
+                          checked={selectedMaterials.includes(material.id)}
+                          onChange={() => toggleMaterialSelection(material.id)}
+                          className="h-5 w-5 text-[#314874] focus:ring-[#314874] border-gray-300 rounded"
+                          disabled={!selectedMaterials.includes(material.id) && selectedMaterials.length >= 3}
+                        />
+                      </div>
+
+                      {/* Thumbnail */}
+                      <div className="flex-shrink-0">
+                        <div className="w-24 h-24 rounded-lg overflow-hidden bg-gray-100">
+                          {material.image_url ? (
+                            <Image
+                              src={material.image_url}
+                              alt={material.name}
+                              width={96}
+                              height={96}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                              <span className="text-xs text-gray-400">ไม่มีรูป</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0 flex flex-col">
+                        <h3 className="text-base font-semibold text-gray-900 mb-1 line-clamp-2">
+                          {material.name}
+                        </h3>
+                        <div className="text-xs text-gray-500 mb-2">
+                          {material.category}
+                        </div>
+                        <div className="text-lg font-bold text-[#314874] mb-2">
+                          {material.price_range || 'สอบถามราคา'}
+                        </div>
+                        
+                        {/* Features (inline) */}
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {material.features.slice(0, 2).map((feature: string, idx: number) => (
+                            <span key={idx} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs">
+                              {feature}
+                            </span>
+                          ))}
+                          {material.features.length > 2 && (
+                            <span className="text-xs text-gray-500 px-2 py-0.5">
+                              +{material.features.length - 2}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex gap-2 mt-auto">
+                          <button
+                            onClick={() => openMaterialDetail(material)}
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 bg-[#314874] hover:bg-[#1E2E4F] text-white py-2 px-3 rounded-lg text-xs font-semibold"
+                          >
+                            <FaEye className="h-3.5 w-3.5" />
+                            ดูเพิ่มเติม
+                          </button>
+                          <button
+                            onClick={calculatePrice}
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 border-2 border-[#314874] text-[#314874] hover:bg-[#314874] hover:text-white py-2 px-3 rounded-lg text-xs font-semibold"
+                          >
+                            <FaPhone className="h-3.5 w-3.5" />
+                            โทร
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop Table (md+) */}
+              <div className="hidden md:block divide-y divide-gray-200">
                 {filteredMaterials.map((material: Material) => (
                   <div key={material.id} className="py-3">
-                    <div className="grid grid-cols-12 items-start gap-3 gap-y-2">
+                    <div className="grid grid-cols-12 items-start gap-3">
                       {/* Checkbox */}
                       <div className="col-span-1 flex items-center">
                         <input
@@ -238,7 +322,7 @@ export default function MaterialsPage() {
                       </div>
 
                       {/* Thumbnail */}
-                      <div className="col-span-3 sm:col-span-2 md:col-span-1">
+                      <div className="col-span-1">
                         <div className="w-20 h-14 rounded-lg overflow-hidden bg-gray-100">
                           {material.image_url ? (
                             <Image
@@ -257,70 +341,44 @@ export default function MaterialsPage() {
                       </div>
 
                       {/* Info */}
-                      <div className="col-span-8 sm:col-span-9 md:col-span-5 min-w-0">
-                        <div className="flex items-start flex-wrap gap-2 min-w-0">
-                          <h3 className="text-base md:text-sm font-semibold text-gray-900 break-words truncate sm:whitespace-normal sm:truncate-none">
-                            {material.name}
-                          </h3>
-                        </div>
-                        <div className="text-xs text-gray-500 mt-1 break-words">
-                          หมวดหมู่: {material.category}
-                        </div>
-                        <div className="hidden md:flex flex-wrap gap-1 mt-2">
+                      <div className="col-span-5 min-w-0">
+                        <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                          {material.name}
+                        </h3>
+                        <div className="flex flex-wrap gap-1 mt-2">
                           {material.features.slice(0, 2).map((feature: string, idx: number) => (
                             <span key={idx} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs">{feature}</span>
                           ))}
                         </div>
                       </div>
 
-                      {/* Price Range */}
-                      <div className="col-span-12 md:col-span-2 min-w-0">
-                        <div className="text-sm text-gray-500 md:hidden">ราคา</div>
-                        <div className="flex items-center gap-2">
-                          <div className="text-lg md:text-base font-semibold text-[#314874] flex-shrink-0">
-                            {material.price_range || 'สอบถามราคา'}
-                          </div>
-                          <div className="ml-auto md:hidden flex items-center gap-2">
-                            <button
-                              onClick={() => openMaterialDetail(material)}
-                              className="inline-flex items-center gap-1 bg-[#314874] hover:bg-[#1E2E4F] text-white py-2 px-4 rounded-md text-sm font-semibold min-w-[90px]"
-                            >
-                              <FaEye className="h-4 w-4" />
-                              ดูเพิ่มเติม
-                            </button>
-                            <button
-                              onClick={calculatePrice}
-                              className="inline-flex items-center justify-center border border-[#314874] text-[#314874] hover:bg-[#314874] hover:text-white py-2 px-4 rounded-md text-sm font-semibold min-w-[90px]"
-                              aria-label="ติดต่อทีมงาน"
-                            >
-                          
-                               โทร
-                            </button>
-                          </div>
+                      {/* Price */}
+                      <div className="col-span-2">
+                        <div className="text-base font-semibold text-[#314874]">
+                          {material.price_range || 'สอบถามราคา'}
                         </div>
                       </div>
 
                       {/* Category */}
-                      <div className="hidden md:block col-span-1 text-gray-900 font-medium">
+                      <div className="col-span-1 text-sm text-gray-900">
                         {material.category}
                       </div>
 
-                      {/* Actions (desktop only) */}
-                      <div className="hidden md:flex md:col-span-2 flex-row flex-wrap justify-end gap-2 mt-2 md:mt-0">
+                      {/* Actions */}
+                      <div className="col-span-2 flex flex-wrap justify-end gap-2">
                         <button
                           onClick={() => openMaterialDetail(material)}
-                          className="inline-flex items-center gap-1 bg-[#314874] hover:bg-[#1E2E4F] text-white py-2 px-4 md:py-1.5 md:px-2.5 rounded-md text-sm md:text-xs font-semibold md:font-medium min-w-[90px] md:min-w-0"
+                          className="inline-flex items-center gap-1 bg-[#314874] hover:bg-[#1E2E4F] text-white py-1.5 px-2.5 rounded-md text-xs font-medium"
                         >
-                          <FaEye className="h-4 w-4 md:h-3 md:w-3" />
-                          <span className="">ดูเพิ่มเติม</span>
+                          <FaEye className="h-3 w-3" />
+                          ดูเพิ่มเติม
                         </button>
                         <button
                           onClick={calculatePrice}
-                          className="inline-flex items-center justify-center border border-[#314874] text-[#314874] hover:bg-[#314874] hover:text-white py-2 px-4 md:py-1.5 md:px-2.5 rounded-md text-sm md:text-xs font-semibold md:font-medium min-w-[90px] md:min-w-0"
-                          aria-label="ติดต่อทีมงาน"
+                          className="inline-flex items-center justify-center gap-1 border border-[#314874] text-[#314874] hover:bg-[#314874] hover:text-white py-1.5 px-2.5 rounded-md text-xs font-medium"
                         >
-                     
-                           โทร
+                          <FaPhone className="h-3 w-3" />
+                          โทร
                         </button>
                       </div>
                     </div>
