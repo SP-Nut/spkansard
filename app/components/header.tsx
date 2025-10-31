@@ -18,6 +18,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [overHero, setOverHero] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [hasHero, setHasHero] = useState(false);
 
   // ปิด scroll เวลาเมนูเปิด
   useEffect(() => {
@@ -29,29 +30,52 @@ export default function Header() {
     setMounted(true);
   }, []);
 
-  // ทำพื้นหลังโปร่งใสเมื่อ hero แสดงอยู่ในหน้าจอ
+  // ตรวจจับว่ายังอยู่เหนือ hero หรือเลื่อนพ้นไปแล้ว (เฉพาะหน้าที่มี hero)
   useEffect(() => {                                                                                               
     if (typeof window === 'undefined') return;
-    const hero = document.getElementById('hero');
-    if (!hero) {
-      setOverHero(false);
-      return;
+    
+    const checkHero = () => {
+      const hero = document.getElementById('hero');
+      if (!hero) {
+        setOverHero(false);
+        setHasHero(false);
+        return null;
+      }
+      
+      // พบ hero = หน้าแรก
+      setHasHero(true);
+      
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          // ถ้า hero ยังแสดงอยู่มากกว่า 70% = header โปร่งใส
+          setOverHero(entry.isIntersecting && entry.intersectionRatio > 0.7);
+        },
+        { threshold: [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1] }
+      );
+      observer.observe(hero);
+      return observer;
+    };
+    
+    // ลองหา hero ทันทีและรอ DOM ถ้ายังไม่มี
+    let observer = checkHero();
+    if (!observer) {
+      const timeout = setTimeout(() => {
+        observer = checkHero();
+      }, 100);
+      return () => {
+        clearTimeout(timeout);
+        observer?.disconnect();
+      };
     }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        setOverHero(entry.isIntersecting && entry.intersectionRatio > 0);
-      },
-      { threshold: 0.2 }
-    );
-    observer.observe(hero);
-    return () => observer.disconnect();
-  }, []);
+    
+    return () => observer?.disconnect();
+  }, [mounted]);
 
   return (
     <header
       className={`w-full fixed top-0 z-50 transition-colors duration-300 ${
-        mounted && overHero && !isMenuOpen ? 'bg-transparent' : 'bg-[#1E2E4F]'
+        mounted && hasHero && overHero && !isMenuOpen ? 'bg-transparent' : 'bg-[#1E2E4F]'
       }`}
     >
       <nav className="mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ maxWidth: '1800px' }}>
