@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { supabase } from '@/lib/supabase';
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
   children: React.ReactNode;
 }
 
@@ -54,7 +54,7 @@ async function fetchArticle(id: string): Promise<Article | null> {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = params;
+  const { id } = await params;
   
   const article = await fetchArticle(id);
 
@@ -131,7 +131,8 @@ export default async function BlogArticleLayout({
   children,
   params,
 }: Props) {
-  const article = await fetchArticle(params.id);
+  const { id } = await params;
+  const article = await fetchArticle(id);
 
   if (!article) {
     return <>{children}</>;
