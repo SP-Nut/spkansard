@@ -15,6 +15,7 @@ const prompt = Prompt({
   variable: "--font-prompt",
   preload: true,
   fallback: ['system-ui', 'arial'],
+  adjustFontFallback: true,
 });
 
 export const metadata: Metadata = {
@@ -155,13 +156,19 @@ export default async function RootLayout({
         <link rel="icon" href="/images/logo.png" type="image/png" />
         <link rel="shortcut icon" href="/images/logo.png" type="image/png" />
         <link rel="apple-touch-icon" href="/images/logo.png" />
-  {/* Preload critical resources for faster LCP */}
-  <link rel="preload" href="/herosection/กันสาดหรู โมเดิร์น.webp" as="image" type="image/webp" />
-        <link rel="preload" href="/images/logo.png" as="image" type="image/png" />
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        
+        {/* Preconnect to required origins */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        
+        {/* Preload critical resources for faster LCP */}
+        <link 
+          rel="preload" 
+          href="/herosection/กันสาดหรู โมเดิร์น.webp" 
+          as="image" 
+          type="image/webp"
+          fetchPriority="high"
+        />
         
         {/* Performance hints */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />

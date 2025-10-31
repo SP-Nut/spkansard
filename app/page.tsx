@@ -2,10 +2,21 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { FaUsers, FaShieldAlt, FaHeart, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { FaCalendarCheck } from "react-icons/fa6";
-import { FaPhoneAlt, FaFileAlt, FaTools, FaHome, FaClock, FaCheckCircle } from "react-icons/fa";
 import { reviews } from "./data/reviewsData";
+
+// Critical icons only - loaded immediately
+import { FaUsers, FaShieldAlt, FaHeart } from "react-icons/fa";
+import { FaCalendarCheck } from "react-icons/fa6";
+
+// Non-critical icons - lazy loaded
+const FaChevronLeft = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaChevronLeft })));
+const FaChevronRight = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaChevronRight })));
+const FaPhoneAlt = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaPhoneAlt })));
+const FaFileAlt = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaFileAlt })));
+const FaTools = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaTools })));
+const FaHome = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaHome })));
+const FaClock = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaClock })));
+const FaCheckCircle = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaCheckCircle })));
 
 // Dynamic imports for better code splitting
 const HeroSection = dynamic(() => import("./components/HeroSection"), {

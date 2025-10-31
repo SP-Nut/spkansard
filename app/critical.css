@@ -1,6 +1,15 @@
 /* Critical CSS for above-the-fold content */
 .font-prompt {
   font-family: var(--font-prompt), 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-display: swap;
+}
+
+/* Optimize font rendering */
+body {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Hero section critical styles */
