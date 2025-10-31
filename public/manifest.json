@@ -1,0 +1,51 @@
+{
+  "name": "SP Kansard - เอสพี กันสาด",
+  "short_name": "SP Kansard",
+  "description": "ผู้นำด้านกันสาดและโรงจอดรถอันดับ 1 ในกรุงเทพฯและปริมณฑล มากกว่า 35 ปี",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3B82F6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "home-improvement"],
+  "lang": "th",
+  "dir": "ltr",
+  "scope": "/",
+  "shortcuts": [
+    {
+      "name": "ประเมินราคา",
+      "short_name": "ราคา",
+      "description": "ประเมินราคากันสาดและโรงจอดรถ",
+      "url": "https://cal-customer.vercel.app/",
+      "icons": [{ "src": "/images/logo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "แกลเลอรี่",
+      "short_name": "ผลงาน",
+      "description": "ดูผลงานกันสาดและโรงจอดรถ",
+      "url": "/gallery",
+      "icons": [{ "src": "/images/logo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "ติดต่อเรา",
+      "short_name": "ติดต่อ",
+      "description": "ติดต่อ SP Kansard",
+      "url": "/contact",
+      "icons": [{ "src": "/images/logo.png", "sizes": "96x96" }]
+    }
+  ]
+}

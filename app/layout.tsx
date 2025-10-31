@@ -5,6 +5,7 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import FloatingContactButton from "./components/FloatingContactButton";
 import StructuredData from "./components/StructuredData";
+import WebsiteSchema from "./components/WebsiteSchema";
 import { headers } from 'next/headers';
 import { Analytics } from "@vercel/analytics/next";
 
@@ -156,6 +157,11 @@ export default async function RootLayout({
         <link rel="icon" href="/images/logo.png" type="image/png" />
         <link rel="shortcut icon" href="/images/logo.png" type="image/png" />
         <link rel="apple-touch-icon" href="/images/logo.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#3B82F6" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="SP Kansard" />
         
         {/* Preconnect to required origins */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -178,7 +184,12 @@ export default async function RootLayout({
       <body
         className={`${prompt.variable} font-sans antialiased flex flex-col min-h-screen`}
       >
-        {!isAdminPage && <StructuredData type="organization" />}
+        {!isAdminPage && (
+          <>
+            <StructuredData type="organization" />
+            <WebsiteSchema />
+          </>
+        )}
         {!isAdminPage && <Header />}
         <main className={isAdminPage ? "flex-1" : "flex-1 pt-16 sm:pt-20"}>
           {children}
