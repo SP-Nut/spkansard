@@ -17,11 +17,17 @@ const navItems = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [overHero, setOverHero] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   // ปิด scroll เวลาเมนูเปิด
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? 'hidden' : 'auto';
   }, [isMenuOpen]);
+
+  // Mark component as mounted
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // ทำพื้นหลังโปร่งใสเมื่อ hero แสดงอยู่ในหน้าจอ
   useEffect(() => {                                                                                               
@@ -45,7 +51,7 @@ export default function Header() {
   return (
     <header
       className={`w-full fixed top-0 z-50 transition-colors duration-300 ${
-        overHero && !isMenuOpen ? 'bg-transparent' : 'bg-[#1E2E4F]'
+        mounted && overHero && !isMenuOpen ? 'bg-transparent' : 'bg-[#1E2E4F]'
       }`}
     >
       <nav className="mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ maxWidth: '1800px' }}>

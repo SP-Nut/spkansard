@@ -64,8 +64,8 @@ export default function StructuredData({ type = 'organization', data }: Structur
           "description": "ผู้เชี่ยวชาญด้านกันสาด โรงจอดรถ งานเหล็ก มากกว่า 35 ปี ให้บริการครบวงจร ติดตั้งกันสาดเมทัลชีท ไวนิล อลูมิเนียม โพลีคาร์บอเนต รับประกัน 5 ปี",
           "image": [
             "https://www.spkansard.co/images/logo.png",
-            "https://www.spkansard.co/herosection/01.jpg",
-            "https://www.spkansard.co/herosection/02.jpg"
+            "https://www.spkansard.co/herosection/กันสาดหรู โมเดิร์น.webp",
+            "https://www.spkansard.co/herosection/กันสาดเรียบๆ ทันสมัย.webp"
           ],
           "logo": "https://www.spkansard.co/images/logo.png",
           "url": "https://www.spkansard.co",

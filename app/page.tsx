@@ -2,10 +2,10 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { FaUsers, FaShieldAlt, FaHeart, FaPhone, FaCalculator, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaUsers, FaShieldAlt, FaHeart, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FaCalendarCheck } from "react-icons/fa6";
-import { SiLine } from "react-icons/si";
 import { FaPhoneAlt, FaFileAlt, FaTools, FaHome, FaClock, FaCheckCircle } from "react-icons/fa";
+import { reviews } from "./data/reviewsData";
 
 // Dynamic imports for better code splitting
 const HeroSection = dynamic(() => import("./components/HeroSection"), {
@@ -20,27 +20,6 @@ export default function Home() {
   const reviewsScrollRef = useRef<HTMLDivElement | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
-  const autoScrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Preload critical hero images
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const preloadImages = [
-        '/herosection/กันสาดหรู โมเดิร์น.webp',
-        '/herosection/กันสาดเรียบๆ ทันสมัย.webp'
-      ];
-      
-      preloadImages.forEach(src => {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = src;
-        link.type = 'image/webp';
-        document.head.appendChild(link);
-      });
-    }
-  }, []);
 
   // Simplified light mode enforcement
   useEffect(() => {
@@ -71,7 +50,8 @@ export default function Home() {
     const container = reviewsScrollRef.current;
     if (!container) return;
     
-    const scrollAmount = 320; // Width of one card plus gap
+    // Calculate for 4 cards: (card width 320px + gap 24px) * 4 = 1376px
+    const scrollAmount = 1376;
     const newScrollLeft = direction === 'left' 
       ? container.scrollLeft - scrollAmount
       : container.scrollLeft + scrollAmount;
@@ -104,63 +84,6 @@ export default function Home() {
     
     return () => container.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Auto scroll effect
-  useEffect(() => {
-    const startAutoScroll = () => {
-      if (autoScrollIntervalRef.current) {
-        clearInterval(autoScrollIntervalRef.current);
-      }
-      
-      const interval = setInterval(() => {
-        const container = reviewsScrollRef.current;
-        if (!container) return;
-        
-        const cardWidth = 320; // Width of one card plus gap
-        const maxScrollLeft = container.scrollWidth - container.clientWidth;
-        
-        // If we're at the end, scroll back to beginning
-        if (container.scrollLeft >= maxScrollLeft - 10) {
-          container.scrollTo({
-            left: 0,
-            behavior: 'smooth'
-          });
-        } else {
-          // Scroll to next card
-          container.scrollTo({
-            left: container.scrollLeft + cardWidth,
-            behavior: 'smooth'
-          });
-        }
-      }, 3000);
-      
-      autoScrollIntervalRef.current = interval;
-    };
-
-    const stopAutoScroll = () => {
-      if (autoScrollIntervalRef.current) {
-        clearInterval(autoScrollIntervalRef.current);
-        autoScrollIntervalRef.current = null;
-      }
-    };
-
-    if (isAutoScrolling) {
-      startAutoScroll();
-    } else {
-      stopAutoScroll();
-    }
-    
-    return () => stopAutoScroll();
-  }, [isAutoScrolling]);
-
-  // Handle mouse enter/leave for auto scroll pause
-  const handleMouseEnter = () => {
-    setIsAutoScrolling(false);
-  };
-
-  const handleMouseLeave = () => {
-    setIsAutoScrolling(true);
-  };
   return (
     <div className="font-prompt bg-blue-50 light-mode-only" style={{ colorScheme: 'light' }}>
       <style jsx global>{`
@@ -254,7 +177,7 @@ export default function Home() {
               loop
               playsInline
               preload="none"
-              poster="/herosection/01.jpg"
+              poster="/herosection/กันสาดหรู โมเดิร์น.webp"
               ref={videoRef}
             />
           </div>
@@ -335,14 +258,14 @@ export default function Home() {
 
       {/* Price Calculator Section - Full Width Sharp Edges */}
       <section
-        className="relative text-center py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 text-white"
+        className="relative text-center py-16 sm:py-20 lg:py-28 xl:py-36 px-4 sm:px-6 lg:px-8 text-white"
         style={{
           backgroundImage: "url('/bg-contact.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           contentVisibility: 'auto',
-          containIntrinsicSize: '600px',
+          containIntrinsicSize: '700px',
         }}
       >
         {/* Dark overlay for better text readability */}
@@ -350,51 +273,16 @@ export default function Home() {
         
         {/* Content with relative positioning */}
         <div className="relative z-10">
-          {/* Main Price Calculator Focus */}
-          <div className="mb-6 sm:mb-8">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 sm:mb-6">
-            ประเมินราคากันสาด
-          </h2>
-          <p className="text-base sm:text-lg lg:text-xl xl:text-2xl mb-6 sm:mb-8 max-w-3xl mx-auto px-2 leading-relaxed">
-            คำนวณราคาทันที ด้วยเครื่องมือออนไลน์ที่แม่นยำ
-          </p>
-
-          {/* Main Calculator CTA */}
-          <a
-            href="https://cal-customer.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center bg-white hover:bg-gray-100 font-bold py-4 sm:py-5 px-8 sm:px-10 rounded-full transition-all duration-300 text-base sm:text-lg lg:text-xl shadow-lg transform hover:-translate-y-1 mb-6 sm:mb-8"
-            style={{ color: "#1E2E4F" }}
-          >
-            <FaCalculator className="w-5 h-5 sm:w-6 sm:h-6 mr-3" />
-            คำนวณราคาทันที
-          </a>
-        </div>
-
-        {/* Compact Consultation Section */}
-        <div className="border-t border-white/20 pt-6 sm:pt-8">
-          <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-4 sm:mb-6">ต้องการคำปรึกษา?</h3>
-
-          <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:gap-4 lg:gap-6 justify-center px-2">
-            <a
-              href="tel:02-936-8841"
-              className="inline-flex items-center justify-center bg-white/20 hover:bg-white/30 border border-white text-white font-medium py-3 px-6 sm:px-7 rounded-full transition-all duration-300 backdrop-blur-sm text-sm sm:text-base lg:text-lg"
-            >
-              <FaPhone className="w-4 h-4 sm:w-5 sm:h-5 mr-3" />
-              โทร 02-936-8841
-            </a>
-            <a
-              href="https://line.me/R/ti/p/@spkansard"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center bg-white/20 hover:bg-white/30 border border-white text-white font-medium py-3 px-6 sm:px-7 rounded-full transition-all duration-300 backdrop-blur-sm text-sm sm:text-base lg:text-lg"
-            >
-              <SiLine className="w-4 h-4 sm:w-5 sm:h-5 mr-3" />
-              LINE @spkansard
-            </a>
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8 leading-tight">
+              คิดถึงกันสาด <br />
+              คิดถึง SP KANSARD
+            </h2>
+            
+            <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-light opacity-90">
+              ผู้เชี่ยวชาญด้านกันสาด มากกว่า 35 ปี
+            </p>
           </div>
-        </div>
         </div>
       </section>
 
@@ -442,180 +330,48 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="overflow-x-auto scrollbar-hide pb-4" 
-                 ref={reviewsScrollRef}
-                 onMouseEnter={handleMouseEnter}
-                 onMouseLeave={handleMouseLeave}>
-              <div className="flex space-x-4 sm:space-x-6" style={{ width: 'max-content' }}>
-              {/* Review 1 */}
-              <div className="w-72 sm:w-80 flex-shrink-0">
-                <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300">
-                  <div className="flex items-center mb-3 sm:mb-4">
-                    <div className="flex space-x-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <div key={star} className="w-3 h-3 rounded-full" style={{backgroundColor:'var(--brand-400)'}}></div>
-                      ))}
+            <div 
+              className="overflow-x-auto scrollbar-hide pb-4 touch-pan-x" 
+              ref={reviewsScrollRef}
+              style={{
+                WebkitOverflowScrolling: 'touch',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                scrollSnapType: 'x proximity',
+                scrollBehavior: 'smooth'
+              }}
+            >
+              <div className="flex space-x-4 sm:space-x-6 px-4 sm:px-0" style={{ width: 'max-content' }}>
+              {reviews.map((review) => (
+                <div key={review.id} className="w-72 sm:w-80 flex-shrink-0" style={{ scrollSnapAlign: 'start' }}>
+                  <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300">
+                    <div className="flex items-center mb-3 sm:mb-4">
+                      <div className="flex space-x-1">
+                        {[...Array(review.rating)].map((_, i) => (
+                          <div key={i} className="w-3 h-3 rounded-full" style={{backgroundColor:'var(--brand-400)'}}></div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-4 sm:mb-5 font-light">
-                    &ldquo;คุณภาพเยี่ยม ทีมงานมืออาชีพ ราคาเป็นธรรม แนะนำเลย&rdquo;
-                  </p>
-                  <div className="flex items-center">
-                    <div 
-                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm"
-                      style={{backgroundColor:'var(--brand-600)'}}
-                    >
-                      ก
-                    </div>
-                    <div className="ml-3">
-                      <div className="font-medium text-gray-900 text-sm sm:text-base">คุณกิตติศักดิ์</div>
-                      <div className="text-xs sm:text-sm text-gray-500">ลาดพร้าว</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Review 2 */}
-              <div className="w-72 sm:w-80 flex-shrink-0">
-                <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300">
-                  <div className="flex items-center mb-3 sm:mb-4">
-                    <div className="flex space-x-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <div key={star} className="w-3 h-3 rounded-full" style={{backgroundColor:'var(--brand-400)'}}></div>
-                      ))}
-                    </div>
-                  </div>
-                  <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-4 sm:mb-5 font-light">
-                    &ldquo;โรงจอดรถสวยงาม แข็งแรงทนทาน บริการดีเยี่ยม&rdquo;
-                  </p>
-                  <div className="flex items-center">
-                    <div 
-                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm"
-                      style={{backgroundColor:'var(--brand-500)'}}
-                    >
-                      ส
-                    </div>
-                    <div className="ml-3">
-                      <div className="font-medium text-gray-900 text-sm sm:text-base">คุณสุนีย์</div>
-                      <div className="text-xs sm:text-sm text-gray-500">รามอินทรา</div>
+                    <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-4 sm:mb-5 font-light">
+                      &ldquo;{review.comment}&rdquo;
+                    </p>
+                    <div className="flex items-center">
+                      <div 
+                        className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm"
+                        style={{backgroundColor: review.colorClass}}
+                      >
+                        {review.initial}
+                      </div>
+                      <div className="ml-3">
+                        <div className="font-medium text-gray-900 text-sm sm:text-base">{review.customerName}</div>
+                        <div className="text-xs sm:text-sm text-gray-500">{review.location}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-
-              {/* Review 3 */}
-              <div className="w-72 sm:w-80 flex-shrink-0">
-                <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300">
-                  <div className="flex items-center mb-3 sm:mb-4">
-                    <div className="flex space-x-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <div key={star} className="w-3 h-3 rounded-full" style={{backgroundColor:'var(--brand-400)'}}></div>
-                      ))}
-                    </div>
-                  </div>
-                  <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-4 sm:mb-5 font-light">
-                    &ldquo;วัสดุดี ราคาไม่แพง ติดตั้งรวดเร็ว สะอาดเรียบร้อย&rdquo;
-                  </p>
-                  <div className="flex items-center">
-                    <div 
-                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm"
-                      style={{backgroundColor:'var(--brand-700)'}}
-                    >
-                      ว
-                    </div>
-                    <div className="ml-3">
-                      <div className="font-medium text-gray-900 text-sm sm:text-base">คุณวิชัย</div>
-                      <div className="text-xs sm:text-sm text-gray-500">บางนา</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Review 4 */}
-              <div className="w-72 sm:w-80 flex-shrink-0">
-                <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300">
-                  <div className="flex items-center mb-3 sm:mb-4">
-                    <div className="flex space-x-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <div key={star} className="w-3 h-3 rounded-full" style={{backgroundColor:'var(--brand-400)'}}></div>
-                      ))}
-                    </div>
-                  </div>
-                  <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-4 sm:mb-5 font-light">
-                    &ldquo;กันสาดกระจกโค้งสวยมาก ทีมติดตั้งมืออาชีพ&rdquo;
-                  </p>
-                  <div className="flex items-center">
-                    <div 
-                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm"
-                      style={{backgroundColor:'var(--brand-500)'}}
-                    >
-                      น
-                    </div>
-                    <div className="ml-3">
-                      <div className="font-medium text-gray-900 text-sm sm:text-base">คุณนันทนา</div>
-                      <div className="text-xs sm:text-sm text-gray-500">เอกมัย</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Review 5 */}
-              <div className="w-72 sm:w-80 flex-shrink-0">
-                <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300">
-                  <div className="flex items-center mb-3 sm:mb-4">
-                    <div className="flex space-x-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <div key={star} className="w-3 h-3 rounded-full" style={{backgroundColor:'var(--brand-400)'}}></div>
-                      ))}
-                    </div>
-                  </div>
-                  <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-4 sm:mb-5 font-light">
-                    &ldquo;โรงจอดรถ 4 คัน แข็งแรงดี ราคาคุ้มค่า&rdquo;
-                  </p>
-                  <div className="flex items-center">
-                    <div 
-                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm"
-                      style={{backgroundColor:'var(--brand-600)'}}
-                    >
-                      อ
-                    </div>
-                    <div className="ml-3">
-                      <div className="font-medium text-gray-900 text-sm sm:text-base">คุณอนุชา</div>
-                      <div className="text-xs sm:text-sm text-gray-500">สาทร</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Review 6 */}
-              <div className="w-72 sm:w-80 flex-shrink-0">
-                <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300">
-                  <div className="flex items-center mb-3 sm:mb-4">
-                    <div className="flex space-x-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <div key={star} className="w-3 h-3 rounded-full" style={{backgroundColor:'var(--brand-400)'}}></div>
-                      ))}
-                    </div>
-                  </div>
-                  <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-4 sm:mb-5 font-light">
-                    &ldquo;ใช้บริการหลายครั้ง คุณภาพคงที่ ไว้ใจได้&rdquo;
-                  </p>
-                  <div className="flex items-center">
-                    <div 
-                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm"
-                      style={{backgroundColor:'var(--brand-700)'}}
-                    >
-                      ป
-                    </div>
-                    <div className="ml-3">
-                      <div className="font-medium text-gray-900 text-sm sm:text-base">คุณปรีชา</div>
-                      <div className="text-xs sm:text-sm text-gray-500">บางกะปิ</div>
-                    </div>
-                  </div>
-                </div>
+              ))}
               </div>
             </div>
-          </div>
           </div>
 
           {/* Summary Stats - Compact */}
@@ -744,11 +500,11 @@ export default function Home() {
       </section>
 
       {/* Visit Sale Gallery Section */}
-      <section className="relative h-96 sm:h-[500px] lg:h-[600px] overflow-hidden" style={{ contentVisibility: 'auto', containIntrinsicSize: '600px' }}>
+      <section className="relative min-h-[500px] sm:h-[500px] lg:h-[600px] overflow-hidden" style={{ contentVisibility: 'auto', containIntrinsicSize: '600px' }}>
         {/* Background Image: use lazy-loaded img to avoid CSS eager fetch */}
         <div className="absolute inset-0">
           <Image
-            src="/herosection/01.jpg"
+            src="/herosection/กันสาดหรู โมเดิร์น.webp"
             alt="SP Kansard showroom background"
             fill
             sizes="100vw"
@@ -756,45 +512,43 @@ export default function Home() {
             className="object-cover object-center"
           />
           {/* Overlay */}
-          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-black/50"></div>
         </div>
         
         {/* Content */}
-        <div className="relative z-10 h-full flex items-center">
+        <div className="relative z-10 h-full flex items-center py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="max-w-2xl">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
                 Visit SP Kansard
               </h2>
               
-              <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8 text-white">
-                <p className="text-base sm:text-lg font-medium">
+              <div className="space-y-1.5 sm:space-y-2 mb-6 sm:mb-8 text-white">
+                <p className="text-sm sm:text-lg font-medium">
                   บริษัท เอสพี กันสาด จำกัด
                 </p>
-                <p className="text-base sm:text-lg">
-                  28/101 ถ.รัชดา-รามอินทรา แขวงคลองกุ่ม
-                </p>
-                <p className="text-base sm:text-lg">
+                <p className="text-sm sm:text-lg leading-relaxed">
+                  28/101 ถ.รัชดา-รามอินทรา แขวงคลองกุ่ม<br />
                   เขตบึงกุ่ม กรุงเทพมหานคร 10230
                 </p>
-                <p className="text-sm sm:text-base text-white/80">
+                <p className="text-xs sm:text-base text-white/90 pt-2">
                   *ผู้เชี่ยวชาญด้านกันสาด โรงจอดรถ งานฝ้า งานระแนง และงานเหล็กครบวงจร
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <div className="space-y-3">
                 <a
                   href="https://maps.google.com/?q=28/101+ถ.รัชดา-รามอินทรา+แขวงคลองกุ่ม+เขตบึงกุ่ม+กรุงเทพมหานคร+10230"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-gray-900 transition-all duration-300 text-sm sm:text-base"
+                  className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-gray-900 transition-all duration-300 text-sm sm:text-base"
                 >
                   Get Direction →
                 </a>
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <a
                     href="tel:02-936-8841"
-                    className="inline-flex items-center justify-center px-4 sm:px-6 py-3 bg-white/20 hover:bg-white/30 border border-white/40 text-white font-medium rounded-lg backdrop-blur-sm transition-all duration-300 text-sm sm:text-base"
+                    className="inline-flex items-center justify-center flex-1 px-4 py-3 bg-white/20 hover:bg-white/30 border border-white/40 text-white font-medium rounded-lg backdrop-blur-sm transition-all duration-300 text-sm sm:text-base"
                   >
                     โทร. 02-936-8841
                   </a>
@@ -802,7 +556,7 @@ export default function Home() {
                     href="https://line.me/R/ti/p/@spkansard"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center px-4 sm:px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-300 text-sm sm:text-base"
+                    className="inline-flex items-center justify-center flex-1 px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-300 text-sm sm:text-base"
                   >
                     LINE @spkansard
                   </a>
