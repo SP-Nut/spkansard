@@ -27,13 +27,6 @@
   "scope": "/",
   "shortcuts": [
     {
-      "name": "ประเมินราคา",
-      "short_name": "ราคา",
-      "description": "ประเมินราคากันสาดและโรงจอดรถ",
-      "url": "https://cal-customer.vercel.app/",
-      "icons": [{ "src": "/images/logo.png", "sizes": "96x96" }]
-    },
-    {
       "name": "แกลเลอรี่",
       "short_name": "ผลงาน",
       "description": "ดูผลงานกันสาดและโรงจอดรถ",
@@ -45,6 +38,13 @@
       "short_name": "ติดต่อ",
       "description": "ติดต่อ SP Kansard",
       "url": "/contact",
+      "icons": [{ "src": "/images/logo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "คำถามที่พบบ่อย",
+      "short_name": "FAQ",
+      "description": "คำถามและคำตอบเกี่ยวกับกันสาด",
+      "url": "/faq",
       "icons": [{ "src": "/images/logo.png", "sizes": "96x96" }]
     }
   ]
