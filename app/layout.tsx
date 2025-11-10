@@ -6,6 +6,7 @@ import Footer from "./components/footer";
 import FloatingContactButton from "./components/FloatingContactButton";
 import StructuredData from "./components/StructuredData";
 import WebsiteSchema from "./components/WebsiteSchema";
+import ConditionalPreload from "./components/ConditionalPreload";
 import { headers } from 'next/headers';
 import { Analytics } from "@vercel/analytics/next";
 
@@ -168,15 +169,6 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         
-        {/* Preload critical resources for faster LCP */}
-        <link 
-          rel="preload" 
-          href="/herosection/กันสาดหรู โมเดิร์น.webp" 
-          as="image" 
-          type="image/webp"
-          fetchPriority="high"
-        />
-        
         {/* Performance hints */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
@@ -197,6 +189,7 @@ export default async function RootLayout({
         </main>
         {!isAdminPage && <Footer />}
         {!isAdminPage && <FloatingContactButton />}
+        <ConditionalPreload />
         <Analytics />
       </body>
     </html>
