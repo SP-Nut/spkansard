@@ -80,7 +80,7 @@ export default function About() {
             <p className="text-sm sm:text-base md:text-lg leading-7 md:leading-8 font-light">
               เราคือผู้นำอันดับ 1 ด้านกันสาดในกรุงเทพฯและปริมณฑล
               เราสร้างสรรค์พื้นที่ภายนอกบ้านและอาคารให้ทั้งสวยงาม ทันสมัย
-              และใช้งานได้จริง ด้วยประสบการณ์ยาวนานกว่า 35 ปี
+              และใช้งานได้จริง ด้วยประสบการณ์ยาวนานกว่า 38 ปี
               และผลงานที่ได้รับความไว้วางใจกว่า 35,000 ครัวเรือน SP Kansard
               ได้รับการยอมรับว่าเป็นผู้เชี่ยวชาญด้านกันสาดที่เจ้าของบ้านและโครงการเลือกใช้มากที่สุดในประเทศไทย
             </p>
@@ -252,7 +252,7 @@ export default function About() {
       >
   <div className="relative overflow-hidden min-h-[560px] sm:min-h-[560px] lg:min-h-[600px]">
           <Image
-            src="/images/bg-contact.webp"
+            src="/bg-contact.webp"
             alt="ตัวอย่างงานกันสาดของ SPK Ansard"
             fill
             priority
@@ -279,7 +279,7 @@ export default function About() {
                 {[
                   {
                     title: "บริการให้คำปรึกษา",
-                    desc: "จากผู้มีประสบการณ์การทำงานมากกว่า 35ปี",
+                    desc: "จากผู้มีประสบการณ์การทำงานมากกว่า 38ปี",
                     icon: (
                       <path
                         strokeLinecap="round"

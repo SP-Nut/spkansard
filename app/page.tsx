@@ -130,7 +130,7 @@ export default function Home() {
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24 text-center">
         <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 sm:mb-6 lg:mb-8" style={{color:'var(--brand-900)'}}>เอสพี กันสาด</h2>
         <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
-          SP Kansard ผู้นำด้านกันสาดอันดับ 1 ในกรุงเทพฯและปริมณฑล ด้วยประสบการณ์กว่า 35 ปี และความไว้วางใจจากลูกค้ากว่า 50,000 ครัวเรือนทั่วประเทศ เราสร้างสรรค์กันสาดที่สวยงาม แข็งแรง และใช้งานได้จริง ครบด้วยวัสดุกันสาดมากที่สุดในไทย ทั้ง เมทัลชีท, ไวนิลดรีมรูฟ, อลูมิเนียมรูฟ, โพลีคาร์บอเนต, ชินโคไลท์ และ ระแนง–ฝ้าทุกประเภท ติดตั้งด้วยมาตรฐานสูงสุด พร้อม รับประกันงานสูงสุด 10 ปี เพื่อความมั่นใจในคุณภาพและบริการที่คุณวางใจได้
+          SP Kansard ผู้นำด้านกันสาดอันดับ 1 ในกรุงเทพฯและปริมณฑล ด้วยประสบการณ์กว่า 38 ปี และความไว้วางใจจากลูกค้ากว่า 50,000 ครัวเรือนทั่วประเทศ เราสร้างสรรค์กันสาดที่สวยงาม แข็งแรง และใช้งานได้จริง ครบด้วยวัสดุกันสาดมากที่สุดในไทย ทั้ง เมทัลชีท, ไวนิลดรีมรูฟ, อลูมิเนียมรูฟ, โพลีคาร์บอเนต, ชินโคไลท์ และ ระแนง–ฝ้าทุกประเภท ติดตั้งด้วยมาตรฐานสูงสุด พร้อม รับประกันงานสูงสุด 10 ปี เพื่อความมั่นใจในคุณภาพและบริการที่คุณวางใจได้
         </p>
 
         {/* Feature Badges */}
@@ -152,7 +152,7 @@ export default function Home() {
               <FaCalendarCheck className="text-[16px] sm:text-[20px] lg:text-[24px]" style={{color:'var(--brand-700)'}} />
             </div>
             <div className="mt-2 text-center">
-              <div className="text-base sm:text-lg lg:text-xl font-bold" style={{color:'var(--brand-900)'}}>35+</div>
+              <div className="text-base sm:text-lg lg:text-xl font-bold" style={{color:'var(--brand-900)'}}>38+</div>
               <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">ปี ประสบการณ์</div>
             </div>
           </div>
@@ -211,7 +211,7 @@ export default function Home() {
           </h2>
           
           <p className="text-sm sm:text-base lg:text-lg xl:text-xl mb-6 sm:mb-8 lg:mb-12 max-w-4xl mx-auto leading-relaxed opacity-90 px-2">
-            เติมเต็มความสมบูรณ์แบบให้บ้านของคุณด้วยนวัตกรรมกันสาดและโรงจอดรถดีไซน์ทันสมัยจาก เอสพี กันสาด ผู้นำด้านการต่อเติมบ้านที่มีประสบการณ์ยาวนานกว่า 35 ปี 
+            เติมเต็มความสมบูรณ์แบบให้บ้านของคุณด้วยนวัตกรรมกันสาดและโรงจอดรถดีไซน์ทันสมัยจาก เอสพี กันสาด ผู้นำด้านการต่อเติมบ้านที่มีประสบการณ์ยาวนานกว่า 38 ปี 
             เรานำเสนอการออกแบบที่ผสมผสานระหว่างความงามและฟังก์ชันการใช้งานอย่างลงตัว เพื่อเปลี่ยนบ้านธรรมดาให้กลายเป็นบ้านที่มีสไตล์ สะท้อนรสนิยมเจ้าของบ้านได้อย่างชัดเจน
           </p>
 
@@ -298,7 +298,7 @@ export default function Home() {
             </h2>
             
             <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-light opacity-90">
-              ผู้เชี่ยวชาญด้านกันสาด มากกว่า 35 ปี
+              ผู้เชี่ยวชาญด้านกันสาด มากกว่า 38 ปี
             </p>
           </div>
         </div>
