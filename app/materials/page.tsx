@@ -185,7 +185,7 @@ export default function MaterialsPage() {
           {!(showDetail && selectedMaterial) ? (
             <>
               {/* Grid Layout - Card Style */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredMaterials.map((material: Material) => (
                   <div key={material.id} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
                     {/* Large Image */}
