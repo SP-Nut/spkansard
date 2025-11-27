@@ -175,7 +175,7 @@ export default function Home() {
             </div>
             <div className="mt-2 text-center">
               <div className="text-base sm:text-lg lg:text-xl font-bold" style={{color:'var(--brand-900)'}}>10</div>
-              <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">ปี รับประกัน</div>
+              <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">รับประกันสูงสุด 10 ปี</div>
             </div>
           </div>
         </div>

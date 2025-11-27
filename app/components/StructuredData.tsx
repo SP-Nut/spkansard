@@ -52,7 +52,7 @@ export default function StructuredData({ type = 'organization', data }: Structur
           ],
           "foundingDate": "1988",
           "numberOfEmployees": "50-100",
-          "description": "ผู้นำด้านกันสาดและโรงจอดรถมากกว่า 35 ปี ให้บริการครบวงจร ออกแบบติดตั้งกันสาดคุณภาพ"
+          "description": "ผู้นำด้านกันสาดและโรงจอดรถมากกว่า 38 ปี ให้บริการครบวงจร ออกแบบติดตั้งกันสาดคุณภาพ"
         };
 
       case 'localBusiness':
@@ -61,7 +61,7 @@ export default function StructuredData({ type = 'organization', data }: Structur
           "@type": ["LocalBusiness", "HomeAndConstructionBusiness", "Contractor"],
           "name": "เอสพี กันสาด (SP Kansard)",
           "alternateName": ["SP Kansard", "บริษัท เอสพี กันสาด จำกัด"],
-          "description": "ผู้เชี่ยวชาญด้านกันสาด โรงจอดรถ งานเหล็ก มากกว่า 35 ปี ให้บริการครบวงจร ติดตั้งกันสาดเมทัลชีท ไวนิล อลูมิเนียม โพลีคาร์บอเนต รับประกัน 5 ปี",
+          "description": "ผู้เชี่ยวชาญด้านกันสาด โรงจอดรถ งานเหล็ก มากกว่า 38 ปี ให้บริการครบวงจร ติดตั้งกันสาดเมทัลชีท ไวนิล อลูมิเนียม โพลีคาร์บอเนต รับประกัน 10 ปี",
           "image": [
             "https://www.spkansard.co/images/logo.png",
             "https://www.spkansard.co/herosection/กันสาดหรู โมเดิร์น.webp",
@@ -171,7 +171,7 @@ export default function StructuredData({ type = 'organization', data }: Structur
           "makesOffer": [
             {
               "@type": "Offer",
-              "name": "รับประกันงาน 5 ปี",
+              "name": "รับประกันงาน 10 ปี",
               "description": "รับประกันคุณภาพงานติดตั้ง วัสดุ และบริการหลังการขาย",
               "validFor": "P5Y"
             },
@@ -191,11 +191,11 @@ export default function StructuredData({ type = 'organization', data }: Structur
           "contactPoint": [
             {
               "@type": "ContactPoint",
-              "telephone": "+66-2-936-8841",
+              "telephone": "+66-29368841",
               "contactType": "customer service",
               "areaServed": "TH",
               "availableLanguage": ["Thai"],
-              "servicePhone": "+66-2-936-8841"
+              "servicePhone": "+66-29368841"
             }
           ]
         };
@@ -209,7 +209,7 @@ export default function StructuredData({ type = 'organization', data }: Structur
           "provider": {
             "@type": "LocalBusiness",
             "name": "เอสพี กันสาด",
-            "telephone": "+66-2-936-8841",
+            "telephone": "+66-29368841",
             "address": {
               "@type": "PostalAddress",
               "addressLocality": "บึงกุ่ม",

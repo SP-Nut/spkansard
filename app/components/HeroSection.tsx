@@ -25,7 +25,7 @@ export default function HeroSection() {
   const slideContent = [
     {
       title: "เอสพี กันสาด",
-      subtitle: "ประสบการณ์กว่า 35 ปี\nลูกค้าไว้วางใจกว่า 50,000 ครัวเรือน",
+      subtitle: "ประสบการณ์กว่า 38 ปี\nลูกค้าไว้วางใจกว่า 50,000 ครัวเรือน",
       buttons: [
         { text: "ดูแกลเลอรี่", href: "/gallery", primary: true, external: false }
       ]
@@ -52,8 +52,8 @@ export default function HeroSection() {
       ]
     },
     {
-      title: "ติดตั้งเร็ว รับประกัน 5 ปี",
-      subtitle: "ติดตั้งงานมาตรฐาน ภายใน 1 วัน**\nรับประกันโครงสร้างสูงสุด 5 ปี",
+      title: "ติดตั้งเร็ว รับประกัน 10 ปี",
+      subtitle: "ติดตั้งงานมาตรฐาน ภายใน 1 วัน**\nรับประกันโครงสร้างสูงสุด 10 ปี",
       buttons: [
         { text: "นัดหมาย", href: "https://cal-customer.vercel.app/", primary: true, external: true }
       ]

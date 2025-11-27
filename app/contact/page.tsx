@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FaHome, FaChevronRight, FaPhone, FaEnvelope, FaFax, FaGlobe, FaMapMarkerAlt, FaRoute } from 'react-icons/fa';
+import { FaHome, FaChevronRight, FaPhone, FaEnvelope, FaFax, FaGlobe, FaMapMarkerAlt } from 'react-icons/fa';
 import { SiLine } from 'react-icons/si';
 import StructuredData from '../components/StructuredData';
 
@@ -301,8 +301,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-1">โทรศัพท์</h3>
-                    <p className="text-gray-600 text-sm sm:text-base">02-936-8841-2</p>
-                    <p className="text-gray-600 text-sm sm:text-base">084-909-7777</p>
+                    <p className="text-gray-600 text-sm sm:text-base">02-936-8841</p>
                   </div>
                 </div>
 
@@ -346,7 +345,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-1">เว็บไซต์</h3>
-                    <p className="text-gray-600 text-sm sm:text-base">www.spkansard.co</p>
+                    <p className="text-gray-600 text-sm sm:text-base">www.spkansard.com</p>
                   </div>
                 </div>
 

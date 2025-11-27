@@ -9,7 +9,7 @@ export default function WebsiteSchema() {
     "name": "SP Kansard - เอสพี กันสาด",
     "alternateName": "เอสพี กันสาด",
     "url": "https://www.spkansard.co",
-    "description": "ผู้นำด้านกันสาดและโรงจอดรถอันดับ 1 ในกรุงเทพฯและปริมณฑล มากกว่า 35 ปี",
+    "description": "ผู้นำด้านกันสาดและโรงจอดรถอันดับ 1 ในกรุงเทพฯและปริมณฑล มากกว่า 38 ปี",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {

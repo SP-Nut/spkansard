@@ -170,7 +170,7 @@ const Footer = () => {
 
               <p className="text-gray-200 text-sm leading-relaxed mb-3">
                 ผู้เชี่ยวชาญด้านกันสาด โรงจอดรถ งานฝ้า งานระแนง และงานเหล็กครบวงจร<br className="hidden sm:block" />
-                มีประสบการณ์กว่า 35 ปี ลูกค้ามากกว่า 50,000 ราย ตั้งแต่ปี 2547
+                มีประสบการณ์กว่า 38 ปี ลูกค้ามากกว่า 50,000 ราย การรับประกัน 10 ปี
               </p>
 
               <div className="space-y-1 text-sm">
@@ -182,7 +182,7 @@ const Footer = () => {
                   href="tel:02-936-8841"
                   className="text-white/90 hover:text-white transition-colors block"
                 >
-                  โทร. 02-936-8841-2, 084-909-7777
+                  โทร. 02-936-8841
                 </a>
                 <p className="text-white/90">
                   แฟกซ์. 02-936-8843
@@ -226,7 +226,7 @@ const Footer = () => {
 
             <p className="text-gray-200 text-sm leading-relaxed mb-3">
               ผู้เชี่ยวชาญด้านกันสาด โรงจอดรถ งานฝ้า งานระแนง และงานเหล็กครบวงจร<br className="hidden sm:block" />
-              มีประสบการณ์กว่า 35 ปี ลูกค้ามากกว่า 50,000 ราย ตั้งแต่ปี 2547
+              มีประสบการณ์กว่า 38 ปี ลูกค้ามากกว่า 50,000 ราย การรับประกัน 10 ปี
             </p>
 
             <div className="space-y-1 text-sm">
@@ -238,7 +238,7 @@ const Footer = () => {
                 href="tel:02-936-8841"
                 className="text-white/90 hover:text-white transition-colors block"
               >
-                โทร. 02-936-8841-2, 084-909-7777
+                โทร. 02-936-8841
               </a>
               <p className="text-white/90">
                 แฟกซ์. 02-936-8843

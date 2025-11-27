@@ -137,7 +137,7 @@ export const metadata: Metadata = {
     'business:contact_data:locality': 'Bangkok',
     'business:contact_data:region': 'Bangkok',
     'business:contact_data:country_name': 'Thailand',
-    'business:contact_data:phone_number': '+66-2-936-8841',
+    'business:contact_data:phone_number': '+66-29368841',
     'business:hours': 'Mo-Fr 08:00-17:00, Sa 08:00-16:00',
   },
 };
