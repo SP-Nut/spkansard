@@ -48,16 +48,20 @@ ${message || 'ไม่มีข้อความเพิ่มเติม'}
       console.log('EMAIL_PASS first 4 chars:', process.env.EMAIL_PASS?.substring(0, 4));
       
       if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-        throw new Error('Email credentials not configured');
+        // Fallback for production (temporary solution)
+        console.warn('Using fallback email credentials');
       }
+
+      const emailUser = process.env.EMAIL_USER || 'spkansards@gmail.com';
+      const emailPass = process.env.EMAIL_PASS || 'rdhz hsys smvj klbv';
 
       const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS
+          user: emailUser,
+          pass: emailPass
         },
         tls: {
           rejectUnauthorized: false
@@ -69,7 +73,7 @@ ${message || 'ไม่มีข้อความเพิ่มเติม'}
       console.log('✅ SMTP connection verified successfully');
 
       const mailOptions = {
-        from: `"SP Kansard Contact" <${process.env.EMAIL_USER}>`,
+        from: `"SP Kansard Contact" <${emailUser}>`,
         to: 'spkansards@gmail.com',
         subject: `🔔 ลูกค้าติดต่อใหม่: ${name}`,
         text: emailContent,

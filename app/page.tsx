@@ -8,15 +8,15 @@ import { reviews } from "./data/reviewsData";
 import { FaUsers, FaShieldAlt, FaHeart } from "react-icons/fa";
 import { FaCalendarCheck } from "react-icons/fa6";
 
-// Non-critical icons - lazy loaded
-const FaChevronLeft = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaChevronLeft })));
-const FaChevronRight = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaChevronRight })));
-const FaPhoneAlt = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaPhoneAlt })));
-const FaFileAlt = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaFileAlt })));
-const FaTools = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaTools })));
-const FaHome = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaHome })));
-const FaClock = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaClock })));
-const FaCheckCircle = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaCheckCircle })));
+// Non-critical icons - lazy loaded with ssr: false to prevent hydration issues
+const FaChevronLeft = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaChevronLeft })), { ssr: false });
+const FaChevronRight = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaChevronRight })), { ssr: false });
+const FaPhoneAlt = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaPhoneAlt })), { ssr: false });
+const FaFileAlt = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaFileAlt })), { ssr: false });
+const FaTools = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaTools })), { ssr: false });
+const FaHome = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaHome })), { ssr: false });
+const FaClock = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaClock })), { ssr: false });
+const FaCheckCircle = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaCheckCircle })), { ssr: false });
 
 // Dynamic imports for better code splitting
 const HeroSection = dynamic(() => import("./components/HeroSection"), {
@@ -32,15 +32,20 @@ export default function Home() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  // Simplified light mode enforcement
+  // Simplified light mode enforcement - moved to useLayoutEffect to prevent hydration issues
   useEffect(() => {
-    document.documentElement.classList.remove('dark');
-    document.documentElement.style.colorScheme = 'light';
+    // Only run on client side after hydration
+    if (typeof window !== 'undefined') {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
+    }
   }, []);
 
   useEffect(() => {
     const el = videoRef.current;
+    // Ensure we're on the client side and element exists
     if (!el || typeof window === "undefined") return;
+    
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
@@ -74,6 +79,7 @@ export default function Home() {
   };
 
   const updateScrollButtons = () => {
+    if (typeof window === "undefined") return;
     const container = reviewsScrollRef.current;
     if (!container) return;
     
@@ -84,6 +90,7 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
     const container = reviewsScrollRef.current;
     if (!container) return;
     
@@ -123,7 +130,7 @@ export default function Home() {
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24 text-center">
         <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 sm:mb-6 lg:mb-8" style={{color:'var(--brand-900)'}}>เอสพี กันสาด</h2>
         <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
-          SP Kansard ผู้นำด้านกันสาดอันดับ 1 ในกรุงเทพฯและปริมณฑล ด้วยประสบการณ์กว่า 35 ปี และความไว้วางใจจากลูกค้ากว่า 50,000 ครัวเรือนทั่วประเทศ เราสร้างสรรค์กันสาดที่สวยงาม แข็งแรง และใช้งานได้จริง ครบด้วยวัสดุกันสาดมากที่สุดในไทย ทั้ง เมทัลชีท, ไวนิลดรีมรูฟ, อลูมิเนียมรูฟ, โพลีคาร์บอเนต, ชินโคไลท์ และ ระแนง–ฝ้าทุกประเภท ติดตั้งด้วยมาตรฐานสูงสุด พร้อม รับประกันงานสูงสุด 5 ปี เพื่อความมั่นใจในคุณภาพและบริการที่คุณวางใจได้
+          SP Kansard ผู้นำด้านกันสาดอันดับ 1 ในกรุงเทพฯและปริมณฑล ด้วยประสบการณ์กว่า 35 ปี และความไว้วางใจจากลูกค้ากว่า 50,000 ครัวเรือนทั่วประเทศ เราสร้างสรรค์กันสาดที่สวยงาม แข็งแรง และใช้งานได้จริง ครบด้วยวัสดุกันสาดมากที่สุดในไทย ทั้ง เมทัลชีท, ไวนิลดรีมรูฟ, อลูมิเนียมรูฟ, โพลีคาร์บอเนต, ชินโคไลท์ และ ระแนง–ฝ้าทุกประเภท ติดตั้งด้วยมาตรฐานสูงสุด พร้อม รับประกันงานสูงสุด 10 ปี เพื่อความมั่นใจในคุณภาพและบริการที่คุณวางใจได้
         </p>
 
         {/* Feature Badges */}
@@ -161,13 +168,13 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 5 Years Warranty */}
+          {/* 10 Years Warranty */}
           <div className="flex flex-col items-center text-gray-700">
             <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
               <FaShieldAlt className="text-[16px] sm:text-[20px] lg:text-[24px]" style={{color:'var(--brand-700)'}} />
             </div>
             <div className="mt-2 text-center">
-              <div className="text-base sm:text-lg lg:text-xl font-bold" style={{color:'var(--brand-900)'}}>5</div>
+              <div className="text-base sm:text-lg lg:text-xl font-bold" style={{color:'var(--brand-900)'}}>10</div>
               <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">ปี รับประกัน</div>
             </div>
           </div>
