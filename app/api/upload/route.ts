@@ -3,11 +3,20 @@ import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: NextRequest) {
   try {
+    // ตรวจสอบ environment variables
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    
+    if (!supabaseUrl || !supabaseKey) {
+      console.error('Missing Supabase environment variables');
+      return NextResponse.json(
+        { error: 'Server configuration error' },
+        { status: 500 }
+      );
+    }
+
     // สร้าง supabase admin client สำหรับ server-side
-    const supabaseAdmin = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabaseAdmin = createClient(supabaseUrl, supabaseKey);
 
     const formData = await request.formData();
     const file = formData.get('file') as File;
@@ -15,6 +24,23 @@ export async function POST(request: NextRequest) {
     if (!file) {
       return NextResponse.json(
         { error: 'ไม่พบไฟล์ที่จะอัพโหลด' },
+        { status: 400 }
+      );
+    }
+
+    // ตรวจสอบขนาดไฟล์ (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      return NextResponse.json(
+        { error: 'ไฟล์ขนาดใหญ่เกินไป (สูงสุด 5MB)' },
+        { status: 400 }
+      );
+    }
+
+    // ตรวจสอบประเภทไฟล์
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      return NextResponse.json(
+        { error: 'รองรับเฉพาะไฟล์ภาพ (JPEG, PNG, GIF, WebP)' },
         { status: 400 }
       );
     }

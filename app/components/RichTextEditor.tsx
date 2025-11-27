@@ -15,7 +15,10 @@ interface RichTextEditorProps {
 export default function RichTextEditor({ content, onChange, onImageUpload }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        // ปิด link ใน StarterKit เพื่อป้องกัน duplicate
+        link: false,
+      }),
       Image.configure({
         inline: true,
         allowBase64: true,
