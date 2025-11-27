@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaFacebookF, FaInstagram, FaYoutube, FaPinterestP } from 'react-icons/fa';
+import { FaFacebookF, FaYoutube } from 'react-icons/fa';
 import { FaTiktok } from 'react-icons/fa6';
 import { SiLine } from 'react-icons/si';
 
@@ -32,9 +32,7 @@ const Footer = () => {
     { label: 'Line', href: 'https://line.me/R/ti/p/@spkansard', Icon: SiLine },
     { label: 'Facebook', href: 'https://www.facebook.com/spkansard/', Icon: FaFacebookF },
     { label: 'YouTube', href: 'https://www.youtube.com/@spkansard', Icon: FaYoutube },
-    { label: 'Instagram', href: '#', Icon: FaInstagram },
-    { label: 'TikTok', href: '#', Icon: FaTiktok },
-    { label: 'Pinterest', href: '#', Icon: FaPinterestP },
+    { label: 'TikTok', href: 'https://www.tiktok.com/@spkansard?is_from_webapp=1&sender_device=pc', Icon: FaTiktok },
   ];
 
   return (
