@@ -94,7 +94,7 @@ export default function MaterialsPage() {
   return (
     <div className="min-h-screen font-prompt bg-gray-50 overflow-x-hidden">
       {/* Hero Section with Breadcrumb (match product) */}
-  <section ref={heroRef} className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-12 sm:py-16 lg:py-20">
+      <section ref={heroRef} className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-8 sm:py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <nav className="flex items-center space-x-2 text-sm mb-6 sm:mb-8">

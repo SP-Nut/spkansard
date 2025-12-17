@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contact Us | SPK Ansard - ติดต่อเรา',
-  description: 'ติดต่อ SPK Ansard บริษัทผู้เชี่ยวชาญด้านงานกันสาด โรงจอดรถ งานฝ้า งานระแนง และงานเหล็กครบวงจร โทร 02-136-8899',
+  title: 'Contact Us | SP Kansard - ติดต่อเรา',
+  description: 'ติดต่อ SP Kansard บริษัทผู้เชี่ยวชาญด้านงานกันสาด โรงจอดรถ งานฝ้า งานระแนง และงานเหล็กครบวงจร โทร 02-936-8841',
   openGraph: {
-    title: 'Contact Us | SPK Ansard - ติดต่อเรา',
-    description: 'ติดต่อ SPK Ansard บริษัทผู้เชี่ยวชาญด้านงานกันสาด โรงจอดรถ งานฝ้า งานระแนง และงานเหล็กครบวงจร',
+    title: 'Contact Us | SP Kansard - ติดต่อเรา',
+    description: 'ติดต่อ SP Kansard บริษัทผู้เชี่ยวชาญด้านงานกันสาด โรงจอดรถ งานฝ้า งานระแนง และงานเหล็กครบวงจร',
     type: 'website',
   },
 };

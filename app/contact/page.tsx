@@ -110,7 +110,7 @@ export default function Contact() {
     <div className="font-prompt min-h-screen bg-gray-50">
       <StructuredData type="localBusiness" />
       {/* Hero Section - unified CI (gradient like other pages) */}
-      <section className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-12 sm:py-16 lg:py-20">
+      <section className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-8 sm:py-12 lg:py-16">
         <div className="w-full">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Breadcrumb */}

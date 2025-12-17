@@ -87,15 +87,15 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'SP-Kansard-Google-Verification', // ต้องใส่ verification code จริง
+    google: 'vo05Z0EFDrqQS6bXEVVBcooZeRMrk4VEegqAPwO4c9g',
   },
   icons: {
     icon: [
-      { url: '/images/logo.png', sizes: '32x32', type: 'image/png' },
-      { url: '/images/logo.png', sizes: '16x16', type: 'image/png' },
+      { url: '/images/logo sp.png', sizes: '32x32', type: 'image/png' },
+      { url: '/images/logo sp.png', sizes: '16x16', type: 'image/png' },
     ],
-    apple: '/images/logo.png',
-    shortcut: '/images/logo.png',
+    apple: '/images/logo sp.png',
+    shortcut: '/images/logo sp.png',
   },
   openGraph: {
     title: "SP Kansard | บริการกันสาดและโรงจอดรถ",
@@ -137,7 +137,7 @@ export const metadata: Metadata = {
     'business:contact_data:locality': 'Bangkok',
     'business:contact_data:region': 'Bangkok',
     'business:contact_data:country_name': 'Thailand',
-    'business:contact_data:phone_number': '+66-29368841',
+    'business:contact_data:phone_number': '+66-2-936-8841',
     'business:hours': 'Mo-Fr 08:00-17:00, Sa 08:00-16:00',
   },
 };
@@ -151,13 +151,14 @@ export default async function RootLayout({
   const headersList = await headers();
   const pathname = headersList.get('x-pathname') || '';
   const isAdminPage = pathname.startsWith('/admin');
+  const isHomePage = pathname === '/' || pathname === '';
 
   return (
     <html lang="th">
       <head>
-        <link rel="icon" href="/images/logo.png" type="image/png" />
-        <link rel="shortcut icon" href="/images/logo.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/images/logo.png" />
+        <link rel="icon" href="/images/logo sp.png" type="image/png" />
+        <link rel="shortcut icon" href="/images/logo sp.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/images/logo sp.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#3B82F6" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -184,7 +185,7 @@ export default async function RootLayout({
           </>
         )}
         {!isAdminPage && <Header />}
-        <main className={isAdminPage ? "flex-1" : "flex-1 pt-16 sm:pt-20"}>
+        <main className={isAdminPage ? "flex-1" : isHomePage ? "flex-1" : "flex-1 pt-16 sm:pt-20"}>
           {children}
         </main>
         {!isAdminPage && <Footer />}

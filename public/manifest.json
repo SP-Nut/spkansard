@@ -9,13 +9,13 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/images/logo.png",
+      "src": "/images/logo sp.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/images/logo.png",
+      "src": "/images/logo sp.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -31,21 +31,21 @@
       "short_name": "ผลงาน",
       "description": "ดูผลงานกันสาดและโรงจอดรถ",
       "url": "/gallery",
-      "icons": [{ "src": "/images/logo.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/images/logo sp.png", "sizes": "96x96" }]
     },
     {
       "name": "ติดต่อเรา",
       "short_name": "ติดต่อ",
       "description": "ติดต่อ SP Kansard",
       "url": "/contact",
-      "icons": [{ "src": "/images/logo.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/images/logo sp.png", "sizes": "96x96" }]
     },
     {
       "name": "คำถามที่พบบ่อย",
       "short_name": "FAQ",
       "description": "คำถามและคำตอบเกี่ยวกับกันสาด",
       "url": "/faq",
-      "icons": [{ "src": "/images/logo.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/images/logo sp.png", "sizes": "96x96" }]
     }
   ]
 }
