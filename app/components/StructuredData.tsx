@@ -23,8 +23,8 @@ export default function StructuredData({ type = 'organization', data }: Structur
           "@type": "Organization",
           "name": "เอสพี กันสาด (SP Kansard)",
           "alternateName": "SP Kansard",
-          "url": "https://www.spkansard.co",
-          "logo": "https://www.spkansard.co/images/logo.png",
+          "url": "https://spkansard.com",
+          "logo": "https://spkansard.com/images/logo.png",
           "contactPoint": {
             "@type": "ContactPoint",
             "telephone": "+66-2-936-8841",
@@ -63,12 +63,12 @@ export default function StructuredData({ type = 'organization', data }: Structur
           "alternateName": ["SP Kansard", "บริษัท เอสพี กันสาด จำกัด"],
           "description": "ผู้เชี่ยวชาญด้านกันสาด โรงจอดรถ งานเหล็ก มากกว่า 38 ปี ให้บริการครบวงจร ติดตั้งกันสาดเมทัลชีท ไวนิล อลูมิเนียม โพลีคาร์บอเนต รับประกัน 10 ปี",
           "image": [
-            "https://www.spkansard.co/images/logo.png",
-            "https://www.spkansard.co/herosection/กันสาดหรู โมเดิร์น.webp",
-            "https://www.spkansard.co/herosection/กันสาดเรียบๆ ทันสมัย.webp"
+            "https://spkansard.com/images/logo.png",
+            "https://spkansard.com/herosection/กันสาดหรู โมเดิร์น.webp",
+            "https://spkansard.com/herosection/กันสาดเรียบๆ ทันสมัย.webp"
           ],
-          "logo": "https://www.spkansard.co/images/logo.png",
-          "url": "https://www.spkansard.co",
+          "logo": "https://spkansard.com/images/logo.png",
+          "url": "https://spkansard.com",
           "telephone": "+66-2-936-8841",
           "email": "info@spkansard.co",
           "address": {

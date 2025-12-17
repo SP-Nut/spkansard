@@ -21,7 +21,7 @@ const prompt = Prompt({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.spkansard.co'),
+  metadataBase: new URL('https://spkansard.com'),
   title: "SP Kansard | กันสาดและโรงจอดรถ กรุงเทพ",
   description: "SP Kansard ให้บริการออกแบบและติดตั้งกันสาดและโรงจอดรถ ครอบคลุมวัสดุหลัก เมทัลชีท ไวนิล อลูมิเนียม โพลีคาร์บอเนต พร้อมทีมช่างติดตั้งและรับประกันงานตามเงื่อนไข",
   keywords: [
@@ -100,7 +100,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SP Kansard | บริการกันสาดและโรงจอดรถ",
   description: "บริการออกแบบและติดตั้งกันสาด โรงจอดรถ และงานโครงสร้างที่เกี่ยวข้อง ดูหน้างานและประเมินตามจริง พร้อมทีมติดตั้ง",
-    url: "https://www.spkansard.co",
+    url: "https://spkansard.com",
     siteName: "SP Kansard",
     locale: "th_TH",
     type: "website",
@@ -122,9 +122,9 @@ export const metadata: Metadata = {
     site: "@spkansard",
   },
   alternates: {
-    canonical: 'https://www.spkansard.co',
+    canonical: 'https://spkansard.com',
     languages: {
-      'th-TH': 'https://www.spkansard.co',
+      'th-TH': 'https://spkansard.com',
     },
   },
   category: 'Local Business - Construction & Home Improvement',

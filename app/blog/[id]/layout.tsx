@@ -71,8 +71,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = `${article.title} | SP Kansard Blog`;
   const description = article.summary || article.excerpt || `อ่านบทความ ${article.title} จาก SP Kansard ผู้เชี่ยวชาญด้านกันสาดและโรงจอดรถ`;
-  const canonicalUrl = `https://www.spkansard.co/blog/${article.slug || article.id}`;
-  const imageUrl = article.image_url || 'https://www.spkansard.co/images/logo.png';
+  const canonicalUrl = `https://spkansard.com/blog/${article.slug || article.id}`;
+  const imageUrl = article.image_url || 'https://spkansard.com/images/logo.png';
 
   return {
     title,
@@ -138,8 +138,8 @@ export default async function BlogArticleLayout({
     return <>{children}</>;
   }
 
-  const canonicalUrl = `https://www.spkansard.co/blog/${article.slug || article.id}`;
-  const imageUrl = article.image_url || 'https://www.spkansard.co/images/logo.png';
+  const canonicalUrl = `https://spkansard.com/blog/${article.slug || article.id}`;
+  const imageUrl = article.image_url || 'https://spkansard.com/images/logo.png';
 
   // BlogPosting Schema for rich snippets
   const blogPostingSchema = {
@@ -153,14 +153,14 @@ export default async function BlogArticleLayout({
     "author": {
       "@type": "Organization",
       "name": "SP Kansard",
-      "url": "https://www.spkansard.co"
+      "url": "https://spkansard.com"
     },
     "publisher": {
       "@type": "Organization",
       "name": "SP Kansard",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.spkansard.co/images/logo.png"
+        "url": "https://spkansard.com/images/logo.png"
       }
     },
     "mainEntityOfPage": {
@@ -181,13 +181,13 @@ export default async function BlogArticleLayout({
         "@type": "ListItem",
         "position": 1,
         "name": "หน้าแรก",
-        "item": "https://www.spkansard.co"
+        "item": "https://spkansard.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "บทความ",
-        "item": "https://www.spkansard.co/blog"
+        "item": "https://spkansard.com/blog"
       },
       {
         "@type": "ListItem",

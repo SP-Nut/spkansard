@@ -60,9 +60,9 @@ export async function generateArticleMetadata(
     };
   }
 
-  const canonicalUrl = `https://www.spkansard.co/blog/${article.slug || article.id}`;
+  const canonicalUrl = `https://spkansard.com/blog/${article.slug || article.id}`;
   const description = article.summary || article.excerpt || `อ่านบทความ ${article.title} จาก SP Kansard`;
-  const imageUrl = article.image_url || 'https://www.spkansard.co/images/logo.png';
+  const imageUrl = article.image_url || 'https://spkansard.com/images/logo.png';
 
   return {
     title: `${article.title} | SP Kansard Blog`,

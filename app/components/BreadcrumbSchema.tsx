@@ -19,7 +19,7 @@ export default function BreadcrumbSchema({ items }: BreadcrumbSchemaProps) {
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      "item": `https://www.spkansard.co${item.path}`
+      "item": `https://spkansard.com${item.path}`
     }))
   };
 

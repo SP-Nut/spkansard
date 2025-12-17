@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/private/', '/admin/'],
     },
-    sitemap: 'https://www.spkansard.co/sitemap.xml',
+    sitemap: 'https://spkansard.com/sitemap.xml',
   }
 }
