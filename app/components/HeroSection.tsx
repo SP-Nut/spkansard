@@ -130,11 +130,7 @@ export default function HeroSection() {
   return (
     <section 
       id="hero" 
-      className="relative w-full overflow-hidden"
-      style={{ 
-        height: '100dvh',
-        minHeight: '100dvh'
-      }}
+      className="relative w-full overflow-hidden h-dvh min-h-dvh"
     >
       {/* Fixed background container */}
       <div 

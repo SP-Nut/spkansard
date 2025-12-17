@@ -101,7 +101,7 @@ export default function GalleryPage() {
   }, [lightboxOpen, nextImage, prevImage, closeLightbox]);
 
   return (
-    <div className="min-h-screen font-prompt bg-gray-50 overflow-x-hidden">
+    <div className="min-h-screen font-prompt bg-gray-50 overflow-x-hidden pt-16 sm:pt-20">
       {/* ลบ background pattern ออก */}
       {/* Hero Section - เหมือน Materials */}
       <section className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-8 sm:py-12 lg:py-16">

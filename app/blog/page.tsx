@@ -69,7 +69,7 @@ const BlogPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pt-16 sm:pt-20">
       {/* Hero Section */}
       <div className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

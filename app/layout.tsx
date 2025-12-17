@@ -151,7 +151,6 @@ export default async function RootLayout({
   const headersList = await headers();
   const pathname = headersList.get('x-pathname') || '';
   const isAdminPage = pathname.startsWith('/admin');
-  const isHomePage = pathname === '/' || pathname === '';
 
   return (
     <html lang="th">
@@ -185,7 +184,7 @@ export default async function RootLayout({
           </>
         )}
         {!isAdminPage && <Header />}
-        <main className={isAdminPage ? "flex-1" : isHomePage ? "flex-1" : "flex-1 pt-16 sm:pt-20"}>
+        <main className="flex-1">
           {children}
         </main>
         {!isAdminPage && <Footer />}

@@ -115,7 +115,7 @@ export default function FAQ() {
   const currentCategory = faqs.find((cat) => cat.id === selectedCategory);
 
   return (
-    <div className="font-prompt min-h-screen bg-gray-50">
+    <div className="font-prompt min-h-screen bg-gray-50 pt-16 sm:pt-20">
       <Suspense fallback={<div style={{ display: 'none' }}></div>}>
         <StructuredData type="faq" />
       </Suspense>

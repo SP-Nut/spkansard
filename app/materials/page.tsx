@@ -92,7 +92,7 @@ export default function MaterialsPage() {
   };
 
   return (
-    <div className="min-h-screen font-prompt bg-gray-50 overflow-x-hidden">
+    <div className="min-h-screen font-prompt bg-gray-50 overflow-x-hidden pt-16 sm:pt-20">
       {/* Hero Section with Breadcrumb (match product) */}
       <section ref={heroRef} className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-8 sm:py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -64,7 +64,7 @@ export default function About() {
     },
   ];
   return (
-    <div className="font-prompt animate-fade-in overflow-x-hidden">
+    <div className="font-prompt animate-fade-in overflow-x-hidden pt-16 sm:pt-20">
       {/* Hero */}
 
       {/* Overview */}
