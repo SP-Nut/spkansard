@@ -1,46 +1,19 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 
-// สำหรับการใช้งานทั่วไป
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Lazy-initialized Supabase client to avoid crashes during build when env vars are missing
+let _supabase: SupabaseClient | null = null
 
-// Types for our database tables
-export interface Material {
-  id: string
-  name: string
-  description: string
-  image_url?: string
-  features: string[]
-  price_range?: string
-  category: string
-  created_at: string
-  updated_at: string
-}
-
-export interface Article {
-  id: string
-  title: string
-  content: string
-  summary?: string  // New field we want to use
-  excerpt?: string  // Existing field in database
-  image_url?: string
-  tags: string[]
-  published: boolean
-  created_at: string
-  updated_at: string
-}
-
-// Helper function to get summary from article (prioritize summary over excerpt)
-export function getArticleSummary(article: Article): string {
-  return article.summary || article.excerpt || '';
-}
-
-export interface AdminUser {
-  id: string
-  username: string
-  password_hash: string
-  created_at: string
-  last_login?: string
-}
+export const supabase = new Proxy({} as SupabaseClient, {
+  get(_target, prop) {
+    if (!_supabase) {
+      if (!supabaseUrl || !supabaseAnonKey) {
+        throw new Error('Supabase URL and Anon Key are required. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.')
+      }
+      _supabase = createClient(supabaseUrl, supabaseAnonKey)
+    }
+    return (_supabase as unknown as Record<string, unknown>)[prop as string]
+  }
+})

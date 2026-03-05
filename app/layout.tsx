@@ -6,7 +6,6 @@ import Footer from "./components/footer";
 import FloatingContactButton from "./components/FloatingContactButton";
 import StructuredData from "./components/StructuredData";
 import WebsiteSchema from "./components/WebsiteSchema";
-import ConditionalPreload from "./components/ConditionalPreload";
 import { headers } from 'next/headers';
 import { Analytics } from "@vercel/analytics/next";
 
@@ -189,7 +188,6 @@ export default async function RootLayout({
         </main>
         {!isAdminPage && <Footer />}
         {!isAdminPage && <FloatingContactButton />}
-        <ConditionalPreload />
         <Analytics />
       </body>
     </html>

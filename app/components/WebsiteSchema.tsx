@@ -1,6 +1,4 @@
-'use client';
 
-import Script from 'next/script';
 
 export default function WebsiteSchema() {
   const websiteData = {
@@ -10,14 +8,6 @@ export default function WebsiteSchema() {
     "alternateName": "เอสพี กันสาด",
     "url": "https://spkansard.com",
     "description": "ผู้นำด้านกันสาดและโรงจอดรถอันดับ 1 ในกรุงเทพฯและปริมณฑล มากกว่า 38 ปี",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://spkansard.com/search?q={search_term_string}"
-      },
-      "query-input": "required name=search_term_string"
-    },
     "publisher": {
       "@type": "Organization",
       "name": "SP Kansard Co., Ltd.",
@@ -29,7 +19,7 @@ export default function WebsiteSchema() {
   };
 
   return (
-    <Script
+    <script
       id="website-schema"
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteData) }}

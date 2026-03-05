@@ -94,7 +94,7 @@ export default function MaterialsPage() {
   return (
     <div className="min-h-screen font-prompt bg-gray-50 overflow-x-hidden pt-16 sm:pt-20">
       {/* Hero Section with Breadcrumb (match product) */}
-      <section ref={heroRef} className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-8 sm:py-12 lg:py-16">
+      <section ref={heroRef} className="relative bg-linear-to-r from-[#1E2E4F] to-[#314874] text-white py-8 sm:py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <nav className="flex items-center space-x-2 text-sm mb-6 sm:mb-8">
@@ -189,7 +189,7 @@ export default function MaterialsPage() {
                 {filteredMaterials.map((material: Material) => (
                   <div key={material.id} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
                     {/* Large Image */}
-                    <div className="relative aspect-[4/3] bg-gray-100">
+                    <div className="relative aspect-4/3 bg-gray-100">
                       {material.image_url ? (
                         <Image
                           src={material.image_url}
@@ -212,7 +212,7 @@ export default function MaterialsPage() {
                       </div>
 
                       {/* Title */}
-                      <h3 className="text-lg font-semibold text-gray-900 line-clamp-2 min-h-[3.5rem]">
+                      <h3 className="text-lg font-semibold text-gray-900 line-clamp-2 min-h-14">
                         {material.name}
                       </h3>
 
@@ -258,7 +258,7 @@ export default function MaterialsPage() {
                 {/* Images */}
                 <div className="space-y-4">
                   {selectedMaterial?.image_url ? (
-                    <div className="relative aspect-[4/3] bg-gray-100 rounded-xl overflow-hidden">
+                    <div className="relative aspect-4/3 bg-gray-100 rounded-xl overflow-hidden">
                       <Image
                         src={selectedMaterial.image_url}
                         alt={selectedMaterial.name}
@@ -267,7 +267,7 @@ export default function MaterialsPage() {
                       />
                     </div>
                   ) : (
-                    <div className="relative aspect-[4/3] bg-gray-200 rounded-xl flex items-center justify-center">
+                    <div className="relative aspect-4/3 bg-gray-200 rounded-xl flex items-center justify-center">
                       <span className="text-gray-400">ไม่มีรูปภาพ</span>
                     </div>
                   )}
@@ -306,7 +306,7 @@ export default function MaterialsPage() {
                         <div className="space-y-2">
                           {selectedMaterial.features.map((feature, index) => (
                             <div key={index} className="flex items-center">
-                              <FaCheckCircle className="w-5 h-5 text-[#314874] mr-3 flex-shrink-0" />
+                              <FaCheckCircle className="w-5 h-5 text-[#314874] mr-3 shrink-0" />
                               <span className="text-gray-700">{feature}</span>
                             </div>
                           ))}
@@ -333,7 +333,7 @@ export default function MaterialsPage() {
       {/* Reviews removed per request */}
 
       {/* Call-to-Action Section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-[#314874] to-[#1E2E4F]">
+      <section className="py-12 sm:py-16 lg:py-20 bg-linear-to-r from-[#314874] to-[#1E2E4F]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
             พร้อมเริ่มโครงการหลังคาของคุณแล้วหรือยัง?

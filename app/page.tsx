@@ -21,13 +21,12 @@ const FaCheckCircle = dynamic(() => import("react-icons/fa").then(mod => ({ defa
 // Dynamic imports for better code splitting
 const HeroSection = dynamic(() => import("./components/HeroSection"), {
   ssr: true,
-  loading: () => <div className="h-screen bg-gradient-to-r from-[#1E2E4F] to-[#314874]" />
+  loading: () => <div className="h-screen bg-linear-to-r from-[#1E2E4F] to-[#314874]" />
 });
 
 
 
 export default function Home() {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const reviewsScrollRef = useRef<HTMLDivElement | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -39,26 +38,6 @@ export default function Home() {
       document.documentElement.classList.remove('dark');
       document.documentElement.style.colorScheme = 'light';
     }
-  }, []);
-
-  useEffect(() => {
-    const el = videoRef.current;
-    // Ensure we're on the client side and element exists
-    if (!el || typeof window === "undefined") return;
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting) {
-          el.play().catch(() => {});
-        } else {
-          el.pause();
-        }
-      },
-      { threshold: 0.35 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
   }, []);
 
   // Scroll functions for reviews
@@ -137,7 +116,7 @@ export default function Home() {
         <div className="mt-6 sm:mt-8 grid grid-cols-2 lg:flex lg:flex-wrap items-center justify-center gap-4 sm:gap-6 lg:gap-8 xl:gap-12">
           {/* 50,000+ Customers */}
           <div className="flex flex-col items-center text-gray-700">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-(--brand-100) bg-white flex items-center justify-center">
               <FaUsers className="text-[16px] sm:text-[20px] lg:text-[24px]" style={{color:'var(--brand-700)'}} />
             </div>
             <div className="mt-2 text-center">
@@ -148,7 +127,7 @@ export default function Home() {
 
           {/* 35+ Years Experience */}
           <div className="flex flex-col items-center text-gray-700">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-(--brand-100) bg-white flex items-center justify-center">
               <FaCalendarCheck className="text-[16px] sm:text-[20px] lg:text-[24px]" style={{color:'var(--brand-700)'}} />
             </div>
             <div className="mt-2 text-center">
@@ -159,7 +138,7 @@ export default function Home() {
 
           {/* Customer Satisfaction 100% */}
           <div className="flex flex-col items-center text-gray-700">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-(--brand-100) bg-white flex items-center justify-center">
               <FaHeart className="text-[16px] sm:text-[20px] lg:text-[24px]" style={{color:'var(--brand-700)'}} />
             </div>
             <div className="mt-2 text-center">
@@ -170,34 +149,13 @@ export default function Home() {
 
           {/* 10 Years Warranty */}
           <div className="flex flex-col items-center text-gray-700">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-[var(--brand-100)] bg-white flex items-center justify-center">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-(--brand-100) bg-white flex items-center justify-center">
               <FaShieldAlt className="text-[16px] sm:text-[20px] lg:text-[24px]" style={{color:'var(--brand-700)'}} />
             </div>
             <div className="mt-2 text-center">
               <div className="text-base sm:text-lg lg:text-xl font-bold" style={{color:'var(--brand-900)'}}>10</div>
               <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">รับประกันสูงสุด 10 ปี</div>
             </div>
-          </div>
-        </div>
-      </section>
-
-  {/* Video Section (full-bleed) */}
-  <section className="relative" style={{ contentVisibility: 'auto', containIntrinsicSize: '56.25vw' }}>
-        {/* Full-bleed wrapper */}
-        <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen">
-          {/* 16:9 Aspect Ratio Box */}
-          <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
-            <video
-              className="absolute inset-0 w-full h-full object-cover"
-              src="/video.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="none"
-              poster="/herosection/กันสาดหรู โมเดิร์น.webp"
-              ref={videoRef}
-            />
           </div>
         </div>
       </section>
@@ -217,19 +175,19 @@ export default function Home() {
 
           <div className="text-left max-w-3xl mx-auto mb-8 sm:mb-12 space-y-3 sm:space-y-4 px-2">
             <div className="flex items-start">
-              <span className="text-white mr-4 mt-1 flex-shrink-0 text-xl sm:text-2xl font-bold">●</span>
+              <span className="text-white mr-4 mt-1 shrink-0 text-xl sm:text-2xl font-bold">●</span>
               <span className="text-sm sm:text-base lg:text-lg">บริการครบวงจร ตั้งแต่การติดตั้งหลังคาโรงจอดรถทุกรูปแบบ ที่ช่วยป้องกันแสงแดดและลดความร้อนอย่างมีประสิทธิภาพ</span>
             </div>
             <div className="flex items-start">
-              <span className="text-white mr-4 mt-1 flex-shrink-0 text-xl sm:text-2xl font-bold">●</span>
+              <span className="text-white mr-4 mt-1 shrink-0 text-xl sm:text-2xl font-bold">●</span>
               <span className="text-sm sm:text-base lg:text-lg">การต่อเติมกันสาดหน้าบ้าน ข้างบ้าน และหลังบ้าน ที่ออกแบบให้กลมกลืนกับสถาปัตยกรรมเดิมของบ้าน</span>
             </div>
             <div className="flex items-start">
-              <span className="text-white mr-4 mt-1 flex-shrink-0 text-xl sm:text-2xl font-bold">●</span>
+              <span className="text-white mr-4 mt-1 shrink-0 text-xl sm:text-2xl font-bold">●</span>
               <span className="text-sm sm:text-base lg:text-lg">คัดสรรวัสดุคุณภาพสูงเกรดพรีเมียม ทั้งเมทัลชีท ไวนิล อลูมิเนียม และโพลีคาร์บอเนต ตอบโจทย์ทุกความต้องการ</span>
             </div>
             <div className="flex items-start">
-              <span className="text-white mr-4 mt-1 flex-shrink-0 text-xl sm:text-2xl font-bold">●</span>
+              <span className="text-white mr-4 mt-1 shrink-0 text-xl sm:text-2xl font-bold">●</span>
               <span className="text-sm sm:text-base lg:text-lg">ทีมสถาปนิกและทีมงานติดตั้งมืออาชีพ ยึดมาตรฐานสากลในทุกขั้นตอน พร้อมให้คำปรึกษาอย่างใกล้ชิด</span>
             </div>
           </div>
@@ -361,7 +319,7 @@ export default function Home() {
             >
               <div className="flex space-x-4 sm:space-x-6 px-4 sm:px-0" style={{ width: 'max-content' }}>
               {reviews.map((review) => (
-                <div key={review.id} className="w-72 sm:w-80 flex-shrink-0" style={{ scrollSnapAlign: 'start' }}>
+                <div key={review.id} className="w-72 sm:w-80 shrink-0" style={{ scrollSnapAlign: 'start' }}>
                   <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300">
                     <div className="flex items-center mb-3 sm:mb-4">
                       <div className="flex space-x-1">
@@ -427,7 +385,7 @@ export default function Home() {
             {/* Step 1: ติดต่อเรา */}
             <div className="text-center group">
               <div className="relative mb-4 sm:mb-5">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-linear-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
                   <FaPhoneAlt className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
                 </div>
               </div>
@@ -442,7 +400,7 @@ export default function Home() {
             {/* Step 2: ประเมินหน้างาน */}
             <div className="text-center group">
               <div className="relative mb-4 sm:mb-5">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-linear-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
                   <FaFileAlt className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
                 </div>
               </div>
@@ -457,7 +415,7 @@ export default function Home() {
             {/* Step 3: เสนอราคา */}
             <div className="text-center group">
               <div className="relative mb-4 sm:mb-5">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-linear-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
                   <FaCheckCircle className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
                 </div>
               </div>
@@ -472,7 +430,7 @@ export default function Home() {
             {/* Step 4: ออกแบบ */}
             <div className="text-center group">
               <div className="relative mb-4 sm:mb-5">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-linear-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
                   <FaTools className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
                 </div>
               </div>
@@ -487,7 +445,7 @@ export default function Home() {
             {/* Step 5: ติดตั้ง */}
             <div className="text-center group">
               <div className="relative mb-4 sm:mb-5">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-linear-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
                   <FaClock className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
                 </div>
               </div>
@@ -502,7 +460,7 @@ export default function Home() {
             {/* Step 6: ส่งมอบงาน */}
             <div className="text-center group">
               <div className="relative mb-4 sm:mb-5">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl bg-linear-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
                   <FaHome className="w-6 h-6 sm:w-8 sm:h-8" style={{color:'var(--brand-600)'}} />
                 </div>
               </div>
@@ -518,7 +476,7 @@ export default function Home() {
       </section>
 
       {/* Visit Sale Gallery Section */}
-      <section className="relative min-h-[500px] sm:h-[500px] lg:h-[600px] overflow-hidden" style={{ contentVisibility: 'auto', containIntrinsicSize: '600px' }}>
+      <section className="relative min-h-125 sm:h-125 lg:h-150 overflow-hidden" style={{ contentVisibility: 'auto', containIntrinsicSize: '600px' }}>
         {/* Background Image: use lazy-loaded img to avoid CSS eager fetch */}
         <div className="absolute inset-0">
           <Image
@@ -526,6 +484,7 @@ export default function Home() {
             alt="SP Kansard showroom background"
             fill
             sizes="100vw"
+            loading="lazy"
             className="object-cover object-center"
           />
           {/* Overlay */}

@@ -22,7 +22,6 @@ interface Stats {
 }
 
 export default function AdminDashboard() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<Stats>({
     totalMaterials: 0,
@@ -30,19 +29,6 @@ export default function AdminDashboard() {
     publishedArticles: 0,
   });
   const router = useRouter();
-
-  useEffect(() => {
-    // ตรวจสอบ token ใน localStorage
-    if (!AdminAuth.isAuthenticated()) {
-      router.push('/admin/login');
-      return;
-    }
-
-    // TODO: ตรวจสอบ token กับ server
-    setIsAuthenticated(true);
-    fetchStats();
-    setLoading(false);
-  }, [router]);
 
   const fetchStats = async () => {
     try {
@@ -72,6 +58,18 @@ export default function AdminDashboard() {
     }
   };
 
+  useEffect(() => {
+    const init = async () => {
+      if (!AdminAuth.isAuthenticated()) {
+        router.push('/admin/login');
+        return;
+      }
+      await fetchStats();
+      setLoading(false);
+    };
+    init();
+  }, [router]);
+
   const handleLogout = () => {
     AdminAuth.clearToken();
     router.push('/admin/login');
@@ -83,10 +81,6 @@ export default function AdminDashboard() {
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1E2E4F]"></div>
       </div>
     );
-  }
-
-  if (!isAuthenticated) {
-    return null;
   }
 
   const menuItems = [

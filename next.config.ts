@@ -6,7 +6,6 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   experimental: {
     optimizePackageImports: ['react-icons'],
-    optimizeServerReact: false,
   },
   
   // Image optimization

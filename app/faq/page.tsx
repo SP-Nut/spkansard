@@ -24,7 +24,7 @@ const faqs = [
       },
       {
         question: "มีบริการสำรวจหน้างานฟรีไหม?",
-        answer: "ใช่ครับ เรามีบริการสำรวจหน้างานและประเมินราคาฟรี โดยทีมช่างผู้เชี่ยวชาญจะไปตรวจสอบพื้นที่และให้คำแนะนำ"
+        answer: "เรามีบริการสำรวจหน้างานและประเมินราคา โดยทีมช่างผู้เชี่ยวชาญจะไปตรวจสอบพื้นที่และให้คำแนะนำ"
       }
     ]
   },
@@ -117,10 +117,10 @@ export default function FAQ() {
   return (
     <div className="font-prompt min-h-screen bg-gray-50 pt-16 sm:pt-20">
       <Suspense fallback={<div style={{ display: 'none' }}></div>}>
-        <StructuredData type="faq" />
+        <StructuredData type="faq" data={{ faqs: faqs.flatMap(cat => cat.questions) }} />
       </Suspense>
       {/* Hero Section - unified CI */}
-      <section className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-12 sm:py-16 lg:py-20">
+      <section className="relative bg-linear-to-r from-[#1E2E4F] to-[#314874] text-white py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <nav className="flex items-center space-x-2 text-sm mb-6 sm:mb-8">
@@ -183,7 +183,7 @@ export default function FAQ() {
                     <details key={faqIndex} className="group border-b border-gray-100 py-3 sm:py-4">
                       <summary className="flex items-center justify-between cursor-pointer hover:bg-blue-25 p-3 sm:p-4 -mx-3 sm:-mx-4 rounded-lg transition-colors">
                         <div className="flex items-start gap-2 sm:gap-3">
-                          <div className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-75 flex items-center justify-center mt-0.5 sm:mt-1">
+                          <div className="shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-75 flex items-center justify-center mt-0.5 sm:mt-1">
                             <svg className="w-3 h-3 sm:w-4 sm:h-4 text-blue-500 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                             </svg>
@@ -206,7 +206,7 @@ export default function FAQ() {
           </div>
 
           {/* Contact CTA */}
-          <div className="mt-8 sm:mt-12 lg:mt-16 rounded-xl p-6 sm:p-8 lg:p-10 text-center bg-gradient-to-r from-[#1E2E4F] to-[#31487A] text-white">
+          <div className="mt-8 sm:mt-12 lg:mt-16 rounded-xl p-6 sm:p-8 lg:p-10 text-center bg-linear-to-r from-[#1E2E4F] to-[#31487A] text-white">
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4">
               ไม่พบคำตอบที่ต้องการ?
             </h2>

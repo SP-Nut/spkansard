@@ -30,10 +30,6 @@ export default function FloatingContactButton() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
-  const handleLinkClick = () => {
-    // ไม่ต้องทำอะไร เพราะไม่มีเมนูให้ปิดแล้ว
-  };
-
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -123,7 +119,6 @@ export default function FloatingContactButton() {
               href={it.href}
               rel={it.rel}
               target={it.target}
-              onClick={handleLinkClick}
               aria-label={it.aria}
               className={[
                 "floating-contact-item group relative w-10 h-10 sm:w-12 sm:h-12 rounded-full shadow-lg flex items-center justify-center",

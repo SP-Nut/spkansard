@@ -4,14 +4,35 @@ import Link from "next/link";
 import { FaPhone, FaEye } from "react-icons/fa";
 
 export const metadata: Metadata = {
-  title: "เกี่ยวกับเรา - SPK Ansard",
+  title: "เกี่ยวกับเรา | SP Kansard - ผู้เชี่ยวชาญกันสาดกว่า 38 ปี",
   description:
-    "เกี่ยวกับบริษัท เอสพีเค แอนซาร์ด ผู้เชี่ยวชาญด้านกันสาด โรงจอดรถ งานฝ้า งานระแนง และงานเหล็กครบวงจร มาตรฐานงานคุณภาพ ใส่ใจทุกรายละเอียด",
+    "เกี่ยวกับบริษัท เอสพี กันสาด ผู้เชี่ยวชาญด้านกันสาด โรงจอดรถ งานฝ้า งานระแนง และงานเหล็กครบวงจร มาตรฐานงานคุณภาพ ใส่ใจทุกรายละเอียด",
+  keywords: 'เกี่ยวกับ SP Kansard, บริษัท เอสพี กันสาด, ประวัติกันสาด, ผู้เชี่ยวชาญกันสาด กรุงเทพ',
   openGraph: {
-    title: "เกี่ยวกับเรา - SPK Ansard",
+    title: "เกี่ยวกับเรา | SP Kansard",
     description:
       "รู้จักเราให้มากขึ้น วิสัยทัศน์ พันธกิจ และคุณค่าที่เรายึดมั่นในการให้บริการ",
+    url: 'https://spkansard.com/about',
+    siteName: 'SP Kansard',
+    locale: 'th_TH',
     type: "website",
+    images: [
+      {
+        url: '/images/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'SP Kansard - เกี่ยวกับเรา',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'เกี่ยวกับเรา | SP Kansard',
+    description: 'รู้จักเราให้มากขึ้น ผู้เชี่ยวชาญด้านกันสาดและโรงจอดรถกว่า 38 ปี',
+    images: ['/images/logo.png'],
+  },
+  alternates: {
+    canonical: 'https://spkansard.com/about',
   },
 };
 
@@ -250,7 +271,7 @@ export default function About() {
         className="relative w-screen ml-[calc(50%-50vw)] overflow-hidden"
         aria-label="ทำไมต้องใช้บริการของ เอสพี กันสาด"
       >
-  <div className="relative overflow-hidden min-h-[560px] sm:min-h-[560px] lg:min-h-[600px]">
+  <div className="relative overflow-hidden min-h-140 sm:min-h-140 lg:min-h-150">
           <Image
             src="/bg-contact.webp"
             alt="ตัวอย่างงานกันสาดของ SPK Ansard"
@@ -261,7 +282,7 @@ export default function About() {
           />
           <div className="absolute inset-0 bg-black/70 sm:bg-black/60" />
           <div
-            className="absolute inset-0 z-[1] mx-auto w-full px-4 sm:px-6 lg:px-8 flex items-center"
+            className="absolute inset-0 z-1 mx-auto w-full px-4 sm:px-6 lg:px-8 flex items-center"
             style={{ maxWidth: "1800px" }}
           >
             <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -275,7 +296,7 @@ export default function About() {
               </div>
 
               {/* Features right */}
-              <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 text-white max-w-[640px] lg:max-w-[700px]">
+              <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 text-white max-w-160 lg:max-w-175">
                 {[
                   {
                     title: "บริการให้คำปรึกษา",
@@ -384,7 +405,7 @@ export default function About() {
           className="mx-auto px-4 sm:px-6 lg:px-8"
           style={{ maxWidth: "1800px" }}
         >
-          <div className="rounded-2xl p-6 sm:p-8 lg:p-10 text-center bg-gradient-to-r from-[#314874] to-[#1E2E4F] shadow-sm">
+          <div className="rounded-2xl p-6 sm:p-8 lg:p-10 text-center bg-linear-to-r from-[#314874] to-[#1E2E4F] shadow-sm">
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white mb-3 sm:mb-4">
               ต้องการคำปรึกษาหรือประเมินราคา?
             </h2>

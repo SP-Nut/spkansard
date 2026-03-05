@@ -42,23 +42,20 @@ ${message || 'ไม่มีข้อความเพิ่มเติม'}
 
     // Send email notification
     try {
-      console.log('=== EMAIL DEBUG INFO ===');
-      console.log('EMAIL_USER:', process.env.EMAIL_USER);
-      console.log('EMAIL_PASS length:', process.env.EMAIL_PASS?.length);
-      console.log('EMAIL_PASS first 4 chars:', process.env.EMAIL_PASS?.substring(0, 4));
-      
       if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-        // Fallback for production (temporary solution)
-        console.warn('Using fallback email credentials');
+        return NextResponse.json(
+          { error: 'ระบบส่งอีเมลยังไม่ได้ตั้งค่า กรุณาติดต่อผู้ดูแลระบบ', success: false },
+          { status: 500 }
+        );
       }
 
-      const emailUser = process.env.EMAIL_USER || 'spkansards@gmail.com';
-      const emailPass = process.env.EMAIL_PASS || 'rdhz hsys smvj klbv';
+      const emailUser = process.env.EMAIL_USER;
+      const emailPass = process.env.EMAIL_PASS;
 
       const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
-        secure: false, // true for 465, false for other ports
+        secure: false,
         auth: {
           user: emailUser,
           pass: emailPass
@@ -68,9 +65,7 @@ ${message || 'ไม่มีข้อความเพิ่มเติม'}
         }
       });
 
-      console.log('Testing SMTP connection...');
       await transporter.verify();
-      console.log('✅ SMTP connection verified successfully');
 
       const mailOptions = {
         from: `"SP Kansard Contact" <${emailUser}>`,
@@ -94,28 +89,17 @@ ${message || 'ไม่มีข้อความเพิ่มเติม'}
         `
       };
 
-      console.log('Sending email to:', mailOptions.to);
-      const result = await transporter.sendMail(mailOptions);
-      console.log('✅ Email sent successfully!');
-      console.log('Message ID:', result.messageId);
-      console.log('=== EMAIL SENT SUCCESSFULLY ===');
+      await transporter.sendMail(mailOptions);
     } catch (emailError: unknown) {
-      console.error('❌ Email sending failed!');
-      console.error('Error:', emailError);
       const error = emailError as Error;
-      console.error('Error message:', error?.message);
-      console.error('Error stack:', error?.stack);
+      console.error('Email sending failed:', error?.message);
       
       // ส่งต่อ error เพื่อให้ผู้ใช้ทราบ
       return NextResponse.json({
         error: `ส่งอีเมลไม่สำเร็จ: ${error?.message || 'ไม่ทราบสาเหตุ'}`,
-        success: false,
-        details: String(emailError)
+        success: false
       }, { status: 500 });
     }
-
-    // Log to console as backup
-    console.log(emailContent);
 
     return NextResponse.json({
       success: true,

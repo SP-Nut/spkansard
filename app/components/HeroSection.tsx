@@ -131,6 +131,9 @@ export default function HeroSection() {
     <section 
       id="hero" 
       className="relative w-full overflow-hidden h-dvh min-h-dvh"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="ภาพกันสาดและโรงจอดรถ SP Kansard"
     >
       {/* Fixed background container */}
       <div 
@@ -162,7 +165,7 @@ export default function HeroSection() {
           {slideImages.map((slide, index) => (
             <div 
               key={index} 
-              className="relative flex-shrink-0"
+              className="relative shrink-0"
               style={{ width: '20%', height: '100%' }}
             >
               {/* Desktop Image */}
@@ -172,6 +175,7 @@ export default function HeroSection() {
                 fill
                 className="hidden md:block object-cover object-center"
                 priority={index === 0}
+                loading={index === 0 ? 'eager' : 'lazy'}
                 sizes="100vw"
                 draggable={false}
               />
@@ -182,20 +186,31 @@ export default function HeroSection() {
                 fill
                 className="block md:hidden object-cover object-center"
                 priority={index === 0}
+                loading={index === 0 ? 'eager' : 'lazy'}
                 sizes="100vw"
                 draggable={false}
               />
               {/* Content overlay */}
               <div className="absolute z-30 bottom-0 left-0 right-0 text-center px-4 sm:px-6">
                 {/* Gradient overlay for better text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-transparent pointer-events-none"></div>
                 <div className="relative z-10 max-w-4xl mx-auto pb-20 sm:pb-24 lg:pb-28">
-                  <h1 
-                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight" 
-                    style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}
-                  >
-                    {slideContent[index]?.title}
-                  </h1>
+                  {index === 0 ? (
+                    <h1 
+                      className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight" 
+                      style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}
+                    >
+                      {slideContent[index]?.title}
+                    </h1>
+                  ) : (
+                    <h2 
+                      className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight" 
+                      style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}
+                      aria-hidden={currentSlide !== index + 1}
+                    >
+                      {slideContent[index]?.title}
+                    </h2>
+                  )}
                   <p 
                     className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-white/90 font-normal mb-4 sm:mb-6 md:mb-8 leading-relaxed max-w-2xl mx-auto" 
                     style={{textShadow: '1px 1px 2px rgba(0,0,0,0.8)'}}

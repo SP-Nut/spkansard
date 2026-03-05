@@ -17,18 +17,12 @@ const navItems = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [overHero, setOverHero] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const [hasHero, setHasHero] = useState(false);
 
   // ปิด scroll เวลาเมนูเปิด
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? 'hidden' : 'auto';
   }, [isMenuOpen]);
-
-  // Mark component as mounted
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // ตรวจจับว่ายังอยู่เหนือ hero หรือเลื่อนพ้นไปแล้ว (เฉพาะหน้าที่มี hero)
   useEffect(() => {                                                                                               
@@ -70,22 +64,22 @@ export default function Header() {
     }
     
     return () => observer?.disconnect();
-  }, [mounted]);
+  }, []);
 
   return (
     <header
       className={`w-full fixed top-0 z-50 transition-colors duration-300 ${
-        mounted && hasHero && overHero && !isMenuOpen ? 'bg-transparent' : 'bg-[#1E2E4F]'
+        hasHero && overHero && !isMenuOpen ? 'bg-transparent' : 'bg-[#1E2E4F]'
       }`}
     >
-      <nav className="mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ maxWidth: '1800px' }}>
+      <nav aria-label="เมนูหลัก" className="mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ maxWidth: '1800px' }}>
         <div className="flex justify-between items-center h-16 sm:h-20 w-full">
           {/* Logo */}
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <Link href="/" className="flex items-center">
               <Image
                 src="/images/logo.png"
-                alt="Logo"
+                alt="SP Kansard - เอสพี กันสาด"
                 width={160}
                 height={53}
                 className="h-10 sm:h-12 lg:h-14 w-auto"
@@ -110,7 +104,7 @@ export default function Header() {
           </div>
 
           {/* CTA */}
-          <div className="hidden lg:flex flex-shrink-0">
+          <div className="hidden lg:flex shrink-0">
             <a
               href="https://cal-customer.vercel.app/"
               target="_blank"
@@ -122,7 +116,7 @@ export default function Header() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="lg:hidden flex-shrink-0">
+          <div className="lg:hidden shrink-0">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-white hover:text-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 p-2 rounded-md"

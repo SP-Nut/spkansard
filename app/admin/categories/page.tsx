@@ -34,10 +34,8 @@ export default function CategoriesPage() {
     // ตรวจสอบ authentication
     const checkAuth = () => {
       const isAuth = AdminAuth.isAuthenticated();
-      console.log('Categories Page - Is Authenticated:', isAuth);
       
       if (!isAuth) {
-        console.log('Not authenticated, redirecting to login...');
         router.push('/admin/login');
         return false;
       }
