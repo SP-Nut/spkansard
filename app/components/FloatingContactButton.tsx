@@ -10,6 +10,8 @@ export default function FloatingContactButton() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const pathname = usePathname();
 
+  const isEstimatePage = pathname === "/estimate";
+
   // หน้า Home โผล่เมื่อเลื่อนเกิน 80% ของ viewport
   useEffect(() => {
     const handleScroll = () => {
@@ -37,7 +39,7 @@ export default function FloatingContactButton() {
     });
   };
   
-  if (!isVisible) return null;
+  if (!isVisible || isEstimatePage) return null;
 
   const items = [
     {
@@ -75,14 +77,14 @@ export default function FloatingContactButton() {
     },
     {
       key: "calculator",
-      href: "https://cal-customer.vercel.app/",
+      href: "/estimate",
       label: "ประเมินราคา",
       bg: "bg-[var(--brand-500)]",
       hoverBg: "hover:bg-[var(--brand-600)]",
       icon: <FaCalculator className="w-4 h-4 sm:w-5 sm:h-5" />,
-      rel: "noopener nofollow",
-      target: "_blank",
-      aria: "ประเมินราคากันสาด (เปิดแท็บใหม่)",
+      rel: undefined,
+      target: undefined,
+      aria: "ประเมินราคากันสาด",
     },
   ];
 

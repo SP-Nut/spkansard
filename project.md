@@ -22,6 +22,7 @@ SP Kansard เป็นเว็บบริษัทรับออกแบบ
 - `app/components/header.tsx`, `footer.tsx`, `FloatingContactButton.tsx`: layout component หลักของเว็บ
 - `app/components/StructuredData.tsx`: JSON-LD schema รวมของ organization, website, local business, service และ FAQ
 - `app/blog`, `app/gallery`, `app/materials`, `app/contact`, `app/about`, `app/faq`: public pages
+- `app/estimate`: ระบบคำนวณราคากันสาด/โรงจอดรถเบื้องต้นในเว็บหลัก พร้อม lead form ส่งเข้า `/api/contact`
 - `app/admin`: admin dashboard สำหรับ articles, materials, categories
 - `app/api/admin`: API หลังบ้าน ใช้ `lib/admin-api.ts` และ `lib/admin-token.ts`
 - `lib/supabase.ts`: Supabase client ฝั่ง client แบบ lazy init เพื่อไม่ให้ build พังตอน env ยังไม่ครบ
@@ -58,6 +59,7 @@ SP Kansard เป็นเว็บบริษัทรับออกแบบ
 - อย่าลบ `.next` หรือ `node_modules` เพื่อ “ทำความสะอาด” เพราะช่วย cache/build และ dependency ไว้
 - ก่อนลบ static asset ต้องค้น reference ทั้ง repo ก่อน เช่น `/herosection/...`, `/heroMobile/...`, `/images/...`
 - Hero หน้าแรกควรเป็นข้อความจัดกลางบนภาพเต็มจอ มี overlay อ่านง่าย และปุ่ม CTA อยู่กลางตามดีไซน์เดิม
+- ปุ่มประเมินราคา/คำนวณราคาให้ชี้ไป `/estimate` ในเว็บหลัก ไม่ต้องกลับไปใช้ `cal-customer.vercel.app`
 - Schema/JSON-LD ให้ใช้ `StructuredData.tsx` เป็นที่รวมหลัก อย่าสร้าง component schema แยกซ้ำโดยไม่จำเป็น
 
 ## หมายเหตุด้าน performance

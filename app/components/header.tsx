@@ -8,6 +8,7 @@ const navItems = [
   { name: 'หน้าแรก', href: '/' },
   { name: 'วัสดุ', href: '/materials' },
   { name: 'ผลงาน', href: '/gallery' },
+  { name: 'ประเมินราคา', href: '/estimate' },
   { name: 'บทความ', href: '/blog' },
   { name: 'เกี่ยวกับเรา', href: '/about' },
   { name: 'ติดต่อเรา', href: '/contact' },
@@ -105,14 +106,12 @@ export default function Header() {
 
           {/* CTA */}
           <div className="hidden lg:flex shrink-0">
-            <a
-              href="https://cal-customer.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/estimate"
               className="bg-[#eaf4ff] text-[#1E2E4F] hover:bg-white font-medium py-2 px-6 rounded-full transition-colors duration-200 text-base"
             >
               คำนวณราคาเบื้องต้น
-            </a>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -151,15 +150,13 @@ export default function Header() {
                   {item.name}
                 </Link>
               ))}
-              <a
-                href="https://cal-customer.vercel.app/"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/estimate"
                 className="bg-[#eaf4ff] text-[#1E2E4F] hover:bg-white font-medium py-2 px-4 rounded-full transition-colors duration-200 text-base inline-block mt-3"
                 onClick={() => setIsMenuOpen(false)}
               >
                 คำนวณราคาเบื้องต้น
-              </a>
+              </Link>
             </div>
           </div>
         )}

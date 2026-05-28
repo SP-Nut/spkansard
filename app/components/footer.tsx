@@ -37,7 +37,7 @@ const Footer = () => {
       links: [
         { label: "คำถามที่พบบ่อย", href: "/faq" },
         { label: "ติดต่อเรา", href: "/contact" },
-        { label: "ประเมินราคา", href: "https://cal-customer.vercel.app/" },
+        { label: "ประเมินราคา", href: "/estimate" },
       ],
     },
   ];

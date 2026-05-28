@@ -145,9 +145,7 @@ export default function About() {
               ปรึกษาเรา ›
             </a>
             <a
-              href="https://cal-customer.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/estimate"
               className="w-full sm:w-auto text-center rounded-full px-6 sm:px-8 py-3 bg-[#314874] hover:bg-[#1E2E4F] text-white font-semibold text-sm sm:text-base transition-colors"
             >
               คำนวณราคาฟรี ›
