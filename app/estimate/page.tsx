@@ -488,24 +488,33 @@ export default function EstimatePage() {
                 )}
               </div>
 
-              <div className="overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+              <div className="rounded-lg border border-gray-200 bg-white p-3">
                 {selectedProduct?.imageUrl ? (
                   <div
                     role="img"
                     aria-label={selectedProduct.imageAlt || selectedProduct.name}
-                    className="h-48 bg-cover bg-center"
+                    className="h-36 rounded-md bg-cover bg-center"
                     style={{ backgroundImage: `url("${selectedProduct.imageUrl}")` }}
                   />
                 ) : (
-                  <div className="flex h-48 flex-col items-center justify-center gap-3 text-gray-400">
-                    <FaImage className="h-8 w-8" />
-                    <span className="text-sm font-semibold">รอรูปสินค้า</span>
+                  <div className="flex h-28 flex-col items-center justify-center gap-2 rounded-md border border-dashed border-gray-300 bg-gray-50 text-gray-400">
+                    <FaImage className="h-7 w-7" />
+                    <span className="text-xs font-semibold">ยังไม่มีรูปสินค้า</span>
                   </div>
                 )}
-                <div className="border-t border-gray-200 bg-white p-3">
-                  <p className="line-clamp-2 text-sm font-bold text-gray-900">
+
+                <div className="mt-3 space-y-2">
+                  <p className="line-clamp-2 text-sm font-bold leading-6 text-gray-900">
                     {selectedProduct?.name || "เลือกสินค้าเพื่อดูรายละเอียด"}
                   </p>
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
+                    <span className="rounded-full bg-gray-100 px-2 py-1">
+                      {materialType || "ยังไม่เลือกวัสดุ"}
+                    </span>
+                    <span className="rounded-full bg-[#eaf4ff] px-2 py-1 text-[#314874]">
+                      {validSize ? `${validSize} ${formatCurrency(estimate.materialRate)}/ตร.ม.` : "เลือกไซซ์ราคา"}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
