@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAdmin } from '@/lib/admin-api';
+import { adminSupabaseErrorResponse, requireAdmin } from '@/lib/admin-api';
 
 const productFields = (body: Record<string, unknown>, includeUpdatedAt = true) => ({
   type: body.type,
@@ -46,11 +46,11 @@ export async function GET(request: NextRequest) {
   ]);
 
   if (productsResult.error) {
-    return NextResponse.json({ error: productsResult.error.message }, { status: 500 });
+    return adminSupabaseErrorResponse(productsResult.error.message);
   }
 
   if (servicesResult.error) {
-    return NextResponse.json({ error: servicesResult.error.message }, { status: 500 });
+    return adminSupabaseErrorResponse(servicesResult.error.message);
   }
 
   return NextResponse.json({
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
     .insert([insertPayload]);
 
   if (insertError) {
-    return NextResponse.json({ error: insertError.message }, { status: 500 });
+    return adminSupabaseErrorResponse(insertError.message);
   }
 
   return NextResponse.json({ success: true });
@@ -97,7 +97,7 @@ export async function PATCH(request: NextRequest) {
     .eq('id', body.id);
 
   if (updateError) {
-    return NextResponse.json({ error: updateError.message }, { status: 500 });
+    return adminSupabaseErrorResponse(updateError.message);
   }
 
   return NextResponse.json({ success: true });
@@ -120,7 +120,7 @@ export async function DELETE(request: NextRequest) {
     .eq('id', id);
 
   if (deleteError) {
-    return NextResponse.json({ error: deleteError.message }, { status: 500 });
+    return adminSupabaseErrorResponse(deleteError.message);
   }
 
   return NextResponse.json({ success: true });
