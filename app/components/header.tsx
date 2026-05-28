@@ -8,7 +8,6 @@ const navItems = [
   { name: 'หน้าแรก', href: '/' },
   { name: 'วัสดุ', href: '/materials' },
   { name: 'ผลงาน', href: '/gallery' },
-  { name: 'ประเมินราคา', href: '/estimate' },
   { name: 'บทความ', href: '/blog' },
   { name: 'เกี่ยวกับเรา', href: '/about' },
   { name: 'ติดต่อเรา', href: '/contact' },
