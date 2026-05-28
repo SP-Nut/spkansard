@@ -26,12 +26,12 @@ import {
   type PriceSize,
 } from "./estimateData";
 export default function EstimatePage() {
-  const [materialType, setMaterialType] = useState<MaterialType>("โปร่งแสง");
-  const [productName, setProductName] = useState(products[0].name);
-  const [size, setSize] = useState<PriceSize>("M");
-  const [width, setWidth] = useState(3);
-  const [length, setLength] = useState(5);
-  const [installStyle, setInstallStyle] = useState<"มีเสา" | "ไร้เสา">("มีเสา");
+  const [materialType, setMaterialType] = useState<MaterialType | "">("");
+  const [productName, setProductName] = useState("");
+  const [size, setSize] = useState<PriceSize | "">("");
+  const [width, setWidth] = useState("");
+  const [length, setLength] = useState("");
+  const [installStyle, setInstallStyle] = useState<"มีเสา" | "ไร้เสา" | "">("");
   const [postServiceName, setPostServiceName] = useState("เสาเดี่ยว");
   const [postCount, setPostCount] = useState(2);
   const [freeInstallName, setFreeInstallName] = useState(freeInstallOptions[0]);
@@ -53,24 +53,47 @@ export default function EstimatePage() {
   const [statusText, setStatusText] = useState("");
 
   const filteredProducts = useMemo(
-    () => products.filter((product) => product.type === materialType),
+    () => (materialType ? products.filter((product) => product.type === materialType) : []),
     [materialType]
   );
 
   const selectedProduct = useMemo(() => {
     const found = products.find((product) => product.name === productName && product.type === materialType);
-    return found ?? filteredProducts[0] ?? products[0];
-  }, [filteredProducts, materialType, productName]);
+    return found ?? null;
+  }, [materialType, productName]);
 
   const availableSizes = useMemo(
-    () => sizes.filter((item) => selectedProduct.prices[item] > 0),
+    () => (selectedProduct ? sizes.filter((item) => selectedProduct.prices[item] > 0) : []),
     [selectedProduct]
   );
 
-  const validSize = availableSizes.includes(size) ? size : availableSizes[0];
+  const validSize = size && availableSizes.includes(size) ? size : "";
+  const numericWidth = Number(width);
+  const numericLength = Number(length);
+  const hasRequiredEstimateInputs =
+    Boolean(selectedProduct && validSize && numericWidth > 0 && numericLength > 0 && installStyle);
 
   const estimate = useMemo(() => {
-    const squareMeters = Math.max(1, width * length);
+    if (!hasRequiredEstimateInputs || !selectedProduct || !validSize) {
+      return {
+        squareMeters: 0,
+        materialRate: 0,
+        materialTotal: 0,
+        postService: null,
+        specialColorService: null,
+        ceilingService: null,
+        extraService: null,
+        gutterService: null,
+        postTotal: 0,
+        colorTotal: 0,
+        ceilingTotal: 0,
+        extraTotal: 0,
+        gutterTotal: 0,
+        total: 0,
+      };
+    }
+
+    const squareMeters = numericWidth * numericLength;
     const materialRate = selectedProduct.prices[validSize] || 0;
     const materialTotal = squareMeters * materialRate;
     const postService = installStyle === "มีเสา"
@@ -114,14 +137,15 @@ export default function EstimatePage() {
     extraQuantity,
     gutterLength,
     gutterName,
+    hasRequiredEstimateInputs,
     installStyle,
-    length,
+    numericLength,
+    numericWidth,
     postCount,
     postServiceName,
     selectedProduct,
     useSpecialColor,
     validSize,
-    width,
   ]);
 
   const handleMaterialTypeChange = (type: MaterialType) => {
@@ -137,7 +161,7 @@ export default function EstimatePage() {
   const handleProductChange = (name: string) => {
     const product = products.find((item) => item.name === name);
     setProductName(name);
-    if (product && product.prices[size] === 0) {
+    if (product && (!size || product.prices[size] === 0)) {
       const firstSize = sizes.find((item) => product.prices[item] > 0);
       if (firstSize) setSize(firstSize);
     }
@@ -145,6 +169,12 @@ export default function EstimatePage() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!hasRequiredEstimateInputs || !selectedProduct || !validSize) {
+      setStatus("error");
+      setStatusText("กรุณาเลือกวัสดุ สินค้า ไซซ์ราคา ขนาดพื้นที่ และรูปแบบติดตั้งก่อนส่งข้อมูล");
+      return;
+    }
+
     setStatus("sending");
     setStatusText("");
 
@@ -153,7 +183,7 @@ export default function EstimatePage() {
       `ประเภทวัสดุ: ${materialType}`,
       `สินค้า: ${selectedProduct.name}`,
       `ไซซ์ราคา: ${validSize}`,
-      `พื้นที่: ${width} x ${length} ม. (${estimate.squareMeters.toFixed(1)} ตร.ม.)`,
+      `พื้นที่: ${numericWidth} x ${numericLength} ม. (${estimate.squareMeters.toFixed(1)} ตร.ม.)`,
       `รูปแบบติดตั้ง: ${installStyle}${installStyle === "ไร้เสา" ? ` (${freeInstallName})` : ""}`,
       installStyle === "มีเสา" && estimate.postService ? `งานเสา: ${estimate.postService.name} x ${postCount}` : "",
       `สีโครงสร้าง: ${useSpecialColor ? "สีผสมพิเศษ" : colorName}`,
@@ -223,6 +253,18 @@ export default function EstimatePage() {
 
       <section className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[1fr_390px] lg:px-8 lg:py-12">
         <div className="space-y-5">
+          <div className="rounded-lg border border-[#dbeafe] bg-[#eaf4ff] p-5 text-[#1E2E4F] sm:p-6">
+            <h2 className="text-lg font-semibold">วิธีใช้งาน</h2>
+            <ol className="mt-3 grid gap-2 text-sm leading-6 text-gray-700 sm:grid-cols-2">
+              <li>1. เลือกประเภทวัสดุและชนิดสินค้า</li>
+              <li>2. เลือกไซซ์ราคาให้ตรงกับงาน</li>
+              <li>3. กรอกขนาดกว้าง x ยาว</li>
+              <li>4. เลือกติดตั้งแบบมีเสาหรือไร้เสา</li>
+              <li>5. เพิ่มบริการเสริมถ้ามี</li>
+              <li>6. ส่งข้อมูลเพื่อขอใบเสนอราคา</li>
+            </ol>
+          </div>
+
           <div className="rounded-lg bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6">
             <h2 className="text-xl font-semibold text-[#1E2E4F]">1. วัสดุและสินค้า</h2>
             <div className="mt-4 grid grid-cols-2 gap-3">
@@ -246,10 +288,12 @@ export default function EstimatePage() {
               <label className="block">
                 <span className="text-sm font-medium text-gray-700">ชนิดสินค้า/วัสดุ</span>
                 <select
-                  value={selectedProduct.name}
+                  value={productName}
                   onChange={(event) => handleProductChange(event.target.value)}
                   className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                  disabled={!materialType}
                 >
+                  <option value="">เลือกสินค้า/วัสดุ</option>
                   {filteredProducts.map((product) => (
                     <option key={product.name} value={product.name}>
                       {product.name}
@@ -264,10 +308,12 @@ export default function EstimatePage() {
                   value={validSize}
                   onChange={(event) => setSize(event.target.value as PriceSize)}
                   className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                  disabled={!selectedProduct}
                 >
+                  <option value="">เลือกไซซ์ราคา</option>
                   {availableSizes.map((item) => (
                     <option key={item} value={item}>
-                      {item} - {formatCurrency(selectedProduct.prices[item])}/ตร.ม.
+                      {item} - {formatCurrency(selectedProduct?.prices[item] ?? 0)}/ตร.ม.
                     </option>
                   ))}
                 </select>
@@ -285,7 +331,7 @@ export default function EstimatePage() {
                   min="1"
                   step="0.5"
                   value={width}
-                  onChange={(event) => setWidth(Number(event.target.value))}
+                  onChange={(event) => setWidth(event.target.value)}
                   className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
                 />
               </label>
@@ -296,7 +342,7 @@ export default function EstimatePage() {
                   min="1"
                   step="0.5"
                   value={length}
-                  onChange={(event) => setLength(Number(event.target.value))}
+                  onChange={(event) => setLength(event.target.value)}
                   className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
                 />
               </label>
@@ -484,6 +530,11 @@ export default function EstimatePage() {
               <div className="text-3xl font-bold leading-tight text-[#1E2E4F]">
                 {formatCurrency(estimate.total)}
               </div>
+              {!hasRequiredEstimateInputs && (
+                <p className="mt-3 text-sm leading-6 text-gray-500">
+                  เริ่มจากเลือกวัสดุ สินค้า ไซซ์ราคา ขนาดพื้นที่ และรูปแบบติดตั้ง ยอดรวมจะอัปเดตอัตโนมัติ
+                </p>
+              )}
               <div className="mt-5 space-y-3 border-t border-gray-100 pt-5 text-sm text-gray-600">
                 <div className="flex justify-between gap-4">
                   <span>วัสดุ</span>
@@ -578,7 +629,7 @@ export default function EstimatePage() {
 
             <button
               type="submit"
-              disabled={status === "sending"}
+              disabled={status === "sending" || !hasRequiredEstimateInputs}
               className="mt-5 w-full rounded-lg bg-[#314874] px-5 py-3 font-semibold text-white transition hover:bg-[#1E2E4F] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {status === "sending" ? "กำลังส่งข้อมูล..." : "ส่งขอใบเสนอราคา"}
