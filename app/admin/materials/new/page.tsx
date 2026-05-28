@@ -110,23 +110,23 @@ export default function AddMaterialPage() {
         setUploading(false);
       }
 
-      // Insert material into database
-      const { error } = await supabase
-        .from('materials')
-        .insert([
-          {
-            name: formData.name,
-            description: formData.description,
-            image_url: imageUrl,
-            features: formData.features,
-            price_range: formData.price_range,
-            category: formData.category
-          }
-        ]);
+      const response = await fetch('/api/admin/materials', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          description: formData.description,
+          image_url: imageUrl,
+          features: formData.features,
+          price_range: formData.price_range,
+          category: formData.category,
+        }),
+      });
+      const result = await response.json();
 
-      if (error) {
-        console.error('Error inserting material:', error);
-        alert('เกิดข้อผิดพลาดในการเพิ่มวัสดุ: ' + error.message);
+      if (!response.ok) {
+        console.error('Error inserting material:', result.error);
+        alert('เกิดข้อผิดพลาดในการเพิ่มวัสดุ: ' + result.error);
         return;
       }
 

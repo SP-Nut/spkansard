@@ -5,18 +5,22 @@ import { useEffect, useRef, useState } from "react";
 import { reviews } from "./data/reviewsData";
 
 // Critical icons only - loaded immediately
-import { FaUsers, FaShieldAlt, FaHeart } from "react-icons/fa";
+import {
+  FaUsers,
+  FaShieldAlt,
+  FaHeart,
+  FaPhoneAlt,
+  FaFileAlt,
+  FaTools,
+  FaHome,
+  FaClock,
+  FaCheckCircle,
+} from "react-icons/fa";
 import { FaCalendarCheck } from "react-icons/fa6";
 
 // Non-critical icons - lazy loaded with ssr: false to prevent hydration issues
 const FaChevronLeft = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaChevronLeft })), { ssr: false });
 const FaChevronRight = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaChevronRight })), { ssr: false });
-const FaPhoneAlt = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaPhoneAlt })), { ssr: false });
-const FaFileAlt = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaFileAlt })), { ssr: false });
-const FaTools = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaTools })), { ssr: false });
-const FaHome = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaHome })), { ssr: false });
-const FaClock = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaClock })), { ssr: false });
-const FaCheckCircle = dynamic(() => import("react-icons/fa").then(mod => ({ default: mod.FaCheckCircle })), { ssr: false });
 
 // Dynamic imports for better code splitting
 const HeroSection = dynamic(() => import("./components/HeroSection"), {

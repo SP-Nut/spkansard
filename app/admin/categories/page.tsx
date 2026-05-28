@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -31,7 +31,7 @@ export default function CategoriesPage() {
   });
 
   useEffect(() => {
-    // ตรวจสอบ authentication
+    // à¸•à¸£à¸§à¸ˆà¸ªà¸­à¸š authentication
     const checkAuth = () => {
       const isAuth = AdminAuth.isAuthenticated();
       
@@ -58,7 +58,7 @@ export default function CategoriesPage() {
       setCategories(data || []);
     } catch (error) {
       console.error('Error fetching categories:', error);
-      alert('เกิดข้อผิดพลาดในการโหลดหมวดหมู่');
+      alert('à¹€à¸à¸´à¸”à¸‚à¹‰à¸­à¸œà¸´à¸”à¸žà¸¥à¸²à¸”à¹ƒà¸™à¸à¸²à¸£à¹‚à¸«à¸¥à¸”à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ');
     } finally {
       setLoading(false);
     }
@@ -95,36 +95,26 @@ export default function CategoriesPage() {
   const handleSave = async () => {
     try {
       if (!formData.name.trim()) {
-        alert('กรุณากรอกชื่อหมวดหมู่');
+        alert('à¸à¸£à¸¸à¸“à¸²à¸à¸£à¸­à¸à¸Šà¸·à¹ˆà¸­à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ');
         return;
       }
 
-      if (isAdding) {
-        const { error } = await supabase
-          .from('categories')
-          .insert([{
-            name: formData.name.trim(),
-            description: formData.description.trim() || null,
-            display_order: formData.display_order,
-            is_active: formData.is_active
-          }]);
+      const payload = {
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        display_order: formData.display_order,
+        is_active: formData.is_active,
+      };
 
-        if (error) throw error;
-        alert('เพิ่มหมวดหมู่สำเร็จ');
-      } else if (editingId) {
-        const { error } = await supabase
-          .from('categories')
-          .update({
-            name: formData.name.trim(),
-            description: formData.description.trim() || null,
-            display_order: formData.display_order,
-            is_active: formData.is_active
-          })
-          .eq('id', editingId);
+      const response = await fetch('/api/admin/categories', {
+        method: isAdding ? 'POST' : 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingId ? { ...payload, id: editingId } : payload),
+      });
+      const result = await response.json();
 
-        if (error) throw error;
-        alert('อัพเดทหมวดหมู่สำเร็จ');
-      }
+      if (!response.ok) throw new Error(result.error || 'Save failed');
+      alert(isAdding ? 'เพิ่มหมวดหมู่สำเร็จ' : 'อัพเดทหมวดหมู่สำเร็จ');
 
       handleCancel();
       fetchCategories();
@@ -132,15 +122,15 @@ export default function CategoriesPage() {
       console.error('Error saving category:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       if (errorMessage.includes('duplicate')) {
-        alert('ชื่อหมวดหมู่นี้มีอยู่แล้ว');
+        alert('à¸Šà¸·à¹ˆà¸­à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆà¸™à¸µà¹‰à¸¡à¸µà¸­à¸¢à¸¹à¹ˆà¹à¸¥à¹‰à¸§');
       } else {
-        alert('เกิดข้อผิดพลาดในการบันทึก: ' + errorMessage);
+        alert('à¹€à¸à¸´à¸”à¸‚à¹‰à¸­à¸œà¸´à¸”à¸žà¸¥à¸²à¸”à¹ƒà¸™à¸à¸²à¸£à¸šà¸±à¸™à¸—à¸¶à¸: ' + errorMessage);
       }
     }
   };
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`ต้องการลบหมวดหมู่ "${name}" หรือไม่?`)) {
+    if (!confirm(`à¸•à¹‰à¸­à¸‡à¸à¸²à¸£à¸¥à¸šà¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ "${name}" à¸«à¸£à¸·à¸­à¹„à¸¡à¹ˆ?`)) {
       return;
     }
 
@@ -155,22 +145,22 @@ export default function CategoriesPage() {
       if (checkError) throw checkError;
 
       if (materials && materials.length > 0) {
-        alert('ไม่สามารถลบหมวดหมู่นี้ได้ เนื่องจากมีวัสดุที่ใช้หมวดหมู่นี้อยู่');
+        alert('à¹„à¸¡à¹ˆà¸ªà¸²à¸¡à¸²à¸£à¸–à¸¥à¸šà¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆà¸™à¸µà¹‰à¹„à¸”à¹‰ à¹€à¸™à¸·à¹ˆà¸­à¸‡à¸ˆà¸²à¸à¸¡à¸µà¸§à¸±à¸ªà¸”à¸¸à¸—à¸µà¹ˆà¹ƒà¸Šà¹‰à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆà¸™à¸µà¹‰à¸­à¸¢à¸¹à¹ˆ');
         return;
       }
 
-      const { error } = await supabase
-        .from('categories')
-        .delete()
-        .eq('id', id);
+      const response = await fetch(`/api/admin/categories?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+      });
+      const result = await response.json();
 
-      if (error) throw error;
+      if (!response.ok) throw new Error(result.error || 'Delete failed');
       
-      alert('ลบหมวดหมู่สำเร็จ');
+      alert('à¸¥à¸šà¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆà¸ªà¸³à¹€à¸£à¹‡à¸ˆ');
       fetchCategories();
     } catch (error) {
       console.error('Error deleting category:', error);
-      alert('เกิดข้อผิดพลาดในการลบหมวดหมู่');
+      alert('à¹€à¸à¸´à¸”à¸‚à¹‰à¸­à¸œà¸´à¸”à¸žà¸¥à¸²à¸”à¹ƒà¸™à¸à¸²à¸£à¸¥à¸šà¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ');
     }
   };
 
@@ -197,17 +187,19 @@ export default function CategoriesPage() {
     }));
 
     try {
-      for (const update of updates) {
-        await supabase
-          .from('categories')
-          .update({ display_order: update.display_order })
-          .eq('id', update.id);
-      }
-      
+      const response = await fetch('/api/admin/categories', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates }),
+      });
+      const result = await response.json();
+
+      if (!response.ok) throw new Error(result.error || 'Reorder failed');
+
       fetchCategories();
     } catch (error) {
       console.error('Error reordering categories:', error);
-      alert('เกิดข้อผิดพลาดในการเรียงลำดับ');
+      alert('à¹€à¸à¸´à¸”à¸‚à¹‰à¸­à¸œà¸´à¸”à¸žà¸¥à¸²à¸”à¹ƒà¸™à¸à¸²à¸£à¹€à¸£à¸µà¸¢à¸‡à¸¥à¸³à¸”à¸±à¸š');
     }
   };
 
@@ -232,7 +224,7 @@ export default function CategoriesPage() {
               >
                 <FaArrowLeft className="h-6 w-6" />
               </Link>
-              <h1 className="text-2xl font-bold text-gray-900">จัดการหมวดหมู่วัสดุ</h1>
+              <h1 className="text-2xl font-bold text-gray-900">à¸ˆà¸±à¸”à¸à¸²à¸£à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆà¸§à¸±à¸ªà¸”à¸¸</h1>
             </div>
             <div className="flex items-center space-x-3">
               <Link
@@ -242,14 +234,14 @@ export default function CategoriesPage() {
                 className="bg-white border-2 border-[#1E2E4F] text-[#1E2E4F] px-4 py-2 rounded-lg hover:bg-[#1E2E4F] hover:text-white transition-colors flex items-center space-x-2"
               >
                 <FaEye />
-                <span>ดูหน้าเว็บ</span>
+                <span>à¸”à¸¹à¸«à¸™à¹‰à¸²à¹€à¸§à¹‡à¸š</span>
               </Link>
               <button
                 onClick={handleAdd}
                 className="bg-[#1E2E4F] text-white px-4 py-2 rounded-lg hover:bg-[#314874] transition-colors flex items-center space-x-2"
               >
                 <FaPlus />
-                <span>เพิ่มหมวดหมู่</span>
+                <span>à¹€à¸žà¸´à¹ˆà¸¡à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ</span>
               </button>
             </div>
           </div>
@@ -262,32 +254,32 @@ export default function CategoriesPage() {
           {(isAdding || editingId) && (
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
               <h2 className="text-xl font-bold mb-4">
-                {isAdding ? 'เพิ่มหมวดหมู่ใหม่' : 'แก้ไขหมวดหมู่'}
+                {isAdding ? 'à¹€à¸žà¸´à¹ˆà¸¡à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆà¹ƒà¸«à¸¡à¹ˆ' : 'à¹à¸à¹‰à¹„à¸‚à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ'}
               </h2>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    ชื่อหมวดหมู่ *
+                    à¸Šà¸·à¹ˆà¸­à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ *
                   </label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#1E2E4F] focus:border-[#1E2E4F]"
-                    placeholder="เช่น ผ้าใบกันสาด"
+                    placeholder="à¹€à¸Šà¹ˆà¸™ à¸œà¹‰à¸²à¹ƒà¸šà¸à¸±à¸™à¸ªà¸²à¸”"
                     required
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    คำอธิบาย
+                    à¸„à¸³à¸­à¸˜à¸´à¸šà¸²à¸¢
                   </label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#1E2E4F] focus:border-[#1E2E4F]"
-                    placeholder="คำอธิบายเกี่ยวกับหมวดหมู่นี้"
+                    placeholder="à¸„à¸³à¸­à¸˜à¸´à¸šà¸²à¸¢à¹€à¸à¸µà¹ˆà¸¢à¸§à¸à¸±à¸šà¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆà¸™à¸µà¹‰"
                   />
                 </div>
                 <div className="flex items-center">
@@ -298,7 +290,7 @@ export default function CategoriesPage() {
                     className="h-4 w-4 text-[#1E2E4F] focus:ring-[#1E2E4F] border-gray-300 rounded"
                   />
                   <label className="ml-2 block text-sm text-gray-900">
-                    เปิดใช้งาน
+                    à¹€à¸›à¸´à¸”à¹ƒà¸Šà¹‰à¸‡à¸²à¸™
                   </label>
                 </div>
                 <div className="flex space-x-3">
@@ -307,14 +299,14 @@ export default function CategoriesPage() {
                     className="bg-[#1E2E4F] text-white px-4 py-2 rounded-lg hover:bg-[#314874] transition-colors flex items-center space-x-2"
                   >
                     <FaSave />
-                    <span>บันทึก</span>
+                    <span>à¸šà¸±à¸™à¸—à¸¶à¸</span>
                   </button>
                   <button
                     onClick={handleCancel}
                     className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors flex items-center space-x-2"
                   >
                     <FaTimes />
-                    <span>ยกเลิก</span>
+                    <span>à¸¢à¸à¹€à¸¥à¸´à¸</span>
                   </button>
                 </div>
               </div>
@@ -327,19 +319,19 @@ export default function CategoriesPage() {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    ลำดับ
+                    à¸¥à¸³à¸”à¸±à¸š
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    ชื่อหมวดหมู่
+                    à¸Šà¸·à¹ˆà¸­à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    คำอธิบาย
+                    à¸„à¸³à¸­à¸˜à¸´à¸šà¸²à¸¢
                   </th>
                   <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    สถานะ
+                    à¸ªà¸–à¸²à¸™à¸°
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    จัดการ
+                    à¸ˆà¸±à¸”à¸à¸²à¸£
                   </th>
                 </tr>
               </thead>
@@ -379,7 +371,7 @@ export default function CategoriesPage() {
                           ? 'bg-green-100 text-green-800' 
                           : 'bg-gray-100 text-gray-800'
                       }`}>
-                        {category.is_active ? 'เปิดใช้งาน' : 'ปิดใช้งาน'}
+                        {category.is_active ? 'à¹€à¸›à¸´à¸”à¹ƒà¸Šà¹‰à¸‡à¸²à¸™' : 'à¸›à¸´à¸”à¹ƒà¸Šà¹‰à¸‡à¸²à¸™'}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -402,7 +394,7 @@ export default function CategoriesPage() {
             </table>
             {categories.length === 0 && (
               <div className="text-center py-8 text-gray-500">
-                ยังไม่มีหมวดหมู่ กดปุ่ม &quot;เพิ่มหมวดหมู่&quot; เพื่อเริ่มต้น
+                à¸¢à¸±à¸‡à¹„à¸¡à¹ˆà¸¡à¸µà¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ à¸à¸”à¸›à¸¸à¹ˆà¸¡ &quot;à¹€à¸žà¸´à¹ˆà¸¡à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ&quot; à¹€à¸žà¸·à¹ˆà¸­à¹€à¸£à¸´à¹ˆà¸¡à¸•à¹‰à¸™
               </div>
             )}
           </div>

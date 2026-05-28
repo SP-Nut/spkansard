@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { FaHome, FaChevronRight, FaClock, FaArrowLeft, FaShare } from 'react-icons/fa';
 import { supabase } from '@/lib/supabase';
+import { sanitizeHtml } from '@/lib/sanitize';
 
 interface Article {
   id: string;
@@ -295,7 +296,7 @@ const ArticlePage = () => {
               {/* Content */}
               <div 
                 className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-[#314874] prose-a:hover:text-[#1E2E4F] prose-strong:text-gray-900"
-                dangerouslySetInnerHTML={{ __html: article.content }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }}
               />
             </div>
           </article>

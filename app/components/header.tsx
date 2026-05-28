@@ -5,13 +5,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const navItems = [
-  { name: 'Home', href: '/' },
-  { name: 'Materials', href: '/materials' },
-  { name: 'Gallery', href: '/gallery' },
-  { name: 'Blog', href: '/blog' },
-  { name: 'About Us', href: '/about' },
-  { name: 'Contact', href: '/contact' },
-  { name: 'FAQ', href: '/faq' },
+  { name: 'หน้าแรก', href: '/' },
+  { name: 'วัสดุ', href: '/materials' },
+  { name: 'ผลงาน', href: '/gallery' },
+  { name: 'บทความ', href: '/blog' },
+  { name: 'เกี่ยวกับเรา', href: '/about' },
+  { name: 'ติดต่อเรา', href: '/contact' },
+  { name: 'คำถามที่พบบ่อย', href: '/faq' },
 ];
 
 export default function Header() {
@@ -111,15 +111,16 @@ export default function Header() {
               rel="noopener noreferrer"
               className="bg-[#eaf4ff] text-[#1E2E4F] hover:bg-white font-medium py-2 px-6 rounded-full transition-colors duration-200 text-base"
             >
-              คำนวนราคาเบื้องต้น
+              คำนวณราคาเบื้องต้น
             </a>
           </div>
 
           {/* Mobile menu button */}
-          <div className="lg:hidden shrink-0">
+          <div className="lg:hidden shrink-0 relative z-[70]">
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-white hover:text-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 p-2 rounded-md"
+              type="button"
+              onClick={() => setIsMenuOpen((open) => !open)}
+              className="relative z-[70] text-white hover:text-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 p-2 rounded-md"
               aria-label={isMenuOpen ? 'ปิดเมนูนำทาง' : 'เปิดเมนูนำทาง'}
               aria-expanded={isMenuOpen}
               aria-controls="mobile-nav"
@@ -137,8 +138,8 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div id="mobile-nav" className="lg:hidden fixed top-16 sm:top-20 left-0 w-full h-full bg-[#1E2E4F] z-40 overflow-y-auto" role="dialog" aria-modal="true">
-            <div className="px-4 pt-2 pb-3 space-y-1">
+          <div id="mobile-nav" className="lg:hidden fixed inset-x-0 bottom-0 top-16 sm:top-20 bg-[#1E2E4F] z-[60] overflow-y-auto" role="dialog" aria-modal="true">
+            <div className="px-4 pt-4 pb-24 space-y-1">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
@@ -157,7 +158,7 @@ export default function Header() {
                 className="bg-[#eaf4ff] text-[#1E2E4F] hover:bg-white font-medium py-2 px-4 rounded-full transition-colors duration-200 text-base inline-block mt-3"
                 onClick={() => setIsMenuOpen(false)}
               >
-                คำนวนราคาเบื้องต้น
+                คำนวณราคาเบื้องต้น
               </a>
             </div>
           </div>

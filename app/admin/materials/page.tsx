@@ -59,12 +59,12 @@ export default function AdminMaterials() {
     }
 
     try {
-      const { error } = await supabase
-        .from('materials')
-        .delete()
-        .eq('id', id);
+      const response = await fetch(`/api/admin/materials?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+      });
+      const result = await response.json();
 
-      if (error) throw error;
+      if (!response.ok) throw new Error(result.error || 'Delete failed');
       
       // อัพเดท state
       setMaterials(materials.filter(material => material.id !== id));
@@ -174,7 +174,7 @@ export default function AdminMaterials() {
                           <div className="h-12 w-12 flex-shrink-0">
                             <Image
                               className="h-12 w-12 rounded-lg object-cover"
-                              src={material.image_url || '/images/placeholder.jpg'}
+                              src={material.image_url || '/images/logo.png'}
                               alt={material.name}
                               width={48}
                               height={48}

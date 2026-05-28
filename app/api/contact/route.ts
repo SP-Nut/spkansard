@@ -1,111 +1,113 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { escapeHtml } from '@/lib/sanitize';
+
+interface ContactBody {
+  name?: string;
+  lastname?: string;
+  phone?: string;
+  email?: string;
+  lineId?: string;
+  services?: unknown;
+  message?: string;
+}
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { name, lastname, phone, email, lineId, services, message } = body;
+    const body = (await request.json()) as ContactBody;
+    const { name, lastname, phone, email, lineId, message } = body;
+    const services = Array.isArray(body.services) ? body.services.map(String) : [];
 
-    // Validate required fields
     if (!name || !phone || !lineId) {
       return NextResponse.json(
-        { error: 'กรุณากรอกชื่อ, เบอร์โทรศัพท์ และ LINE ID' },
+        { error: 'กรุณากรอกชื่อ เบอร์โทรศัพท์ และ LINE ID' },
         { status: 400 }
       );
     }
 
-    // Validate phone number format
     const phonePattern = /^[0-9\s\-\+\(\)]+$/;
     if (!phonePattern.test(phone)) {
       return NextResponse.json(
-        { error: 'กรุณากรอกเบอร์โทรเป็นตัวเลขเท่านั้น' },
+        { error: 'กรุณากรอกเบอร์โทรให้ถูกต้อง' },
         { status: 400 }
       );
     }
 
-    // Create email content
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      return NextResponse.json(
+        { error: 'ระบบส่งอีเมลยังไม่ได้ตั้งค่า', success: false },
+        { status: 500 }
+      );
+    }
+
+    const emailUser = process.env.EMAIL_USER;
+    const emailPass = process.env.EMAIL_PASS;
+    const submittedAt = new Date().toLocaleString('th-TH');
+    const servicesText = services.length > 0 ? services.join(', ') : 'Not specified';
+
     const emailContent = `
-=== ข้อมูลติดต่อใหม่จากเว็บไซต์ ===
+=== New contact from website ===
 
-ชื่อ: ${name} ${lastname || ''}
-เบอร์โทร: ${phone}
-อีเมล: ${email || 'ไม่ระบุ'}
-LINE ID: ${lineId || 'ไม่ระบุ'}
-บริการที่สนใจ: ${services.length > 0 ? services.join(', ') : 'ไม่ระบุ'}
+Name: ${name} ${lastname || ''}
+Phone: ${phone}
+Email: ${email || 'Not specified'}
+LINE ID: ${lineId}
+Interested services: ${servicesText}
 
-รายละเอียด:
-${message || 'ไม่มีข้อความเพิ่มเติม'}
+Message:
+${message || 'No additional message'}
 
-เวลาที่ส่ง: ${new Date().toLocaleString('th-TH')}
-=======================================
+Submitted at: ${submittedAt}
+================================
     `;
 
-    // Send email notification
-    try {
-      if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-        return NextResponse.json(
-          { error: 'ระบบส่งอีเมลยังไม่ได้ตั้งค่า กรุณาติดต่อผู้ดูแลระบบ', success: false },
-          { status: 500 }
-        );
-      }
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: emailUser,
+        pass: emailPass,
+      },
+    });
 
-      const emailUser = process.env.EMAIL_USER;
-      const emailPass = process.env.EMAIL_PASS;
+    await transporter.verify();
 
-      const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        auth: {
-          user: emailUser,
-          pass: emailPass
-        },
-        tls: {
-          rejectUnauthorized: false
-        }
-      });
+    const safeName = escapeHtml(name);
+    const safeLastname = escapeHtml(lastname);
+    const safePhone = escapeHtml(phone);
+    const safeEmail = escapeHtml(email || 'Not specified');
+    const safeLineId = escapeHtml(lineId);
+    const safeServices = escapeHtml(servicesText);
+    const safeMessage = escapeHtml(message || 'No additional message');
+    const safeSubmittedAt = escapeHtml(submittedAt);
 
-      await transporter.verify();
-
-      const mailOptions = {
-        from: `"SP Kansard Contact" <${emailUser}>`,
-        to: 'spkansards@gmail.com',
-        subject: `🔔 ลูกค้าติดต่อใหม่: ${name}`,
-        text: emailContent,
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px;">
-            <h2 style="color: #314874;">📬 ข้อมูลติดต่อใหม่จากเว็บไซต์</h2>
-            <div style="background: #f5f5f5; padding: 20px; border-radius: 8px;">
-              <p><strong>👤 ชื่อ:</strong> ${name} ${lastname || ''}</p>
-              <p><strong>📞 เบอร์โทร:</strong> ${phone}</p>
-              <p><strong>📧 อีเมล:</strong> ${email || 'ไม่ระบุ'}</p>
-              <p><strong>💬 LINE ID:</strong> ${lineId || 'ไม่ระบุ'}</p>
-              <p><strong>🛠️ บริการที่สนใจ:</strong> ${services.length > 0 ? services.join(', ') : 'ไม่ระบุ'}</p>
-              <p><strong>📝 รายละเอียด:</strong></p>
-              <p style="background: white; padding: 10px; border-left: 3px solid #314874;">${message || 'ไม่มีข้อความเพิ่มเติม'}</p>
-              <p><strong>🕒 เวลาที่ส่ง:</strong> ${new Date().toLocaleString('th-TH')}</p>
-            </div>
+    await transporter.sendMail({
+      from: `"SP Kansard Contact" <${emailUser}>`,
+      to: 'spkansards@gmail.com',
+      subject: `New website contact: ${name}`,
+      text: emailContent,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px;">
+          <h2 style="color: #314874;">New contact from website</h2>
+          <div style="background: #f5f5f5; padding: 20px; border-radius: 8px;">
+            <p><strong>Name:</strong> ${safeName} ${safeLastname}</p>
+            <p><strong>Phone:</strong> ${safePhone}</p>
+            <p><strong>Email:</strong> ${safeEmail}</p>
+            <p><strong>LINE ID:</strong> ${safeLineId}</p>
+            <p><strong>Interested services:</strong> ${safeServices}</p>
+            <p><strong>Message:</strong></p>
+            <p style="background: white; padding: 10px; border-left: 3px solid #314874;">${safeMessage}</p>
+            <p><strong>Submitted at:</strong> ${safeSubmittedAt}</p>
           </div>
-        `
-      };
-
-      await transporter.sendMail(mailOptions);
-    } catch (emailError: unknown) {
-      const error = emailError as Error;
-      console.error('Email sending failed:', error?.message);
-      
-      // ส่งต่อ error เพื่อให้ผู้ใช้ทราบ
-      return NextResponse.json({
-        error: `ส่งอีเมลไม่สำเร็จ: ${error?.message || 'ไม่ทราบสาเหตุ'}`,
-        success: false
-      }, { status: 500 });
-    }
+        </div>
+      `,
+    });
 
     return NextResponse.json({
       success: true,
-      message: 'ขอบคุณสำหรับการติดต่อ เราจะติดต่อกลับในเร็วๆ นี้'
+      message: 'ขอบคุณสำหรับการติดต่อ เราจะติดต่อกลับในเร็ว ๆ นี้',
     });
-
   } catch (error) {
     console.error('Error processing contact form:', error);
     return NextResponse.json(

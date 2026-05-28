@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
+import { createAdminToken } from '@/lib/admin-token';
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,21 +15,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // สร้าง JWT token
-    const token = jwt.sign(
-      { 
-        admin: true,
-        timestamp: Date.now()
-      },
-      process.env.JWT_SECRET || 'fallback-secret-key',
-      { expiresIn: '24h' }
-    );
-
-    return NextResponse.json({
+    const token = await createAdminToken();
+    const response = NextResponse.json({
       success: true,
       token,
       message: 'เข้าสู่ระบบสำเร็จ'
     });
+
+    response.cookies.set('adminToken', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 24 * 60 * 60,
+    });
+
+    return response;
 
   } catch (error) {
     console.error('Login error:', error);

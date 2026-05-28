@@ -70,7 +70,12 @@ export default function AdminDashboard() {
     init();
   }, [router]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/logout', { method: 'POST' });
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
     AdminAuth.clearToken();
     router.push('/admin/login');
   };

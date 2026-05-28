@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
 
+const supabaseStorageHost = process.env.NEXT_PUBLIC_SUPABASE_URL
+  ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
+  : 'cqezrbvsppgponmupoyt.supabase.co';
+
 const nextConfig: NextConfig = {
   // Performance optimizations
   compress: true,
@@ -19,7 +23,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'cqezrbvsppgponmupoyt.supabase.co',
+        hostname: supabaseStorageHost,
         pathname: '/storage/v1/object/public/**',
       },
     ],
@@ -62,15 +66,6 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/herosection/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/_next/static/(.*)',
         headers: [
           {
             key: 'Cache-Control',

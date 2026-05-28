@@ -52,13 +52,15 @@ export default function ArticlesManagementPage() {
 
   const togglePublished = async (id: string, currentStatus: boolean) => {
     try {
-      const { error } = await supabase
-        .from('articles')
-        .update({ published: !currentStatus })
-        .eq('id', id);
+      const response = await fetch('/api/admin/articles', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, published: !currentStatus }),
+      });
+      const result = await response.json();
 
-      if (error) {
-        console.error('Error updating article:', error);
+      if (!response.ok) {
+        console.error('Error updating article:', result.error);
         alert('เกิดข้อผิดพลาดในการอัปเดตสถานะ');
         return;
       }
@@ -81,13 +83,13 @@ export default function ArticlesManagementPage() {
     }
 
     try {
-      const { error } = await supabase
-        .from('articles')
-        .delete()
-        .eq('id', id);
+      const response = await fetch(`/api/admin/articles?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+      });
+      const result = await response.json();
 
-      if (error) {
-        console.error('Error deleting article:', error);
+      if (!response.ok) {
+        console.error('Error deleting article:', result.error);
         alert('เกิดข้อผิดพลาดในการลบบทความ');
         return;
       }

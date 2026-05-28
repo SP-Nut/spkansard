@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { supabase } from '@/lib/supabase';
+import { sanitizeHtml } from '@/lib/sanitize';
 import dynamic from 'next/dynamic';
 
 // Dynamic import to avoid SSR issues
@@ -147,7 +147,7 @@ export default function AddArticlePage() {
     return `${slug}-${timestamp}`;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent, publishOverride?: boolean) => {
     e.preventDefault();
     setLoading(true);
 
@@ -164,24 +164,24 @@ export default function AddArticlePage() {
       // Generate slug from title
       const slug = generateSlug(formData.title);
 
-      // Insert article into database
-      const { error } = await supabase
-        .from('articles')
-        .insert([
-          {
-            title: formData.title,
-            slug: slug,
-            content: formData.content,
-            excerpt: formData.summary,  // Save to excerpt field in database
-            image_url: imageUrl || null,
-            tags: formData.tags,
-            published: formData.published
-          }
-        ]);
+      const response = await fetch('/api/admin/articles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: formData.title,
+          slug,
+          content: sanitizeHtml(formData.content),
+          excerpt: formData.summary,
+          image_url: imageUrl || null,
+          tags: formData.tags,
+          published: publishOverride ?? formData.published,
+        }),
+      });
+      const result = await response.json();
 
-      if (error) {
-        console.error('Error inserting article:', error);
-        alert('เกิดข้อผิดพลาดในการเพิ่มบทความ: ' + error.message);
+      if (!response.ok) {
+        console.error('Error inserting article:', result.error);
+        alert('เกิดข้อผิดพลาดในการเพิ่มบทความ: ' + result.error);
         return;
       }
 
@@ -196,18 +196,16 @@ export default function AddArticlePage() {
     }
   };
 
-  const handleSaveDraft = async () => {
-    setFormData(prev => ({ ...prev, published: false }));
-    // Trigger form submission with published = false
-    const form = document.querySelector('form') as HTMLFormElement;
-    form?.requestSubmit();
+  const handleSaveDraft = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const form = e.currentTarget.form;
+    if (!form?.reportValidity()) return;
+    await handleSubmit(e as unknown as React.FormEvent, false);
   };
 
-  const handlePublish = async () => {
-    setFormData(prev => ({ ...prev, published: true }));
-    // Trigger form submission with published = true
-    const form = document.querySelector('form') as HTMLFormElement;
-    form?.requestSubmit();
+  const handlePublish = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const form = e.currentTarget.form;
+    if (!form?.reportValidity()) return;
+    await handleSubmit(e as unknown as React.FormEvent, true);
   };
 
   return (

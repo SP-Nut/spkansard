@@ -4,6 +4,7 @@ import { useState, lazy, Suspense } from 'react';
 import Link from 'next/link';
 import { FaHome, FaChevronRight, FaPhone } from 'react-icons/fa';
 import { SiLine } from 'react-icons/si';
+import { sanitizeHtml } from '@/lib/sanitize';
 
 // Dynamic import for non-critical component
 const StructuredData = lazy(() => import('../components/StructuredData'));
@@ -195,7 +196,7 @@ export default function FAQ() {
                       <div className="mt-3 sm:mt-4 ml-7 sm:ml-9">
                         <div 
                           className="text-gray-600 leading-relaxed text-sm sm:text-base"
-                          dangerouslySetInnerHTML={{ __html: faq.answer }}
+                          dangerouslySetInnerHTML={{ __html: sanitizeHtml(faq.answer) }}
                         />
                       </div>
                     </details>

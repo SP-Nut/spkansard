@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
+import { sanitizeHtml } from '@/lib/sanitize';
 import dynamic from 'next/dynamic';
 
 // Dynamic import to avoid SSR issues
@@ -169,7 +170,7 @@ export default function EditArticlePage() {
     return data.url;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent, publishOverride?: boolean) => {
     e.preventDefault();
     setLoading(true);
 
@@ -183,23 +184,24 @@ export default function EditArticlePage() {
         setUploading(false);
       }
 
-      // Update article in database
-      const { error } = await supabase
-        .from('articles')
-        .update({
+      const response = await fetch('/api/admin/articles', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: articleId,
           title: formData.title,
-          content: formData.content,
-          excerpt: formData.summary,  // Save to excerpt field in database
+          content: sanitizeHtml(formData.content),
+          excerpt: formData.summary,
           image_url: imageUrl || null,
           tags: formData.tags,
-          published: formData.published,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', articleId);
+          published: publishOverride ?? formData.published,
+        }),
+      });
+      const result = await response.json();
 
-      if (error) {
-        console.error('Error updating article:', error);
-        alert('เกิดข้อผิดพลาดในการอัปเดตบทความ: ' + error.message);
+      if (!response.ok) {
+        console.error('Error updating article:', result.error);
+        alert('เกิดข้อผิดพลาดในการอัปเดตบทความ: ' + result.error);
         return;
       }
 
@@ -214,18 +216,16 @@ export default function EditArticlePage() {
     }
   };
 
-  const handleSaveDraft = async () => {
-    setFormData(prev => ({ ...prev, published: false }));
-    // Trigger form submission with published = false
-    const form = document.querySelector('form') as HTMLFormElement;
-    form?.requestSubmit();
+  const handleSaveDraft = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const form = e.currentTarget.form;
+    if (!form?.reportValidity()) return;
+    await handleSubmit(e as unknown as React.FormEvent, false);
   };
 
-  const handlePublish = async () => {
-    setFormData(prev => ({ ...prev, published: true }));
-    // Trigger form submission with published = true
-    const form = document.querySelector('form') as HTMLFormElement;
-    form?.requestSubmit();
+  const handlePublish = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const form = e.currentTarget.form;
+    if (!form?.reportValidity()) return;
+    await handleSubmit(e as unknown as React.FormEvent, true);
   };
 
   if (initialLoading) {
