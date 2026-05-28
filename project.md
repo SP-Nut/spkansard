@@ -23,9 +23,9 @@ SP Kansard เป็นเว็บบริษัทรับออกแบบ
 - `app/components/StructuredData.tsx`: JSON-LD schema รวมของ organization, website, local business, service และ FAQ
 - `app/blog`, `app/gallery`, `app/materials`, `app/contact`, `app/about`, `app/faq`: public pages
 - `app/estimate`: ระบบคำนวณราคากันสาดเบื้องต้นในเว็บหลัก ใช้ตารางราคาวัสดุจริงตามประเภทโปร่งแสง/ทึบแสง, ไซซ์ราคา, พื้นที่, รูปแบบติดตั้ง, บริการหลัก/เสริม และส่ง lead เข้า `/api/contact`
-- `app/estimate/estimateData.ts`: แหล่งข้อมูลราคาและ helper ของ calculator แก้สินค้า/ราคา/บริการที่ไฟล์นี้ก่อน อย่าใส่ data ยาวกลับเข้า `page.tsx`
-- Calculator products support optional `imageUrl` and `imageAlt` fields in `app/estimate/estimateData.ts`; put product preview images there instead of hard-coding image paths in `app/estimate/page.tsx`.
-- Calculator data is now admin-managed in Supabase tables `estimate_products` and `estimate_services`. Run `supabase-estimate.sql`, then use `/admin/estimate` to seed/edit prices, product images, active status, and service options. Keep `estimateData.ts` as fallback/default seed data only.
+- `app/estimate/estimateData.ts`: helper/types ของ calculator เท่านั้น ราคา สินค้า และบริการอยู่ใน Supabase
+- Calculator products support optional `image_url` and `image_alt` fields in `estimate_products`; put product preview images in Supabase instead of hard-coding image paths in `app/estimate/page.tsx`.
+- Calculator data is admin-managed in Supabase tables `estimate_products` and `estimate_services`. Run `supabase-estimate.sql` to create/update schema and seed default prices/services, then use `/admin/estimate` to edit products, prices, product images, active status, and service options.
 - `app/api/admin/estimate-data`: authenticated admin API for calculator products/services. Use this for admin writes so service role stays server-side.
 - `app/admin`: admin dashboard สำหรับ articles, materials, categories
 - `app/api/admin`: API หลังบ้าน ใช้ `lib/admin-api.ts` และ `lib/admin-token.ts`

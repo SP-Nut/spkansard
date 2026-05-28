@@ -13,14 +13,10 @@ import {
 } from "react-icons/fa";
 
 import {
-  extraServices,
   formatCurrency,
   freeColors,
   freeInstallOptions,
   getServiceTotal,
-  gutters,
-  mainServices,
-  products,
   sizes,
   unitLabels,
   type MaterialType,
@@ -87,10 +83,10 @@ const initialCustomer = {
 };
 
 export default function EstimatePage() {
-  const [calculatorProducts, setCalculatorProducts] = useState<Product[]>(products);
-  const [calculatorMainServices, setCalculatorMainServices] = useState<ServiceOption[]>(mainServices);
-  const [calculatorExtraServices, setCalculatorExtraServices] = useState<ServiceOption[]>(extraServices);
-  const [calculatorGutters, setCalculatorGutters] = useState<ServiceOption[]>(gutters);
+  const [calculatorProducts, setCalculatorProducts] = useState<Product[]>([]);
+  const [calculatorMainServices, setCalculatorMainServices] = useState<ServiceOption[]>([]);
+  const [calculatorExtraServices, setCalculatorExtraServices] = useState<ServiceOption[]>([]);
+  const [calculatorGutters, setCalculatorGutters] = useState<ServiceOption[]>([]);
   const [materialType, setMaterialType] = useState<MaterialType | "">("");
   const [productName, setProductName] = useState("");
   const [size, setSize] = useState<PriceSize | "">("");
@@ -103,8 +99,7 @@ export default function EstimatePage() {
   const [colorName, setColorName] = useState(freeColors[0]);
   const [useSpecialColor, setUseSpecialColor] = useState(false);
   const [ceilingName, setCeilingName] = useState("");
-  const [extraName, setExtraName] = useState("");
-  const [extraQuantity, setExtraQuantity] = useState(1);
+  const [extraServiceQuantities, setExtraServiceQuantities] = useState<Record<string, number>>({});
   const [gutterName, setGutterName] = useState("");
   const [gutterLength, setGutterLength] = useState(5);
   const [customer, setCustomer] = useState(initialCustomer);
@@ -142,7 +137,7 @@ export default function EstimatePage() {
           setCalculatorGutters(serviceRows.filter((row) => row.service_type === "gutter").map(mapServiceRow));
         }
       } catch (error) {
-        console.warn("Estimate data fallback is active:", error);
+        console.warn("Estimate data could not be loaded from Supabase:", error);
       }
     };
 
@@ -183,7 +178,7 @@ export default function EstimatePage() {
         postService: null,
         specialColorService: null,
         ceilingService: null,
-        extraService: null,
+        extraServiceItems: [],
         gutterService: null,
         postTotal: 0,
         colorTotal: 0,
@@ -206,13 +201,23 @@ export default function EstimatePage() {
     const ceilingService = validSize === "L+"
       ? calculatorMainServices.find((service) => service.name === ceilingName) ?? null
       : null;
-    const extraService = calculatorExtraServices.find((service) => service.name === extraName) ?? null;
+    const extraServiceItems = calculatorExtraServices
+      .filter((service) => extraServiceQuantities[service.name] !== undefined)
+      .map((service) => {
+        const quantity = Math.max(0, extraServiceQuantities[service.name] ?? 1);
+
+        return {
+          service,
+          quantity,
+          total: getServiceTotal(service, quantity, squareMeters),
+        };
+      });
     const gutterService = calculatorGutters.find((service) => service.name === gutterName) ?? null;
 
     const postTotal = getServiceTotal(postService, postCount, squareMeters);
     const colorTotal = getServiceTotal(specialColorService, 1, squareMeters);
     const ceilingTotal = getServiceTotal(ceilingService, 1, squareMeters);
-    const extraTotal = getServiceTotal(extraService, extraQuantity, squareMeters);
+    const extraTotal = extraServiceItems.reduce((sum, item) => sum + item.total, 0);
     const gutterTotal = getServiceTotal(gutterService, gutterLength, squareMeters);
 
     return {
@@ -222,7 +227,7 @@ export default function EstimatePage() {
       postService,
       specialColorService,
       ceilingService,
-      extraService,
+      extraServiceItems,
       gutterService,
       postTotal,
       colorTotal,
@@ -236,8 +241,7 @@ export default function EstimatePage() {
     calculatorExtraServices,
     calculatorGutters,
     calculatorMainServices,
-    extraName,
-    extraQuantity,
+    extraServiceQuantities,
     gutterLength,
     gutterName,
     hasRequiredEstimateInputs,
@@ -268,6 +272,28 @@ export default function EstimatePage() {
     setSize(firstSize ?? "");
   };
 
+  const handleExtraServiceToggle = (serviceName: string, checked: boolean) => {
+    setExtraServiceQuantities((current) => {
+      if (checked) {
+        return {
+          ...current,
+          [serviceName]: current[serviceName] ?? 1,
+        };
+      }
+
+      const next = { ...current };
+      delete next[serviceName];
+      return next;
+    });
+  };
+
+  const handleExtraQuantityChange = (serviceName: string, quantity: number) => {
+    setExtraServiceQuantities((current) => ({
+      ...current,
+      [serviceName]: quantity,
+    }));
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!hasRequiredEstimateInputs || !selectedProduct || !validSize) {
@@ -290,7 +316,9 @@ export default function EstimatePage() {
       installStyle === "มีเสา" && estimate.postService ? `งานเสา: ${estimate.postService.name} x ${postCount}` : "",
       `สีโครงสร้าง: ${useSpecialColor ? "สีผสมพิเศษ" : colorName}`,
       estimate.ceilingService ? `งานฝ้า: ${estimate.ceilingService.name}` : "",
-      estimate.extraService ? `บริการเสริม: ${estimate.extraService.name} x ${extraQuantity}` : "",
+      estimate.extraServiceItems.length > 0
+        ? `บริการเสริม: ${estimate.extraServiceItems.map((item) => `${item.service.name} x ${item.quantity}`).join(", ")}`
+        : "",
       estimate.gutterService ? `รางน้ำ: ${estimate.gutterService.name} x ${gutterLength} เมตร` : "",
       customer.imageUrl ? `รูปหน้างาน/แบบที่ชอบ: ${customer.imageUrl}` : "",
       `รวมราคาเบื้องต้น: ${formatCurrency(estimate.total)}`,
@@ -308,7 +336,12 @@ export default function EstimatePage() {
           phone: customer.phone,
           lineId: customer.lineId,
           email: customer.email,
-          services: [selectedProduct.name, validSize, "ประเมินราคาออนไลน์"],
+          services: [
+            selectedProduct.name,
+            validSize,
+            "ประเมินราคาออนไลน์",
+            ...estimate.extraServiceItems.map((item) => item.service.name),
+          ],
           message: estimateMessage,
         }),
       });
@@ -588,33 +621,53 @@ export default function EstimatePage() {
                 </select>
               </label>
 
-              <label className="block">
+              <div className="sm:col-span-2">
                 <span className="text-sm font-medium text-gray-700">บริการเสริม</span>
-                <select
-                  value={extraName}
-                  onChange={(event) => setExtraName(event.target.value)}
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
-                >
-                  <option value="">ไม่เลือก</option>
-                  {calculatorExtraServices.map((service) => (
-                    <option key={service.name} value={service.name}>
-                      {service.group} - {service.name} ({formatCurrency(service.price)}/{unitLabels[service.unit]})
-                    </option>
-                  ))}
-                </select>
-              </label>
+                <div className="mt-2 grid gap-3">
+                  {calculatorExtraServices.map((service) => {
+                    const isSelected = extraServiceQuantities[service.name] !== undefined;
 
-              <label className="block">
-                <span className="text-sm font-medium text-gray-700">จำนวนบริการเสริม</span>
-                <input
-                  type="number"
-                  min="0"
-                  value={extraQuantity}
-                  disabled={!extraName}
-                  onChange={(event) => setExtraQuantity(Number(event.target.value))}
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 disabled:bg-gray-100 disabled:text-gray-400 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
-                />
-              </label>
+                    return (
+                      <div
+                        key={service.name}
+                        className={`grid gap-3 rounded-lg border px-4 py-3 transition sm:grid-cols-[minmax(0,1fr)_120px] ${
+                          isSelected
+                            ? "border-[#314874] bg-[#eaf4ff]"
+                            : "border-gray-200 bg-white"
+                        }`}
+                      >
+                        <label className="flex cursor-pointer items-start gap-3">
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={(event) => handleExtraServiceToggle(service.name, event.target.checked)}
+                            className="mt-1 h-4 w-4 rounded border-gray-300 text-[#314874] focus:ring-[#314874]"
+                          />
+                          <span className="min-w-0">
+                            <span className="block text-sm font-medium text-gray-900">
+                              {service.group} - {service.name}
+                            </span>
+                            <span className="mt-1 block text-xs text-gray-500">
+                              {formatCurrency(service.price)}/{unitLabels[service.unit]}
+                            </span>
+                          </span>
+                        </label>
+                        <label className="block">
+                          <span className="text-xs font-medium text-gray-600">จำนวน</span>
+                          <input
+                            type="number"
+                            min="0"
+                            value={extraServiceQuantities[service.name] ?? 1}
+                            disabled={!isSelected}
+                            onChange={(event) => handleExtraQuantityChange(service.name, Number(event.target.value))}
+                            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 disabled:bg-gray-100 disabled:text-gray-400 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                          />
+                        </label>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
 
               <label className="block">
                 <span className="text-sm font-medium text-gray-700">วัสดุรางน้ำ</span>
