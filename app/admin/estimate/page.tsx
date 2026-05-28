@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { type ChangeEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   FaArrowLeft,
   FaCalculator,
   FaEdit,
+  FaImage,
   FaPlus,
   FaSave,
   FaSearch,
@@ -153,6 +154,7 @@ export default function AdminEstimatePage() {
   const [serviceStatusFilter, setServiceStatusFilter] = useState<StatusFilter>("all");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingProductImage, setUploadingProductImage] = useState(false);
   const [message, setMessage] = useState<MessageState>(null);
 
   const serviceGroups = useMemo(() => {
@@ -264,6 +266,39 @@ export default function AdminEstimatePage() {
     setProductForm(createEmptyProduct());
     setMessage({ type: "success", text: "บันทึกสินค้าแล้ว" });
     fetchData();
+  };
+
+  const uploadProductImage = async (file: File) => {
+    setUploadingProductImage(true);
+    setMessage(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", "estimate-products");
+
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "อัปโหลดรูปสินค้าไม่สำเร็จ");
+      }
+
+      setProductForm((product) => ({
+        ...product,
+        image_url: result.url,
+        image_alt: product.image_alt || product.name || file.name,
+      }));
+      setMessage({ type: "success", text: "อัปโหลดรูปสินค้าแล้ว อย่าลืมกดบันทึกสินค้า" });
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : "ไม่ทราบสาเหตุ";
+      setMessage({ type: "error", text: `อัปโหลดรูปสินค้าไม่สำเร็จ: ${detail}` });
+    } finally {
+      setUploadingProductImage(false);
+    }
   };
 
   const saveService = async () => {
@@ -472,8 +507,10 @@ export default function AdminEstimatePage() {
               <ProductForm
                 product={productForm}
                 saving={saving}
+                uploadingImage={uploadingProductImage}
                 onCancel={() => setProductForm(createEmptyProduct())}
                 onChange={setProductForm}
+                onUploadImage={uploadProductImage}
                 onSave={saveProduct}
               />
               <div className="min-w-0 border-t xl:border-l xl:border-t-0">
@@ -574,16 +611,27 @@ export default function AdminEstimatePage() {
 function ProductForm({
   product,
   saving,
+  uploadingImage,
   onCancel,
   onChange,
+  onUploadImage,
   onSave,
 }: {
   product: ProductRow;
   saving: boolean;
+  uploadingImage: boolean;
   onCancel: () => void;
   onChange: (product: ProductRow) => void;
+  onUploadImage: (file: File) => Promise<void>;
   onSave: () => void;
 }) {
+  const handleImageFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    await onUploadImage(file);
+  };
+
   return (
     <div className="p-5">
       <div className="mb-5 flex items-start justify-between gap-4">
@@ -643,6 +691,37 @@ function ProductForm({
           />
         </label>
 
+        <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            {product.image_url ? (
+              <div
+                role="img"
+                aria-label={product.image_alt || product.name || "รูปสินค้า"}
+                className="h-20 w-28 rounded-md border border-gray-200 bg-white object-cover"
+                style={{ backgroundImage: `url("${product.image_url}")`, backgroundPosition: "center", backgroundSize: "cover" }}
+              />
+            ) : (
+              <div className="flex h-20 w-28 items-center justify-center rounded-md border border-dashed border-gray-300 bg-white text-gray-400">
+                <FaImage className="h-6 w-6" />
+              </div>
+            )}
+            <div className="min-w-0 flex-1">
+              <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:border-[#314874]">
+                <FaImage />
+                {uploadingImage ? "กำลังอัปโหลด..." : "อัปโหลดรูปสินค้า"}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/gif,image/webp"
+                  onChange={handleImageFileChange}
+                  disabled={uploadingImage || saving}
+                  className="sr-only"
+                />
+              </label>
+              <p className="mt-2 text-xs text-gray-500">รองรับ JPEG, PNG, GIF, WebP สูงสุด 5MB</p>
+            </div>
+          </div>
+        </div>
+
         <label className="block">
           <span className="text-sm text-gray-600">Alt รูป</span>
           <input
@@ -689,7 +768,7 @@ function ProductForm({
           <button
             type="button"
             onClick={onSave}
-            disabled={saving}
+            disabled={saving || uploadingImage}
             className="inline-flex items-center gap-2 rounded-lg bg-[#1E2E4F] px-4 py-2 font-semibold text-white hover:bg-[#314874] disabled:opacity-60"
           >
             <FaSave /> {product.id ? "บันทึกสินค้า" : "เพิ่มสินค้า"}

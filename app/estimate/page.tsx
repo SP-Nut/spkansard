@@ -51,6 +51,11 @@ interface EstimateServiceRow {
   is_active?: boolean | null;
 }
 
+const materialTypes: MaterialType[] = ["โปร่งแสง", "ทึบแสง"];
+const inputClass =
+  "w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-[#24456f] focus:ring-2 focus:ring-[#24456f]/15 disabled:bg-gray-100 disabled:text-gray-400";
+const labelClass = "text-sm font-semibold text-[#14213d]";
+
 const mapProductRow = (row: EstimateProductRow): Product => ({
   id: row.id,
   type: row.type,
@@ -255,6 +260,9 @@ export default function EstimatePage() {
     validSize,
   ]);
 
+  const selectedExtraCount = estimate.extraServiceItems.length;
+  const extraAndGutterTotal = estimate.colorTotal + estimate.ceilingTotal + estimate.extraTotal + estimate.gutterTotal;
+
   const handleMaterialTypeChange = (type: MaterialType) => {
     setMaterialType(type);
     setProductName("");
@@ -262,7 +270,7 @@ export default function EstimatePage() {
   };
 
   const handleProductChange = (name: string) => {
-    const product = calculatorProducts.find((item) => item.name === name);
+    const product = calculatorProducts.find((item) => item.name === name && item.type === materialType);
     setProductName(name);
     if (!product) {
       setSize("");
@@ -298,7 +306,7 @@ export default function EstimatePage() {
     event.preventDefault();
     if (!hasRequiredEstimateInputs || !selectedProduct || !validSize) {
       setStatus("error");
-      setStatusText("กรุณาเลือกวัสดุ สินค้า ไซซ์ราคา ขนาดพื้นที่ และรูปแบบติดตั้งก่อนส่งข้อมูล");
+      setStatusText("กรุณาเลือกวัสดุ สินค้า ไซซ์ ขนาดพื้นที่ และรูปแบบติดตั้งก่อนส่งข้อมูล");
       return;
     }
 
@@ -362,56 +370,58 @@ export default function EstimatePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16 sm:pt-20">
-      <section className="relative bg-linear-to-r from-[#1E2E4F] to-[#314874] py-8 text-white sm:py-12 lg:py-14">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <nav className="mb-6 flex items-center gap-2 text-sm text-white/75">
-            <Link href="/" className="transition hover:text-white" aria-label="หน้าแรก">
+    <div className="min-h-screen bg-[#f7f8f5] pt-16 text-[#14213d] sm:pt-20">
+      <section className="border-b border-[#d7ddd2] bg-[#fbfcf8]">
+        <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
+          <nav className="mb-5 flex items-center gap-2 text-xs font-semibold text-gray-500">
+            <Link href="/" className="transition hover:text-[#24456f]" aria-label="หน้าแรก">
               <FaHome className="h-4 w-4" />
             </Link>
             <FaChevronRight className="h-3 w-3" />
             <span>ประเมินราคา</span>
           </nav>
 
-          <div className="text-center">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-white/65 sm:text-sm">
-              SP KANSARD ESTIMATE
-            </p>
-            <h1 className="mx-auto max-w-4xl text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
-              คำนวณราคากันสาดเบื้องต้น
-            </h1>
-            <p className="mx-auto mt-4 max-w-3xl text-base leading-8 text-[#eaf4ff] sm:text-lg">
-              เลือกวัสดุ ขนาด และรูปแบบติดตั้งก่อน ระบบจะเริ่มคำนวณจาก 0 และอัปเดตยอดให้อัตโนมัติ
-            </p>
+          <div className="grid gap-5 lg:grid-cols-[1fr_360px] lg:items-end">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#60714d]">SP Kansard Estimate</p>
+              <h1 className="mt-2 max-w-3xl text-3xl font-black leading-tight text-[#14213d] sm:text-4xl lg:text-5xl">
+                คำนวณราคากันสาดแบบเร็วและส่งให้ทีมประเมินต่อ
+              </h1>
+            </div>
+            <div className="grid grid-cols-3 gap-2 rounded-lg border border-[#d7ddd2] bg-white p-2 text-center text-xs font-semibold text-gray-600 shadow-sm">
+              <span className="rounded-md bg-[#edf4e6] px-2 py-3 text-[#385127]">เลือกวัสดุ</span>
+              <span className="rounded-md bg-[#f3f5f0] px-2 py-3">ใส่ขนาด</span>
+              <span className="rounded-md bg-[#f3f5f0] px-2 py-3">ส่งข้อมูล</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[1fr_390px] lg:px-8 lg:py-10">
-        <div className="space-y-5">
-          <div className="rounded-lg border border-[#dbeafe] bg-[#eaf4ff] p-5 text-[#1E2E4F] sm:p-6">
-            <h2 className="text-lg font-semibold">วิธีใช้งาน</h2>
-            <div className="mt-3 grid gap-3 text-sm leading-6 text-gray-700 sm:grid-cols-3">
-              <p><strong className="text-[#1E2E4F]">1.</strong> เลือกวัสดุและสินค้า</p>
-              <p><strong className="text-[#1E2E4F]">2.</strong> ใส่ขนาดและรูปแบบติดตั้ง</p>
-              <p><strong className="text-[#1E2E4F]">3.</strong> เพิ่มตัวเลือกเสริมแล้วส่งข้อมูล</p>
+      <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[minmax(0,1fr)_380px] lg:px-8">
+        <div className="space-y-4">
+          <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#60714d]">Step 1</p>
+                <h2 className="text-xl font-black">วัสดุและรุ่น</h2>
+              </div>
+              <span className="rounded-full bg-[#edf4e6] px-3 py-1 text-xs font-bold text-[#385127]">
+                {calculatorProducts.length} รายการ
+              </span>
             </div>
-          </div>
 
-          <div className="rounded-lg bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6">
-            <div className="flex flex-col gap-4 lg:flex-row">
-              <div className="flex-1">
-                <h2 className="text-xl font-semibold text-[#1E2E4F]">เลือกงานหลัก</h2>
-                <div className="mt-4 grid grid-cols-2 gap-3">
-                  {(["โปร่งแสง", "ทึบแสง"] as MaterialType[]).map((type) => (
+            <div className="grid gap-5 xl:grid-cols-[1fr_260px]">
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-2">
+                  {materialTypes.map((type) => (
                     <button
                       key={type}
                       type="button"
                       onClick={() => handleMaterialTypeChange(type)}
-                      className={`rounded-lg border px-4 py-3 text-sm font-semibold transition ${
+                      className={`rounded-lg border px-4 py-3 text-sm font-black transition ${
                         materialType === type
-                          ? "border-[#314874] bg-[#eaf4ff] text-[#1E2E4F]"
-                          : "border-gray-200 bg-white text-gray-700 hover:border-[#314874]/40"
+                          ? "border-[#24456f] bg-[#24456f] text-white shadow-sm"
+                          : "border-gray-200 bg-[#f7f8f5] text-[#14213d] hover:border-[#24456f]/40"
                       }`}
                     >
                       {type}
@@ -419,18 +429,18 @@ export default function EstimatePage() {
                   ))}
                 </div>
 
-                <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_190px]">
+                <div className="grid gap-3 md:grid-cols-[1fr_190px]">
                   <label className="block">
-                    <span className="text-sm font-medium text-gray-700">สินค้า/วัสดุ</span>
+                    <span className={labelClass}>สินค้า/วัสดุ</span>
                     <select
                       value={productName}
                       onChange={(event) => handleProductChange(event.target.value)}
-                      className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                      className={`mt-2 ${inputClass}`}
                       disabled={!materialType}
                     >
                       <option value="">เลือกสินค้า/วัสดุ</option>
                       {filteredProducts.map((product) => (
-                        <option key={product.name} value={product.name}>
+                        <option key={`${product.type}-${product.name}`} value={product.name}>
                           {product.name}
                         </option>
                       ))}
@@ -438,104 +448,135 @@ export default function EstimatePage() {
                   </label>
 
                   <label className="block">
-                    <span className="text-sm font-medium text-gray-700">ไซซ์ราคา</span>
+                    <span className={labelClass}>ไซซ์ราคา</span>
                     <select
                       value={validSize}
                       onChange={(event) => setSize(event.target.value as PriceSize)}
-                      className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                      className={`mt-2 ${inputClass}`}
                       disabled={!selectedProduct}
                     >
                       <option value="">เลือกไซซ์</option>
                       {availableSizes.map((item) => (
                         <option key={item} value={item}>
-                          {item} - {formatCurrency(selectedProduct?.prices[item] ?? 0)}/ตร.ม.
+                          {item} - {formatCurrency(selectedProduct?.prices[item] || 0)}
                         </option>
                       ))}
                     </select>
                   </label>
                 </div>
+
+                {selectedProduct && (
+                  <div className="grid gap-2 sm:grid-cols-3">
+                    {availableSizes.map((item) => (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => setSize(item)}
+                        className={`rounded-lg border p-3 text-left transition ${
+                          validSize === item
+                            ? "border-[#24456f] bg-[#eef5ff]"
+                            : "border-gray-200 bg-white hover:border-[#24456f]/40"
+                        }`}
+                      >
+                        <span className="block text-sm font-black">{item}</span>
+                        <span className="mt-1 block text-xs text-gray-500">
+                          {formatCurrency(selectedProduct.prices[item])}/ตร.ม.
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              <div className="lg:w-56">
-                <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
-                  {selectedProduct?.imageUrl ? (
-                    <div
-                      role="img"
-                      aria-label={selectedProduct.imageAlt || selectedProduct.name}
-                      className="h-full w-full bg-cover bg-center"
-                      style={{ backgroundImage: `url("${selectedProduct.imageUrl}")` }}
-                    />
-                  ) : (
-                    <div className="px-5 text-center text-sm leading-6 text-gray-500">
-                      <FaImage className="mx-auto mb-2 h-8 w-8 text-[#314874]/60" />
-                      รองรับรูปสินค้าในไฟล์ data
-                    </div>
-                  )}
+              <div className="overflow-hidden rounded-lg border border-gray-200 bg-[#f3f5f0]">
+                {selectedProduct?.imageUrl ? (
+                  <div
+                    role="img"
+                    aria-label={selectedProduct.imageAlt || selectedProduct.name}
+                    className="h-48 bg-cover bg-center"
+                    style={{ backgroundImage: `url("${selectedProduct.imageUrl}")` }}
+                  />
+                ) : (
+                  <div className="flex h-48 flex-col items-center justify-center gap-3 text-gray-400">
+                    <FaImage className="h-8 w-8" />
+                    <span className="text-sm font-semibold">รอรูปสินค้า</span>
+                  </div>
+                )}
+                <div className="border-t border-gray-200 bg-white p-3">
+                  <p className="line-clamp-2 text-sm font-bold text-[#14213d]">
+                    {selectedProduct?.name || "เลือกสินค้าเพื่อดูรายละเอียด"}
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
 
-          <div className="rounded-lg bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6">
-            <h2 className="text-xl font-semibold text-[#1E2E4F]">ขนาดและติดตั้ง</h2>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
+            <div className="mb-4">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#60714d]">Step 2</p>
+              <h2 className="text-xl font-black">ขนาดและการติดตั้ง</h2>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
               <label className="block">
-                <span className="text-sm font-medium text-gray-700">กว้าง (เมตร)</span>
+                <span className={labelClass}>กว้าง (เมตร)</span>
                 <input
                   type="number"
                   min="0"
-                  step="0.5"
+                  step="0.1"
                   value={width}
                   onChange={(event) => setWidth(event.target.value)}
                   placeholder="เช่น 3"
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                  className={`mt-2 ${inputClass}`}
                 />
               </label>
               <label className="block">
-                <span className="text-sm font-medium text-gray-700">ยาว (เมตร)</span>
+                <span className={labelClass}>ยาว (เมตร)</span>
                 <input
                   type="number"
                   min="0"
-                  step="0.5"
+                  step="0.1"
                   value={length}
                   onChange={(event) => setLength(event.target.value)}
                   placeholder="เช่น 5"
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                  className={`mt-2 ${inputClass}`}
                 />
               </label>
             </div>
 
-            <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto_auto]">
-              <div className="inline-flex items-center gap-2 rounded-lg bg-gray-50 px-4 py-3 text-sm text-gray-700">
-                <FaRulerCombined className="h-4 w-4 text-[#314874]" />
-                พื้นที่ {estimate.squareMeters.toFixed(1)} ตร.ม.
+            <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_220px]">
+              <div className="flex items-center gap-3 rounded-lg bg-[#f7f8f5] px-4 py-3 text-sm font-bold">
+                <FaRulerCombined className="text-[#24456f]" />
+                <span>พื้นที่ {estimate.squareMeters.toFixed(1)} ตร.ม.</span>
               </div>
-              {(["มีเสา", "ไร้เสา"] as const).map((style) => (
-                <button
-                  key={style}
-                  type="button"
-                  onClick={() => setInstallStyle(style)}
-                  className={`rounded-lg border px-4 py-3 text-sm font-semibold transition ${
-                    installStyle === style
-                      ? "border-[#314874] bg-[#314874] text-white"
-                      : "border-gray-200 bg-white text-gray-700 hover:border-[#314874]/40"
-                  }`}
-                >
-                  {style}
-                </button>
-              ))}
+              <div className="grid grid-cols-2 gap-2">
+                {(["มีเสา", "ไร้เสา"] as InstallStyle[]).map((style) => (
+                  <button
+                    key={style}
+                    type="button"
+                    onClick={() => setInstallStyle(style)}
+                    className={`rounded-lg border px-4 py-3 text-sm font-black transition ${
+                      installStyle === style
+                        ? "border-[#24456f] bg-[#24456f] text-white"
+                        : "border-gray-200 bg-white hover:border-[#24456f]/40"
+                    }`}
+                  >
+                    {style}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {installStyle && (
-              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <div className="mt-4 grid gap-4 md:grid-cols-2">
                 {installStyle === "มีเสา" ? (
                   <>
                     <label className="block">
-                      <span className="text-sm font-medium text-gray-700">งานเสา</span>
+                      <span className={labelClass}>รูปแบบเสา</span>
                       <select
                         value={postServiceName}
                         onChange={(event) => setPostServiceName(event.target.value)}
-                        className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                        className={`mt-2 ${inputClass}`}
                       >
                         {calculatorMainServices
                           .filter((service) => service.group === "งานเสา")
@@ -547,23 +588,23 @@ export default function EstimatePage() {
                       </select>
                     </label>
                     <label className="block">
-                      <span className="text-sm font-medium text-gray-700">จำนวนต้น</span>
+                      <span className={labelClass}>จำนวนต้น</span>
                       <input
                         type="number"
                         min="0"
                         value={postCount}
                         onChange={(event) => setPostCount(Number(event.target.value))}
-                        className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                        className={`mt-2 ${inputClass}`}
                       />
                     </label>
                   </>
                 ) : (
-                  <label className="block sm:col-span-2">
-                    <span className="text-sm font-medium text-gray-700">รูปแบบไร้เสา</span>
+                  <label className="block md:col-span-2">
+                    <span className={labelClass}>รูปแบบไร้เสา</span>
                     <select
                       value={freeInstallName}
                       onChange={(event) => setFreeInstallName(event.target.value)}
-                      className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                      className={`mt-2 ${inputClass}`}
                     >
                       {freeInstallOptions.map((item) => (
                         <option key={item} value={item}>
@@ -575,64 +616,104 @@ export default function EstimatePage() {
                 )}
               </div>
             )}
-          </div>
+          </section>
 
-          <details className="rounded-lg bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6">
-            <summary className="cursor-pointer text-xl font-semibold text-[#1E2E4F]">
-              ตัวเลือกเสริม
-            </summary>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              <label className="block">
-                <span className="text-sm font-medium text-gray-700">สีโครงสร้าง</span>
-                <select
-                  value={useSpecialColor ? "สีผสมพิเศษ" : colorName}
-                  onChange={(event) => {
-                    const value = event.target.value;
-                    setUseSpecialColor(value === "สีผสมพิเศษ");
-                    if (value !== "สีผสมพิเศษ") setColorName(value);
-                  }}
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
-                >
-                  {freeColors.map((item) => (
-                    <option key={item} value={item}>
-                      {item} - ฟรี
-                    </option>
-                  ))}
-                  <option value="สีผสมพิเศษ">สีผสมพิเศษ - 200 บาท/ตร.ม.</option>
-                </select>
-              </label>
+          <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
+            <details>
+              <summary className="cursor-pointer list-none">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#60714d]">Optional</p>
+                    <h2 className="text-xl font-black">ตัวเลือกเสริม</h2>
+                  </div>
+                  <span className="rounded-full bg-[#f3f5f0] px-3 py-1 text-xs font-bold text-gray-600">
+                    เลือกแล้ว {selectedExtraCount}
+                  </span>
+                </div>
+              </summary>
 
-              <label className="block">
-                <span className="text-sm font-medium text-gray-700">งานฝ้า {validSize !== "L+" ? "(เฉพาะ L+)" : ""}</span>
-                <select
-                  value={validSize === "L+" ? ceilingName : ""}
-                  disabled={validSize !== "L+"}
-                  onChange={(event) => setCeilingName(event.target.value)}
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 disabled:bg-gray-100 disabled:text-gray-400 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
-                >
-                  <option value="">ไม่เลือก</option>
-                  {calculatorMainServices
-                    .filter((service) => service.group === "งานฝ้า ใช้เฉพาะ L+")
-                    .map((service) => (
-                      <option key={service.name} value={service.name}>
-                        {service.name} - {formatCurrency(service.price)}/ตร.ม.
+              <div className="mt-5 grid gap-4 md:grid-cols-2">
+                <label className="block">
+                  <span className={labelClass}>สีโครงสร้าง</span>
+                  <select
+                    value={useSpecialColor ? "สีผสมพิเศษ" : colorName}
+                    onChange={(event) => {
+                      const value = event.target.value;
+                      setUseSpecialColor(value === "สีผสมพิเศษ");
+                      if (value !== "สีผสมพิเศษ") setColorName(value);
+                    }}
+                    className={`mt-2 ${inputClass}`}
+                  >
+                    {freeColors.map((item) => (
+                      <option key={item} value={item}>
+                        {item} - ฟรี
                       </option>
                     ))}
-                </select>
-              </label>
+                    <option value="สีผสมพิเศษ">สีผสมพิเศษ - 200 บาท/ตร.ม.</option>
+                  </select>
+                </label>
 
-              <div className="sm:col-span-2">
-                <span className="text-sm font-medium text-gray-700">บริการเสริม</span>
-                <div className="mt-2 grid gap-3">
+                <label className="block">
+                  <span className={labelClass}>งานฝ้า {validSize !== "L+" ? "(เฉพาะ L+)" : ""}</span>
+                  <select
+                    value={validSize === "L+" ? ceilingName : ""}
+                    disabled={validSize !== "L+"}
+                    onChange={(event) => setCeilingName(event.target.value)}
+                    className={`mt-2 ${inputClass}`}
+                  >
+                    <option value="">ไม่เลือก</option>
+                    {calculatorMainServices
+                      .filter((service) => service.group === "งานฝ้า ใช้เฉพาะ L+")
+                      .map((service) => (
+                        <option key={service.name} value={service.name}>
+                          {service.name} - {formatCurrency(service.price)}/ตร.ม.
+                        </option>
+                      ))}
+                  </select>
+                </label>
+
+                <label className="block">
+                  <span className={labelClass}>วัสดุรางน้ำ</span>
+                  <select
+                    value={gutterName}
+                    onChange={(event) => setGutterName(event.target.value)}
+                    className={`mt-2 ${inputClass}`}
+                  >
+                    <option value="">ไม่เลือก</option>
+                    {calculatorGutters.map((service) => (
+                      <option key={service.name} value={service.name}>
+                        {service.group} - {service.name} ({formatCurrency(service.price)}/เมตร)
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="block">
+                  <span className={labelClass}>ความยาวรางน้ำ (เมตร)</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.5"
+                    value={gutterLength}
+                    disabled={!gutterName}
+                    onChange={(event) => setGutterLength(Number(event.target.value))}
+                    className={`mt-2 ${inputClass}`}
+                  />
+                </label>
+              </div>
+
+              <div className="mt-5">
+                <p className={labelClass}>บริการเสริม</p>
+                <div className="mt-2 grid gap-2">
                   {calculatorExtraServices.map((service) => {
                     const isSelected = extraServiceQuantities[service.name] !== undefined;
 
                     return (
                       <div
                         key={service.name}
-                        className={`grid gap-3 rounded-lg border px-4 py-3 transition sm:grid-cols-[minmax(0,1fr)_120px] ${
+                        className={`grid gap-3 rounded-lg border px-3 py-3 transition sm:grid-cols-[minmax(0,1fr)_110px] ${
                           isSelected
-                            ? "border-[#314874] bg-[#eaf4ff]"
+                            ? "border-[#24456f] bg-[#eef5ff]"
                             : "border-gray-200 bg-white"
                         }`}
                       >
@@ -641,10 +722,10 @@ export default function EstimatePage() {
                             type="checkbox"
                             checked={isSelected}
                             onChange={(event) => handleExtraServiceToggle(service.name, event.target.checked)}
-                            className="mt-1 h-4 w-4 rounded border-gray-300 text-[#314874] focus:ring-[#314874]"
+                            className="mt-1 h-4 w-4 rounded border-gray-300 text-[#24456f] focus:ring-[#24456f]"
                           />
                           <span className="min-w-0">
-                            <span className="block text-sm font-medium text-gray-900">
+                            <span className="block text-sm font-bold text-[#14213d]">
                               {service.group} - {service.name}
                             </span>
                             <span className="mt-1 block text-xs text-gray-500">
@@ -652,160 +733,114 @@ export default function EstimatePage() {
                             </span>
                           </span>
                         </label>
-                        <label className="block">
-                          <span className="text-xs font-medium text-gray-600">จำนวน</span>
-                          <input
-                            type="number"
-                            min="0"
-                            value={extraServiceQuantities[service.name] ?? 1}
-                            disabled={!isSelected}
-                            onChange={(event) => handleExtraQuantityChange(service.name, Number(event.target.value))}
-                            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 disabled:bg-gray-100 disabled:text-gray-400 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
-                          />
-                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          value={extraServiceQuantities[service.name] ?? 1}
+                          disabled={!isSelected}
+                          onChange={(event) => handleExtraQuantityChange(service.name, Number(event.target.value))}
+                          className={inputClass}
+                          aria-label={`จำนวน ${service.name}`}
+                        />
                       </div>
                     );
                   })}
                 </div>
               </div>
-
-              <label className="block">
-                <span className="text-sm font-medium text-gray-700">วัสดุรางน้ำ</span>
-                <select
-                  value={gutterName}
-                  onChange={(event) => setGutterName(event.target.value)}
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
-                >
-                  <option value="">ไม่เลือก</option>
-                  {calculatorGutters.map((service) => (
-                    <option key={service.name} value={service.name}>
-                      {service.group} - {service.name} ({formatCurrency(service.price)}/เมตร)
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="block">
-                <span className="text-sm font-medium text-gray-700">ความยาวรางน้ำ (เมตร)</span>
-                <input
-                  type="number"
-                  min="0"
-                  step="0.5"
-                  value={gutterLength}
-                  disabled={!gutterName}
-                  onChange={(event) => setGutterLength(Number(event.target.value))}
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 disabled:bg-gray-100 disabled:text-gray-400 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
-                />
-              </label>
-            </div>
-          </details>
+            </details>
+          </section>
         </div>
 
-        <aside className="space-y-5 lg:sticky lg:top-24 lg:self-start">
-          <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-black/5">
-            <div className="bg-[#314874] px-5 py-4 text-white sm:px-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
-                Estimated Total
-              </p>
-              <h2 className="mt-1 text-lg font-semibold">รวมราคาเบื้องต้น</h2>
-            </div>
-            <div className="p-5 sm:p-6">
-              <div className="text-3xl font-bold leading-tight text-[#1E2E4F]">
-                {formatCurrency(estimate.total)}
-              </div>
-              {!hasRequiredEstimateInputs && (
-                <p className="mt-3 text-sm leading-6 text-gray-500">
-                  เลือกวัสดุ สินค้า ไซซ์ ขนาด และรูปแบบติดตั้งก่อน ยอดรวมจะเริ่มคำนวณจาก 0
-                </p>
-              )}
-              <div className="mt-5 space-y-3 border-t border-gray-100 pt-5 text-sm text-gray-600">
-                <div className="flex justify-between gap-4">
-                  <span>วัสดุ</span>
-                  <strong className="text-right text-[#1E2E4F]">{formatCurrency(estimate.materialTotal)}</strong>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <span>ติดตั้ง/งานเสา</span>
-                  <strong className="text-right text-[#1E2E4F]">{formatCurrency(estimate.postTotal)}</strong>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <span>ตัวเลือกเสริม</span>
-                  <strong className="text-right text-[#1E2E4F]">
-                    {formatCurrency(estimate.colorTotal + estimate.ceilingTotal + estimate.extraTotal + estimate.gutterTotal)}
-                  </strong>
-                </div>
-              </div>
-              <p className="mt-5 rounded-lg bg-[#eaf4ff] px-4 py-3 text-sm leading-6 text-gray-600">
-                ราคาเบื้องต้นยังไม่ใช่ใบเสนอราคาสุดท้าย ทีมงานจะตรวจรายละเอียดหน้างานก่อนยืนยันราคา
+        <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+          <section className="overflow-hidden rounded-lg border border-[#24456f]/20 bg-white shadow-sm">
+            <div className="bg-[#24456f] p-5 text-white">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">Estimated Total</p>
+              <div className="mt-3 text-4xl font-black leading-none">{formatCurrency(estimate.total)}</div>
+              <p className="mt-3 text-sm leading-6 text-white/75">
+                ราคาเบื้องต้นจะอัปเดตตามตัวเลือกที่กรอก
               </p>
             </div>
-          </div>
+            <div className="space-y-3 p-5 text-sm">
+              <SummaryRow label="วัสดุ" value={formatCurrency(estimate.materialTotal)} />
+              <SummaryRow label="ติดตั้ง/งานเสา" value={formatCurrency(estimate.postTotal)} />
+              <SummaryRow label="ตัวเลือกเสริม" value={formatCurrency(extraAndGutterTotal)} />
+              <div className="rounded-lg bg-[#edf4e6] p-4 text-sm leading-6 text-[#385127]">
+                ราคานี้เป็นตัวเลขประเมิน ทีมงานจะตรวจหน้างานก่อนยืนยันราคาอีกครั้ง
+              </div>
+            </div>
+          </section>
 
-          <form onSubmit={handleSubmit} className="rounded-lg bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6">
-            <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#eaf4ff] text-[#314874]">
-                <FaCalculator className="h-5 w-5" />
+          <form
+            id="estimate-contact"
+            onSubmit={handleSubmit}
+            className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm"
+          >
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#edf4e6] text-[#385127]">
+                <FaCalculator />
               </div>
               <div>
-                <h2 className="text-xl font-semibold text-[#1E2E4F]">ขอใบเสนอราคา</h2>
-                <p className="mt-1 text-sm text-gray-500">ส่งข้อมูลให้ทีมงานติดต่อกลับ</p>
+                <h2 className="text-xl font-black">ขอใบเสนอราคา</h2>
+                <p className="text-sm text-gray-500">ส่งข้อมูลให้ทีมงานติดต่อกลับ</p>
               </div>
             </div>
-            <div className="mt-5 space-y-4">
+
+            <div className="space-y-3">
               <label className="block">
-                <span className="text-sm font-medium text-gray-700">ชื่อ *</span>
+                <span className={labelClass}>ชื่อ *</span>
                 <input
                   value={customer.name}
                   onChange={(event) => setCustomer((data) => ({ ...data, name: event.target.value }))}
                   required
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                  className={`mt-2 ${inputClass}`}
                 />
               </label>
               <label className="block">
-                <span className="text-sm font-medium text-gray-700">เบอร์โทร *</span>
+                <span className={labelClass}>เบอร์โทร *</span>
                 <input
                   value={customer.phone}
                   onChange={(event) => setCustomer((data) => ({ ...data, phone: event.target.value }))}
                   required
                   inputMode="tel"
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                  className={`mt-2 ${inputClass}`}
                 />
               </label>
               <label className="block">
-                <span className="text-sm font-medium text-gray-700">LINE ID *</span>
+                <span className={labelClass}>LINE ID *</span>
                 <input
                   value={customer.lineId}
                   onChange={(event) => setCustomer((data) => ({ ...data, lineId: event.target.value }))}
                   required
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                  className={`mt-2 ${inputClass}`}
                 />
               </label>
               <label className="block">
-                <span className="text-sm font-medium text-gray-700">อีเมล</span>
+                <span className={labelClass}>อีเมล</span>
                 <input
                   value={customer.email}
                   onChange={(event) => setCustomer((data) => ({ ...data, email: event.target.value }))}
                   type="email"
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                  className={`mt-2 ${inputClass}`}
                 />
               </label>
               <label className="block">
-                <span className="text-sm font-medium text-gray-700">ลิงก์รูปหน้างาน/แบบที่ชอบ</span>
+                <span className={labelClass}>ลิงก์รูปหน้างาน/แบบที่ชอบ</span>
                 <input
                   value={customer.imageUrl}
                   onChange={(event) => setCustomer((data) => ({ ...data, imageUrl: event.target.value }))}
                   type="url"
-                  placeholder="เช่น Google Drive, LINE album, รูปตัวอย่าง"
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
+                  placeholder="Google Drive, LINE album, URL รูป"
+                  className={`mt-2 ${inputClass}`}
                 />
               </label>
               <label className="block">
-                <span className="text-sm font-medium text-gray-700">รายละเอียดเพิ่มเติม</span>
+                <span className={labelClass}>รายละเอียดเพิ่มเติม</span>
                 <textarea
                   value={customer.message}
                   onChange={(event) => setCustomer((data) => ({ ...data, message: event.target.value }))}
                   rows={3}
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#314874] focus:outline-none focus:ring-2 focus:ring-[#314874]/20"
-                  placeholder="เช่น พื้นที่ติดตั้ง, มีเสาเดิมหรือยังไม่มีเสา"
+                  placeholder="เช่น พื้นที่ติดตั้ง มีเสาเดิม หรือข้อจำกัดหน้างาน"
+                  className={`mt-2 ${inputClass}`}
                 />
               </label>
             </div>
@@ -823,15 +858,15 @@ export default function EstimatePage() {
             <button
               type="submit"
               disabled={status === "sending" || !hasRequiredEstimateInputs}
-              className="mt-5 w-full rounded-lg bg-[#314874] px-5 py-3 font-semibold text-white transition hover:bg-[#1E2E4F] disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-5 w-full rounded-lg bg-[#24456f] px-5 py-3 font-black text-white transition hover:bg-[#14213d] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {status === "sending" ? "กำลังส่งข้อมูล..." : "ส่งขอใบเสนอราคา"}
             </button>
 
-            <div className="mt-5 grid grid-cols-2 gap-3">
+            <div className="mt-3 grid grid-cols-2 gap-2">
               <a
                 href="tel:02-936-8841"
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 px-4 py-3 text-sm font-semibold text-[#1E2E4F] transition hover:bg-gray-50"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 px-4 py-3 text-sm font-bold text-[#24456f] transition hover:bg-gray-50"
               >
                 <FaPhoneAlt className="h-4 w-4" />
                 โทรหาเรา
@@ -840,7 +875,7 @@ export default function EstimatePage() {
                 href="https://line.me/R/ti/p/@spkansard"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#06C755] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#05B84E]"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#06C755] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#05B84E]"
               >
                 <FaLine className="h-4 w-4" />
                 LINE
@@ -848,7 +883,16 @@ export default function EstimatePage() {
             </div>
           </form>
         </aside>
-      </section>
+      </main>
+    </div>
+  );
+}
+
+function SummaryRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-3 last:border-b-0">
+      <span className="text-gray-500">{label}</span>
+      <strong className="text-right text-[#14213d]">{value}</strong>
     </div>
   );
 }

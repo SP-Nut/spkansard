@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { getBearerToken, verifyAdminToken } from '@/lib/admin-token';
 
+const getUploadFolder = (folder: FormDataEntryValue | null) => {
+  const folderName = typeof folder === 'string' ? folder : 'materials';
+  return folderName.replace(/[^a-z0-9-]/gi, '').slice(0, 40) || 'materials';
+};
+
 export async function POST(request: NextRequest) {
   try {
     const token = getBearerToken(request.headers.get('authorization')) || request.cookies.get('adminToken')?.value;
@@ -31,6 +36,7 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const file = formData.get('file') as File;
+    const folder = getUploadFolder(formData.get('folder'));
 
     if (!file) {
       return NextResponse.json(
@@ -59,7 +65,7 @@ export async function POST(request: NextRequest) {
     // สร้างชื่อไฟล์ที่ไม่ซ้ำ
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-    const filePath = `materials/${fileName}`;
+    const filePath = `${folder}/${fileName}`;
 
     // อัพโหลดไฟล์
     const { error: uploadError } = await supabaseAdmin.storage
