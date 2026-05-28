@@ -1,5 +1,5 @@
 interface StructuredDataProps {
-  type?: 'organization' | 'localBusiness' | 'service' | 'faq';
+  type?: 'organization' | 'website' | 'localBusiness' | 'service' | 'faq';
   data?: {
     name?: string;
     description?: string;
@@ -49,6 +49,24 @@ export default function StructuredData({ type = 'organization', data }: Structur
           "foundingDate": "1988",
           "numberOfEmployees": "50-100",
           "description": "ผู้นำด้านกันสาดและโรงจอดรถมากกว่า 38 ปี ให้บริการครบวงจร ออกแบบติดตั้งกันสาดคุณภาพ"
+        };
+
+      case 'website':
+        return {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "SP Kansard - เอสพี กันสาด",
+          "alternateName": "เอสพี กันสาด",
+          "url": "https://spkansard.com",
+          "description": "ผู้นำด้านกันสาดและโรงจอดรถอันดับ 1 ในกรุงเทพฯและปริมณฑล มากกว่า 38 ปี",
+          "publisher": {
+            "@type": "Organization",
+            "name": "SP Kansard Co., Ltd.",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://spkansard.com/images/logo.png"
+            }
+          }
         };
 
       case 'localBusiness':

@@ -72,24 +72,26 @@ export default function HeroSection() {
             }`}
             aria-hidden={currentSlide !== index}
           >
-            <Image
-              src={slide.desktop}
-              alt={`${slide.alt} - เดสก์ท็อป`}
-              fill
-              priority={index === 0}
-              loading={index === 0 ? "eager" : "lazy"}
-              sizes="100vw"
-              className="hidden object-cover object-center md:block"
-            />
-            <Image
-              src={slide.mobile}
-              alt={`${slide.alt} - มือถือ`}
-              fill
-              priority={index === 0}
-              loading={index === 0 ? "eager" : "lazy"}
-              sizes="100vw"
-              className="block object-cover object-center md:hidden"
-            />
+            <div className="hero-drift absolute inset-0">
+              <Image
+                src={slide.desktop}
+                alt={`${slide.alt} - เดสก์ท็อป`}
+                fill
+                priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
+                sizes="100vw"
+                className="hidden object-cover object-center md:block"
+              />
+              <Image
+                src={slide.mobile}
+                alt={`${slide.alt} - มือถือ`}
+                fill
+                priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
+                sizes="100vw"
+                className="block object-cover object-center md:hidden"
+              />
+            </div>
           </div>
         ))}
 
@@ -98,7 +100,7 @@ export default function HeroSection() {
         <div className="absolute inset-x-0 bottom-0 h-44 bg-linear-to-t from-[#071526]/42 to-transparent" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[88svh] max-w-[1760px] items-center justify-center px-5 pb-16 pt-28 text-center sm:px-8 lg:px-10">
+      <div className="relative z-10 mx-auto flex min-h-[88svh] max-w-[1760px] items-center justify-center px-5 pb-16 pt-28 text-center sm:px-8 md:pb-16 lg:px-10">
         <div className="relative max-w-4xl">
           <div key={currentSlide} className="animate-[fadeIn_900ms_ease-out]">
             <p className="mb-4 text-xs font-semibold tracking-[0.28em] text-white/78 sm:text-sm">
@@ -157,6 +159,7 @@ export default function HeroSection() {
           />
         ))}
       </div>
+
     </section>
   );
 }

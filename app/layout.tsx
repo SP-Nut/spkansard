@@ -5,7 +5,6 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import FloatingContactButton from "./components/FloatingContactButton";
 import StructuredData from "./components/StructuredData";
-import WebsiteSchema from "./components/WebsiteSchema";
 import { headers } from 'next/headers';
 import { Analytics } from "@vercel/analytics/next";
 
@@ -90,11 +89,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/images/logo sp.png', sizes: '32x32', type: 'image/png' },
-      { url: '/images/logo sp.png', sizes: '16x16', type: 'image/png' },
+      { url: '/images/logotab.png', sizes: '800x800', type: 'image/png' },
     ],
-    apple: '/images/logo sp.png',
-    shortcut: '/images/logo sp.png',
+    apple: '/images/logotab.png',
+    shortcut: '/images/logotab.png',
   },
   openGraph: {
     title: "SP Kansard | บริการกันสาดและโรงจอดรถ",
@@ -154,9 +152,9 @@ export default async function RootLayout({
   return (
     <html lang="th">
       <head>
-        <link rel="icon" href="/images/logo sp.png" type="image/png" />
-        <link rel="shortcut icon" href="/images/logo sp.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/images/logo sp.png" />
+        <link rel="icon" href="/images/logotab.png" type="image/png" />
+        <link rel="shortcut icon" href="/images/logotab.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/images/logotab.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#3B82F6" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -179,7 +177,7 @@ export default async function RootLayout({
         {!isAdminPage && (
           <>
             <StructuredData type="organization" />
-            <WebsiteSchema />
+            <StructuredData type="website" />
           </>
         )}
         {!isAdminPage && <Header />}
