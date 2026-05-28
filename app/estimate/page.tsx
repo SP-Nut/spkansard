@@ -53,8 +53,8 @@ interface EstimateServiceRow {
 
 const materialTypes: MaterialType[] = ["โปร่งแสง", "ทึบแสง"];
 const inputClass =
-  "w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-[#24456f] focus:ring-2 focus:ring-[#24456f]/15 disabled:bg-gray-100 disabled:text-gray-400";
-const labelClass = "text-sm font-semibold text-[#14213d]";
+  "w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-[#314874] focus:ring-2 focus:ring-[#314874]/20 disabled:bg-gray-100 disabled:text-gray-400";
+const labelClass = "text-sm font-semibold text-gray-700";
 
 const mapProductRow = (row: EstimateProductRow): Product => ({
   id: row.id,
@@ -370,11 +370,11 @@ export default function EstimatePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f7f8f5] pt-16 text-[#14213d] sm:pt-20">
-      <section className="border-b border-[#d7ddd2] bg-[#fbfcf8]">
+    <div className="min-h-screen bg-gray-50 pt-16 text-gray-900 sm:pt-20">
+      <section className="bg-linear-to-r from-[#1E2E4F] to-[#314874] text-white">
         <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
-          <nav className="mb-5 flex items-center gap-2 text-xs font-semibold text-gray-500">
-            <Link href="/" className="transition hover:text-[#24456f]" aria-label="หน้าแรก">
+          <nav className="mb-5 flex items-center gap-2 text-xs font-semibold text-white/70">
+            <Link href="/" className="transition hover:text-white" aria-label="หน้าแรก">
               <FaHome className="h-4 w-4" />
             </Link>
             <FaChevronRight className="h-3 w-3" />
@@ -383,15 +383,15 @@ export default function EstimatePage() {
 
           <div className="grid gap-5 lg:grid-cols-[1fr_360px] lg:items-end">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#60714d]">SP Kansard Estimate</p>
-              <h1 className="mt-2 max-w-3xl text-3xl font-black leading-tight text-[#14213d] sm:text-4xl lg:text-5xl">
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#eaf4ff]">SP Kansard Estimate</p>
+              <h1 className="mt-2 max-w-3xl text-3xl font-black leading-tight text-white sm:text-4xl lg:text-5xl">
                 คำนวณราคากันสาดแบบเร็วและส่งให้ทีมประเมินต่อ
               </h1>
             </div>
-            <div className="grid grid-cols-3 gap-2 rounded-lg border border-[#d7ddd2] bg-white p-2 text-center text-xs font-semibold text-gray-600 shadow-sm">
-              <span className="rounded-md bg-[#edf4e6] px-2 py-3 text-[#385127]">เลือกวัสดุ</span>
-              <span className="rounded-md bg-[#f3f5f0] px-2 py-3">ใส่ขนาด</span>
-              <span className="rounded-md bg-[#f3f5f0] px-2 py-3">ส่งข้อมูล</span>
+            <div className="grid grid-cols-3 gap-2 rounded-lg border border-white/20 bg-white/10 p-2 text-center text-xs font-semibold text-white/75 shadow-sm">
+              <span className="rounded-md bg-white px-2 py-3 text-[#1E2E4F]">เลือกวัสดุ</span>
+              <span className="rounded-md bg-white/10 px-2 py-3">ใส่ขนาด</span>
+              <span className="rounded-md bg-white/10 px-2 py-3">ส่งข้อมูล</span>
             </div>
           </div>
         </div>
@@ -402,10 +402,10 @@ export default function EstimatePage() {
           <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
             <div className="mb-4 flex items-center justify-between gap-3">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#60714d]">Step 1</p>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#314874]">Step 1</p>
                 <h2 className="text-xl font-black">วัสดุและรุ่น</h2>
               </div>
-              <span className="rounded-full bg-[#edf4e6] px-3 py-1 text-xs font-bold text-[#385127]">
+              <span className="rounded-full bg-[#eaf4ff] px-3 py-1 text-xs font-bold text-[#314874]">
                 {calculatorProducts.length} รายการ
               </span>
             </div>
@@ -420,8 +420,8 @@ export default function EstimatePage() {
                       onClick={() => handleMaterialTypeChange(type)}
                       className={`rounded-lg border px-4 py-3 text-sm font-black transition ${
                         materialType === type
-                          ? "border-[#24456f] bg-[#24456f] text-white shadow-sm"
-                          : "border-gray-200 bg-[#f7f8f5] text-[#14213d] hover:border-[#24456f]/40"
+                          ? "border-[#1E2E4F] bg-[#1E2E4F] text-white shadow-sm"
+                          : "border-gray-200 bg-gray-50 text-gray-800 hover:border-[#314874]/50"
                       }`}
                     >
                       {type}
@@ -474,11 +474,11 @@ export default function EstimatePage() {
                         onClick={() => setSize(item)}
                         className={`rounded-lg border p-3 text-left transition ${
                           validSize === item
-                            ? "border-[#24456f] bg-[#eef5ff]"
-                            : "border-gray-200 bg-white hover:border-[#24456f]/40"
+                            ? "border-[#314874] bg-[#eaf4ff]"
+                            : "border-gray-200 bg-white hover:border-[#314874]/50"
                         }`}
                       >
-                        <span className="block text-sm font-black">{item}</span>
+                        <span className="block text-sm font-black text-gray-900">{item}</span>
                         <span className="mt-1 block text-xs text-gray-500">
                           {formatCurrency(selectedProduct.prices[item])}/ตร.ม.
                         </span>
@@ -488,7 +488,7 @@ export default function EstimatePage() {
                 )}
               </div>
 
-              <div className="overflow-hidden rounded-lg border border-gray-200 bg-[#f3f5f0]">
+              <div className="overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
                 {selectedProduct?.imageUrl ? (
                   <div
                     role="img"
@@ -503,7 +503,7 @@ export default function EstimatePage() {
                   </div>
                 )}
                 <div className="border-t border-gray-200 bg-white p-3">
-                  <p className="line-clamp-2 text-sm font-bold text-[#14213d]">
+                  <p className="line-clamp-2 text-sm font-bold text-gray-900">
                     {selectedProduct?.name || "เลือกสินค้าเพื่อดูรายละเอียด"}
                   </p>
                 </div>
@@ -513,7 +513,7 @@ export default function EstimatePage() {
 
           <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
             <div className="mb-4">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#60714d]">Step 2</p>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#314874]">Step 2</p>
               <h2 className="text-xl font-black">ขนาดและการติดตั้ง</h2>
             </div>
 
@@ -545,8 +545,8 @@ export default function EstimatePage() {
             </div>
 
             <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_220px]">
-              <div className="flex items-center gap-3 rounded-lg bg-[#f7f8f5] px-4 py-3 text-sm font-bold">
-                <FaRulerCombined className="text-[#24456f]" />
+              <div className="flex items-center gap-3 rounded-lg bg-gray-50 px-4 py-3 text-sm font-bold">
+                <FaRulerCombined className="text-[#314874]" />
                 <span>พื้นที่ {estimate.squareMeters.toFixed(1)} ตร.ม.</span>
               </div>
               <div className="grid grid-cols-2 gap-2">
@@ -557,8 +557,8 @@ export default function EstimatePage() {
                     onClick={() => setInstallStyle(style)}
                     className={`rounded-lg border px-4 py-3 text-sm font-black transition ${
                       installStyle === style
-                        ? "border-[#24456f] bg-[#24456f] text-white"
-                        : "border-gray-200 bg-white hover:border-[#24456f]/40"
+                        ? "border-[#1E2E4F] bg-[#1E2E4F] text-white"
+                        : "border-gray-200 bg-white hover:border-[#314874]/50"
                     }`}
                   >
                     {style}
@@ -623,10 +623,10 @@ export default function EstimatePage() {
               <summary className="cursor-pointer list-none">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#60714d]">Optional</p>
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#314874]">Optional</p>
                     <h2 className="text-xl font-black">ตัวเลือกเสริม</h2>
                   </div>
-                  <span className="rounded-full bg-[#f3f5f0] px-3 py-1 text-xs font-bold text-gray-600">
+                  <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-bold text-gray-600">
                     เลือกแล้ว {selectedExtraCount}
                   </span>
                 </div>
@@ -713,7 +713,7 @@ export default function EstimatePage() {
                         key={service.name}
                         className={`grid gap-3 rounded-lg border px-3 py-3 transition sm:grid-cols-[minmax(0,1fr)_110px] ${
                           isSelected
-                            ? "border-[#24456f] bg-[#eef5ff]"
+                            ? "border-[#314874] bg-[#eaf4ff]"
                             : "border-gray-200 bg-white"
                         }`}
                       >
@@ -722,10 +722,10 @@ export default function EstimatePage() {
                             type="checkbox"
                             checked={isSelected}
                             onChange={(event) => handleExtraServiceToggle(service.name, event.target.checked)}
-                            className="mt-1 h-4 w-4 rounded border-gray-300 text-[#24456f] focus:ring-[#24456f]"
+                            className="mt-1 h-4 w-4 rounded border-gray-300 text-[#314874] focus:ring-[#314874]"
                           />
                           <span className="min-w-0">
-                            <span className="block text-sm font-bold text-[#14213d]">
+                            <span className="block text-sm font-bold text-gray-900">
                               {service.group} - {service.name}
                             </span>
                             <span className="mt-1 block text-xs text-gray-500">
@@ -752,8 +752,8 @@ export default function EstimatePage() {
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-          <section className="overflow-hidden rounded-lg border border-[#24456f]/20 bg-white shadow-sm">
-            <div className="bg-[#24456f] p-5 text-white">
+          <section className="overflow-hidden rounded-lg border border-[#1E2E4F]/20 bg-white shadow-sm">
+            <div className="bg-[#1E2E4F] p-5 text-white">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">Estimated Total</p>
               <div className="mt-3 text-4xl font-black leading-none">{formatCurrency(estimate.total)}</div>
               <p className="mt-3 text-sm leading-6 text-white/75">
@@ -764,7 +764,7 @@ export default function EstimatePage() {
               <SummaryRow label="วัสดุ" value={formatCurrency(estimate.materialTotal)} />
               <SummaryRow label="ติดตั้ง/งานเสา" value={formatCurrency(estimate.postTotal)} />
               <SummaryRow label="ตัวเลือกเสริม" value={formatCurrency(extraAndGutterTotal)} />
-              <div className="rounded-lg bg-[#edf4e6] p-4 text-sm leading-6 text-[#385127]">
+              <div className="rounded-lg bg-[#eaf4ff] p-4 text-sm leading-6 text-[#314874]">
                 ราคานี้เป็นตัวเลขประเมิน ทีมงานจะตรวจหน้างานก่อนยืนยันราคาอีกครั้ง
               </div>
             </div>
@@ -776,7 +776,7 @@ export default function EstimatePage() {
             className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm"
           >
             <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#edf4e6] text-[#385127]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#eaf4ff] text-[#314874]">
                 <FaCalculator />
               </div>
               <div>
@@ -858,7 +858,7 @@ export default function EstimatePage() {
             <button
               type="submit"
               disabled={status === "sending" || !hasRequiredEstimateInputs}
-              className="mt-5 w-full rounded-lg bg-[#24456f] px-5 py-3 font-black text-white transition hover:bg-[#14213d] disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-5 w-full rounded-lg bg-[#314874] px-5 py-3 font-black text-white transition hover:bg-[#1E2E4F] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {status === "sending" ? "กำลังส่งข้อมูล..." : "ส่งขอใบเสนอราคา"}
             </button>
@@ -866,7 +866,7 @@ export default function EstimatePage() {
             <div className="mt-3 grid grid-cols-2 gap-2">
               <a
                 href="tel:02-936-8841"
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 px-4 py-3 text-sm font-bold text-[#24456f] transition hover:bg-gray-50"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 px-4 py-3 text-sm font-bold text-[#314874] transition hover:bg-gray-50"
               >
                 <FaPhoneAlt className="h-4 w-4" />
                 โทรหาเรา
@@ -892,7 +892,7 @@ function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-3 last:border-b-0">
       <span className="text-gray-500">{label}</span>
-      <strong className="text-right text-[#14213d]">{value}</strong>
+      <strong className="text-right text-gray-900">{value}</strong>
     </div>
   );
 }
