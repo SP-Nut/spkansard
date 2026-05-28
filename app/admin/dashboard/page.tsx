@@ -10,7 +10,8 @@ import {
   FaSignOutAlt, 
   FaPlus,
   FaChartBar,
-  FaUsers
+  FaUsers,
+  FaCalculator
 } from 'react-icons/fa';
 import { AdminAuth } from '@/lib/auth';
 import { supabase } from '@/lib/supabase';
@@ -19,6 +20,7 @@ interface Stats {
   totalMaterials: number;
   totalArticles: number;
   publishedArticles: number;
+  totalEstimateProducts: number;
 }
 
 export default function AdminDashboard() {
@@ -27,6 +29,7 @@ export default function AdminDashboard() {
     totalMaterials: 0,
     totalArticles: 0,
     publishedArticles: 0,
+    totalEstimateProducts: 0,
   });
   const router = useRouter();
 
@@ -48,10 +51,15 @@ export default function AdminDashboard() {
         .select('*', { count: 'exact', head: true })
         .eq('published', true);
 
+      const { count: estimateProductsCount } = await supabase
+        .from('estimate_products')
+        .select('*', { count: 'exact', head: true });
+
       setStats({
         totalMaterials: materialsCount || 0,
         totalArticles: articlesCount || 0,
         publishedArticles: publishedCount || 0,
+        totalEstimateProducts: estimateProductsCount || 0,
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -91,17 +99,20 @@ export default function AdminDashboard() {
   const menuItems = [
     { icon: FaChartBar, label: 'Dashboard', href: '/admin/dashboard', active: true },
     { icon: FaBox, label: 'จัดการวัสดุ', href: '/admin/materials' },
+    { icon: FaCalculator, label: 'จัดการราคาคำนวณ', href: '/admin/estimate' },
     { icon: FaNewspaper, label: 'จัดการบทความ', href: '/admin/articles' },
   ];
 
   const quickActions = [
     { icon: FaPlus, label: 'เพิ่มวัสดุใหม่', href: '/admin/materials/new', color: 'bg-blue-500' },
+    { icon: FaCalculator, label: 'จัดการราคาคำนวณ', href: '/admin/estimate', color: 'bg-indigo-500' },
     { icon: FaPlus, label: 'เขียนบทความใหม่', href: '/admin/articles/new', color: 'bg-green-500' },
   ];
 
   const statsDisplay = [
     { label: 'วัสดุทั้งหมด', value: stats.totalMaterials.toString(), icon: FaBox, color: 'text-blue-600' },
     { label: 'บทความ', value: stats.totalArticles.toString(), icon: FaNewspaper, color: 'text-green-600' },
+    { label: 'สินค้าคำนวณราคา', value: stats.totalEstimateProducts.toString(), icon: FaCalculator, color: 'text-indigo-600' },
     { label: 'บทความที่เผยแพร่', value: stats.publishedArticles.toString(), icon: FaUsers, color: 'text-purple-600' },
   ];
 

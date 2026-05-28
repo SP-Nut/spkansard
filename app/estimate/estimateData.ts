@@ -3,17 +3,25 @@ export type PriceSize = "M" | "M+" | "L" | "L+" | "Stainless S" | "Stainless M";
 export type Unit = "sqm" | "post" | "set" | "point" | "meter" | "free";
 
 export interface Product {
+  id?: string;
   type: MaterialType;
   name: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  displayOrder?: number;
+  isActive?: boolean;
   prices: Record<PriceSize, number>;
 }
 
 export interface ServiceOption {
+  id?: string;
   group: string;
   name: string;
   price: number;
   unit: Unit;
   onlySize?: PriceSize;
+  displayOrder?: number;
+  isActive?: boolean;
 }
 
 export const sizes: PriceSize[] = ["M", "M+", "L", "L+", "Stainless S", "Stainless M"];
