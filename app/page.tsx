@@ -28,6 +28,72 @@ const HeroSection = dynamic(() => import("./components/HeroSection"), {
   loading: () => <div className="h-screen bg-linear-to-r from-[#1E2E4F] to-[#314874]" />
 });
 
+function CountUp({
+  end,
+  suffix = "",
+  duration = 1400,
+}: {
+  end: number;
+  suffix?: string;
+  duration?: number;
+}) {
+  const ref = useRef<HTMLSpanElement | null>(null);
+  const [value, setValue] = useState(end);
+  const [hasStarted, setHasStarted] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node || hasStarted) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setValue(0);
+          setHasStarted(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.35 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [hasStarted]);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const animationFrame = requestAnimationFrame(() => setValue(end));
+      return () => cancelAnimationFrame(animationFrame);
+    }
+
+    let animationFrame = 0;
+    const startTime = performance.now();
+
+    const tick = (now: number) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      setValue(Math.round(end * eased));
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(tick);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [duration, end, hasStarted]);
+
+  return (
+    <span ref={ref}>
+      {value.toLocaleString("en-US")}
+      {suffix}
+    </span>
+  );
+}
+
 
 
 export default function Home() {
@@ -117,47 +183,55 @@ export default function Home() {
         </p>
 
         {/* Feature Badges */}
-        <div className="mt-6 sm:mt-8 grid grid-cols-2 lg:flex lg:flex-wrap items-center justify-center gap-4 sm:gap-6 lg:gap-8 xl:gap-12">
+        <div className="mx-auto mt-6 grid max-w-2xl grid-cols-2 items-start gap-x-4 gap-y-8 sm:mt-8 md:grid-cols-4 md:gap-x-4 lg:gap-x-5">
           {/* 50,000+ Customers */}
-          <div className="flex flex-col items-center text-gray-700">
+          <div className="flex min-h-[8.5rem] flex-col items-center justify-start text-gray-700">
             <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-(--brand-100) bg-white flex items-center justify-center">
               <FaUsers className="text-[16px] sm:text-[20px] lg:text-[24px]" style={{color:'var(--brand-700)'}} />
             </div>
             <div className="mt-2 text-center">
-              <div className="text-base sm:text-lg lg:text-xl font-bold" style={{color:'var(--brand-900)'}}>50,000+</div>
+              <div className="text-base sm:text-lg lg:text-xl font-bold tabular-nums" style={{color:'var(--brand-900)'}}>
+                <CountUp end={50000} suffix="+" />
+              </div>
               <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">ครัวเรือน</div>
             </div>
           </div>
 
           {/* 35+ Years Experience */}
-          <div className="flex flex-col items-center text-gray-700">
+          <div className="flex min-h-[8.5rem] flex-col items-center justify-start text-gray-700">
             <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-(--brand-100) bg-white flex items-center justify-center">
               <FaCalendarCheck className="text-[16px] sm:text-[20px] lg:text-[24px]" style={{color:'var(--brand-700)'}} />
             </div>
             <div className="mt-2 text-center">
-              <div className="text-base sm:text-lg lg:text-xl font-bold" style={{color:'var(--brand-900)'}}>38+</div>
+              <div className="text-base sm:text-lg lg:text-xl font-bold tabular-nums" style={{color:'var(--brand-900)'}}>
+                <CountUp end={38} suffix="+" />
+              </div>
               <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">ปี ประสบการณ์</div>
             </div>
           </div>
 
           {/* Customer Satisfaction 100% */}
-          <div className="flex flex-col items-center text-gray-700">
+          <div className="flex min-h-[8.5rem] flex-col items-center justify-start text-gray-700">
             <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-(--brand-100) bg-white flex items-center justify-center">
               <FaHeart className="text-[16px] sm:text-[20px] lg:text-[24px]" style={{color:'var(--brand-700)'}} />
             </div>
             <div className="mt-2 text-center">
-              <div className="text-base sm:text-lg lg:text-xl font-bold" style={{color:'var(--brand-900)'}}>100%</div>
+              <div className="text-base sm:text-lg lg:text-xl font-bold tabular-nums" style={{color:'var(--brand-900)'}}>
+                <CountUp end={100} suffix="%" />
+              </div>
               <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">ความพึงพอใจ</div>
             </div>
           </div>
 
           {/* 10 Years Warranty */}
-          <div className="flex flex-col items-center text-gray-700">
+          <div className="flex min-h-[8.5rem] flex-col items-center justify-start text-gray-700">
             <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-1 ring-(--brand-100) bg-white flex items-center justify-center">
               <FaShieldAlt className="text-[16px] sm:text-[20px] lg:text-[24px]" style={{color:'var(--brand-700)'}} />
             </div>
             <div className="mt-2 text-center">
-              <div className="text-base sm:text-lg lg:text-xl font-bold" style={{color:'var(--brand-900)'}}>10</div>
+              <div className="text-base sm:text-lg lg:text-xl font-bold tabular-nums" style={{color:'var(--brand-900)'}}>
+                <CountUp end={10} />
+              </div>
               <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">รับประกันสูงสุด 10 ปี</div>
             </div>
           </div>
