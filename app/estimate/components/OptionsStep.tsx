@@ -2,7 +2,7 @@ import { FaCheckCircle, FaTint } from "react-icons/fa";
 import { formatCurrency, unitLabels, type PriceSize, type ServiceOption } from "../estimateData";
 
 const inputClass =
-  "mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base font-bold text-slate-950 outline-none transition focus:border-[#00A2EA] focus:ring-4 focus:ring-[#00A2EA]/15 disabled:bg-slate-100 disabled:text-slate-400";
+  "mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base font-bold text-slate-950 outline-none transition focus:border-[#314874] focus:ring-4 focus:ring-[#314874]/15 disabled:bg-slate-100 disabled:text-slate-400";
 
 export function OptionsStep({
   selectedSize,
@@ -44,10 +44,10 @@ export function OptionsStep({
   const ceilingServices = mainServices.filter((service) => service.group === "งานฝ้า ใช้เฉพาะ L+");
 
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+    <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
       <StepHeading eyebrow="Step 6" title="เลือกสีและของเสริม" description="แยกเป็นกลุ่มเพื่อให้เห็นผลต่อราคาได้ง่ายขึ้น" />
 
-      <div className="mt-5 grid gap-4">
+      <div className="mt-4 grid gap-4">
         <OptionGroup title="สีโครงสร้าง" description="สีมาตรฐานฟรี สีผสมพิเศษคิดตามพื้นที่">
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {[...freeColors, "สีผสมพิเศษ"].map((color) => {
@@ -58,7 +58,7 @@ export function OptionsStep({
                   type="button"
                   onClick={() => onColorChange(color)}
                   className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm font-black transition ${
-                    selected ? "border-[#00A2EA] bg-[#e7f7ff] text-[#30318B]" : "border-slate-200 bg-white text-slate-700 hover:border-[#00A2EA]/50"
+                    selected ? "border-[#314874] bg-[#eaf4ff] text-[#1E2E4F]" : "border-slate-200 bg-white text-slate-700 hover:border-[#314874]/50"
                   }`}
                 >
                   <span>{color}</span>
@@ -111,15 +111,20 @@ export function OptionsStep({
         </OptionGroup>
 
         <OptionGroup title="บริการเสริม" description="งานรากฐาน งานไฟ งานท่อน้ำ และบริการอื่นจากฐานข้อมูล">
-          <div className="grid gap-3">
+          <details className="group">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-black text-[#1E2E4F]">
+              <span>เลือกบริการเสริม {Object.keys(selectedServices).length ? `(${Object.keys(selectedServices).length})` : ""}</span>
+              <span className="text-slate-400 transition group-open:rotate-45">+</span>
+            </summary>
+          <div className="mt-3 grid max-h-[360px] gap-2 overflow-y-auto pr-1">
             {extraServices.map((service) => {
               const selected = selectedServices[service.name] !== undefined;
               const isQuantityLocked = service.unit === "sqm" || service.unit === "free";
               return (
                 <div
                   key={service.name}
-                  className={`grid gap-3 rounded-3xl border p-4 transition sm:grid-cols-[minmax(0,1fr)_140px] ${
-                    selected ? "border-[#00A2EA] bg-[#e7f7ff]" : "border-slate-200 bg-white"
+                  className={`grid gap-3 rounded-2xl border p-3 transition sm:grid-cols-[minmax(0,1fr)_120px] ${
+                    selected ? "border-[#314874] bg-[#eaf4ff]" : "border-slate-200 bg-white"
                   }`}
                 >
                   <label className="flex cursor-pointer items-start gap-3">
@@ -127,12 +132,12 @@ export function OptionsStep({
                       type="checkbox"
                       checked={selected}
                       onChange={(event) => onExtraToggle(service.name, event.target.checked)}
-                      className="mt-1 h-5 w-5 rounded border-slate-300 text-[#00A2EA] focus:ring-[#00A2EA]"
+                      className="mt-1 h-5 w-5 rounded border-slate-300 text-[#314874] focus:ring-[#314874]"
                     />
                     <span className="min-w-0">
                       <span className="flex items-center gap-2 text-sm font-black text-slate-950">
                         {service.group} - {service.name}
-                        {selected ? <FaCheckCircle className="h-4 w-4 shrink-0 text-[#00A2EA]" /> : null}
+                        {selected ? <FaCheckCircle className="h-4 w-4 shrink-0 text-[#314874]" /> : null}
                       </span>
                       <span className="mt-1 block text-xs font-bold text-slate-500">
                         {service.unit === "free"
@@ -155,6 +160,7 @@ export function OptionsStep({
               );
             })}
           </div>
+          </details>
         </OptionGroup>
       </div>
     </section>
@@ -163,13 +169,13 @@ export function OptionsStep({
 
 function OptionGroup({ title, description, children }: { title: string; description: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-3xl border border-slate-100 bg-slate-50 p-4">
+    <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
       <div className="mb-3 flex items-start gap-3">
-        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white text-[#00A2EA]">
+        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white text-[#314874]">
           <FaTint />
         </div>
         <div>
-          <h3 className="font-black text-[#202166]">{title}</h3>
+          <h3 className="font-black text-[#1E2E4F]">{title}</h3>
           <p className="mt-1 text-sm leading-6 text-slate-600">{description}</p>
         </div>
       </div>
@@ -181,8 +187,8 @@ function OptionGroup({ title, description, children }: { title: string; descript
 function StepHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
     <div>
-      <p className="text-xs font-black uppercase tracking-[0.18em] text-[#00A2EA]">{eyebrow}</p>
-      <h2 className="mt-1 text-2xl font-black text-[#202166]">{title}</h2>
+      <p className="text-xs font-black uppercase tracking-[0.18em] text-[#314874]">{eyebrow}</p>
+      <h2 className="mt-1 text-2xl font-black text-[#1E2E4F]">{title}</h2>
       <p className="mt-2 text-sm leading-6 text-slate-600">{description}</p>
     </div>
   );

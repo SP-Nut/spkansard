@@ -5,7 +5,7 @@ import { FaLine, FaTimes } from "react-icons/fa";
 import type { CustomerInfo } from "../types/estimate.types";
 
 const inputClass =
-  "mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-950 outline-none transition focus:border-[#00A2EA] focus:ring-4 focus:ring-[#00A2EA]/15";
+  "mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-950 outline-none transition focus:border-[#314874] focus:ring-4 focus:ring-[#314874]/15";
 
 export function ContactLeadForm({
   open,
@@ -29,11 +29,11 @@ export function ContactLeadForm({
   return (
     <div className="fixed inset-0 z-[60] bg-slate-950/45 p-3" role="dialog" aria-modal="true">
       <div className="mx-auto flex min-h-full max-w-2xl items-end sm:items-center">
-        <form onSubmit={onSubmit} className="max-h-[92vh] w-full overflow-y-auto rounded-3xl bg-white p-5 shadow-2xl sm:p-6">
+        <form onSubmit={onSubmit} className="max-h-[92vh] w-full overflow-y-auto rounded-2xl bg-white p-4 shadow-2xl sm:p-5">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-[#00A2EA]">Contact</p>
-              <h2 className="mt-1 text-2xl font-black text-[#202166]">ส่งผลประเมินให้แอดมินทาง LINE</h2>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-[#314874]">Contact</p>
+              <h2 className="mt-1 text-2xl font-black text-[#1E2E4F]">ส่งผลประเมินให้แอดมินทาง LINE</h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">กรอกข้อมูลติดต่อ ทีมงานจะใช้รายละเอียดประเมินนี้คุยต่อและออกใบเสนอราคาให้</p>
             </div>
             <button
@@ -46,7 +46,7 @@ export function ContactLeadForm({
             </button>
           </div>
 
-          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <Field label="ชื่อ *">
               <input value={customer.name} onChange={(event) => onCustomerChange({ ...customer, name: event.target.value })} required className={inputClass} />
             </Field>
@@ -79,7 +79,7 @@ export function ContactLeadForm({
           <button
             type="submit"
             disabled={status === "sending"}
-            className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#FF2B8C] px-5 py-4 text-base font-black text-white shadow-lg shadow-[#FF2B8C]/20 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
+            className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#314874] px-5 py-4 text-base font-black text-white shadow-lg shadow-[#314874]/20 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
           >
             <FaLine />
             {status === "sending" ? "กำลังส่งข้อมูล..." : "ส่งข้อมูลให้ทีมงาน"}

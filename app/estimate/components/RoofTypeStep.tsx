@@ -32,9 +32,9 @@ export function RoofTypeStep({
   onSelect: (type: MaterialType) => void;
 }) {
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+    <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
       <StepHeading eyebrow="Step 1" title="เลือกประเภทหลังคา" description="เริ่มจากลักษณะพื้นที่และบรรยากาศที่ต้องการ" />
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
         {roofCards.map(({ type, title, description, badge, Icon }) => {
           const selected = selectedType === type;
           return (
@@ -42,19 +42,19 @@ export function RoofTypeStep({
               key={type}
               type="button"
               onClick={() => onSelect(type)}
-              className={`group relative rounded-3xl border p-5 text-left transition hover:-translate-y-0.5 hover:shadow-lg ${
+              className={`group relative rounded-2xl border p-4 text-left transition hover:-translate-y-0.5 hover:shadow-lg ${
                 selected
-                  ? "border-[#00A2EA] bg-[#e7f7ff] ring-4 ring-[#00A2EA]/15"
-                  : "border-slate-200 bg-white hover:border-[#00A2EA]/50"
+                  ? "border-[#314874] bg-[#eaf4ff] ring-4 ring-[#314874]/15"
+                  : "border-slate-200 bg-white hover:border-[#314874]/50"
               }`}
             >
               <div className="flex items-start justify-between gap-4">
-                <div className="grid h-14 w-14 place-items-center rounded-2xl bg-[#30318B] text-white shadow-lg shadow-[#30318B]/20">
+                <div className="grid h-14 w-14 place-items-center rounded-2xl bg-[#1E2E4F] text-white shadow-lg shadow-[#1E2E4F]/20">
                   <Icon className="h-6 w-6" />
                 </div>
-                {selected ? <FaCheckCircle className="h-6 w-6 text-[#00A2EA]" /> : null}
+                {selected ? <FaCheckCircle className="h-6 w-6 text-[#314874]" /> : null}
               </div>
-              <span className="mt-5 inline-flex rounded-full bg-white px-3 py-1 text-xs font-black text-[#30318B]">
+              <span className="mt-4 inline-flex rounded-full bg-white px-3 py-1 text-xs font-black text-[#1E2E4F]">
                 {badge}
               </span>
               <h3 className="mt-3 text-xl font-black text-slate-950">{title}</h3>
@@ -70,8 +70,8 @@ export function RoofTypeStep({
 function StepHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
     <div>
-      <p className="text-xs font-black uppercase tracking-[0.18em] text-[#00A2EA]">{eyebrow}</p>
-      <h2 className="mt-1 text-2xl font-black text-[#202166]">{title}</h2>
+      <p className="text-xs font-black uppercase tracking-[0.18em] text-[#314874]">{eyebrow}</p>
+      <h2 className="mt-1 text-2xl font-black text-[#1E2E4F]">{title}</h2>
       <p className="mt-2 text-sm leading-6 text-slate-600">{description}</p>
     </div>
   );

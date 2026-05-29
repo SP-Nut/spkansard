@@ -29,16 +29,16 @@ export function EstimateFAQ() {
   return (
     <section className="mx-auto max-w-4xl px-4 pb-24 pt-4 sm:px-6 lg:px-8">
       <div className="mb-6 text-center">
-        <p className="text-xs font-black uppercase tracking-[0.18em] text-[#00A2EA]">FAQ</p>
-        <h2 className="mt-2 text-3xl font-black text-[#202166]">คำถามที่พบบ่อย</h2>
+        <p className="text-xs font-black uppercase tracking-[0.18em] text-[#314874]">FAQ</p>
+        <h2 className="mt-2 text-3xl font-black text-[#1E2E4F]">คำถามที่พบบ่อย</h2>
       </div>
       <div className="space-y-3">
         {faqs.map((faq) => (
-          <details key={faq.question} className="group rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+          <details key={faq.question} className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
             <summary className="cursor-pointer list-none text-base font-black text-slate-950">
               <span className="flex items-center justify-between gap-4">
                 {faq.question}
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#e7f7ff] text-[#00A2EA] transition group-open:rotate-45">+</span>
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#eaf4ff] text-[#314874] transition group-open:rotate-45">+</span>
               </span>
             </summary>
             <p className="mt-3 text-sm leading-7 text-slate-600">{faq.answer}</p>

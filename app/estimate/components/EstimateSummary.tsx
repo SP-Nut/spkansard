@@ -41,12 +41,12 @@ export function EstimateSummary({
             onClick={() => onMobileOpenChange(true)}
             className="flex min-w-0 flex-1 items-center gap-3 text-left"
           >
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-[#e7f7ff] text-[#00A2EA]">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-[#eaf4ff] text-[#314874]">
               <FaChevronUp />
             </span>
             <span className="min-w-0">
               <span className="block text-xs font-bold text-slate-500">ราคาประเมินเบื้องต้น</span>
-              <span className="block truncate text-xl font-black text-[#202166]">
+              <span className="block truncate text-xl font-black text-[#1E2E4F]">
                 {estimate.isReady ? formatCurrency(estimate.total) : "รอข้อมูล"}
               </span>
             </span>
@@ -55,7 +55,7 @@ export function EstimateSummary({
             type="button"
             disabled={!estimate.isReady}
             onClick={onOpenContact}
-            className="rounded-2xl bg-[#FF2B8C] px-4 py-3 text-sm font-black text-white shadow-lg shadow-[#FF2B8C]/20 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
+            className="rounded-2xl bg-[#314874] px-4 py-3 text-sm font-black text-white shadow-lg shadow-[#314874]/20 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
           >
             ส่ง LINE
           </button>
@@ -64,7 +64,7 @@ export function EstimateSummary({
 
       {mobileOpen ? (
         <div className="fixed inset-0 z-50 bg-slate-950/40 p-3 lg:hidden" role="dialog" aria-modal="true">
-          <div className="absolute inset-x-3 bottom-3 max-h-[86vh] overflow-y-auto rounded-3xl bg-white p-4 shadow-2xl">
+          <div className="absolute inset-x-3 bottom-3 max-h-[86vh] overflow-y-auto rounded-2xl bg-white p-4 shadow-2xl">
             <button
               type="button"
               onClick={() => onMobileOpenChange(false)}
@@ -106,8 +106,8 @@ function SummaryPanel({
   const selectedServices = estimate.extraServiceItems.map((item) => item.service.name).join(", ");
 
   return (
-    <section className="overflow-hidden rounded-3xl border border-[#30318B]/10 bg-white shadow-[0_24px_80px_rgba(48,49,139,0.14)]">
-      <div className="bg-[#30318B] p-5 text-white">
+    <section className="overflow-hidden rounded-2xl border border-[#1E2E4F]/10 bg-white shadow-[0_18px_54px_rgba(30,46,79,0.14)]">
+      <div className="bg-[#1E2E4F] p-4 text-white">
         <p className="text-xs font-black uppercase tracking-[0.18em] text-white/70">ราคาประเมินเบื้องต้น</p>
         {estimate.isReady ? (
           <div className="mt-3 text-4xl font-black leading-none transition">{formatCurrency(estimate.total)}</div>
@@ -119,7 +119,7 @@ function SummaryPanel({
         {!estimate.isReady ? <p className="mt-3 text-sm text-white/70">{missingText}</p> : null}
       </div>
 
-      <div className="space-y-5 p-5">
+      <div className="space-y-4 p-4">
         <div className="grid gap-2 text-sm">
           <InfoRow label="ประเภทหลังคา" value={selection.roofType || "-"} />
           <InfoRow label="สินค้า" value={selection.product?.name || "-"} />
@@ -134,7 +134,7 @@ function SummaryPanel({
           {selectedServices ? <InfoRow label="บริการเสริม" value={selectedServices} /> : null}
         </div>
 
-        <div className="rounded-3xl bg-slate-50 p-4">
+        <div className="rounded-2xl bg-slate-50 p-4">
           <PriceRow label="ราคาวัสดุ" value={estimate.materialTotal} />
           <PriceRow label="ราคางานเสา" value={estimate.postTotal} />
           <PriceRow label="ราคาสีพิเศษ" value={estimate.colorTotal} />
@@ -143,7 +143,7 @@ function SummaryPanel({
           <PriceRow label="ราคารวมบริการเสริม" value={estimate.extraTotal} />
         </div>
 
-        <p className="rounded-3xl bg-[#f4fbff] p-4 text-xs leading-6 text-[#30318B]">
+        <p className="rounded-2xl bg-[#f7fbff] p-4 text-xs leading-6 text-[#1E2E4F]">
           ราคานี้เป็นราคาเบื้องต้น อาจเปลี่ยนแปลงตามสภาพหน้างาน ระยะติดตั้ง รายละเอียดโครงสร้าง และการตรวจสอบจริงจากทีมงาน
         </p>
 
@@ -152,7 +152,7 @@ function SummaryPanel({
             type="button"
             disabled={!estimate.isReady}
             onClick={onOpenContact}
-            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#FF2B8C] px-5 py-3 text-sm font-black text-white shadow-lg shadow-[#FF2B8C]/20 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#314874] px-5 py-3 text-sm font-black text-white shadow-lg shadow-[#314874]/20 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
           >
             <FaLine />
             ส่งผลประเมินให้แอดมินทาง LINE
@@ -161,7 +161,7 @@ function SummaryPanel({
             type="button"
             disabled={!estimate.isReady}
             onClick={onOpenContact}
-            className="rounded-2xl bg-[#00A2EA] px-5 py-3 text-sm font-black text-white transition hover:bg-[#008ed0] disabled:cursor-not-allowed disabled:bg-slate-300"
+            className="rounded-2xl bg-[#314874] px-5 py-3 text-sm font-black text-white transition hover:bg-[#1E2E4F] disabled:cursor-not-allowed disabled:bg-slate-300"
           >
             ขอใบเสนอราคาแบบละเอียด
           </button>
@@ -169,13 +169,13 @@ function SummaryPanel({
             type="button"
             disabled={!estimate.isReady}
             onClick={onSaveSummaryImage}
-            className="rounded-2xl border border-slate-200 px-5 py-3 text-sm font-black text-[#30318B] transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:text-slate-400"
+            className="rounded-2xl border border-slate-200 px-5 py-3 text-sm font-black text-[#1E2E4F] transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:text-slate-400"
           >
             บันทึกผลประเมินเป็นรูปภาพ
           </button>
           <a
             href="tel:02-936-8841"
-            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 px-5 py-3 text-sm font-black text-[#30318B] transition hover:bg-slate-50"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 px-5 py-3 text-sm font-black text-[#1E2E4F] transition hover:bg-slate-50"
           >
             <FaPhoneAlt />
             โทรปรึกษาทีมงาน

@@ -3,7 +3,7 @@ import { formatCurrency, unitLabels, type ServiceOption } from "../estimateData"
 import type { InstallType } from "../types/estimate.types";
 
 const inputClass =
-  "mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base font-bold text-slate-950 outline-none transition focus:border-[#00A2EA] focus:ring-4 focus:ring-[#00A2EA]/15";
+  "mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base font-bold text-slate-950 outline-none transition focus:border-[#314874] focus:ring-4 focus:ring-[#314874]/15";
 
 export function InstallTypeStep({
   installType,
@@ -31,9 +31,9 @@ export function InstallTypeStep({
   const postServices = mainServices.filter((service) => service.group === "งานเสา");
 
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+    <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
       <StepHeading eyebrow="Step 5" title="เลือกรูปแบบติดตั้ง" description="ระบบจะคิดค่าเสาเฉพาะงานแบบมีเสาตามสูตรเดิม" />
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <InstallCard
           selected={installType === "มีเสา"}
           title="มีเสา"
@@ -51,7 +51,7 @@ export function InstallTypeStep({
       </div>
 
       {installType === "มีเสา" ? (
-        <div className="mt-5 grid gap-4 rounded-3xl bg-slate-50 p-4 sm:grid-cols-2">
+        <div className="mt-4 grid gap-4 rounded-2xl bg-slate-50 p-4 sm:grid-cols-2">
           <label className="block">
             <span className="text-sm font-black text-slate-700">รูปแบบเสา</span>
             <select value={postServiceName} onChange={(event) => onPostServiceChange(event.target.value)} className={inputClass}>
@@ -76,7 +76,7 @@ export function InstallTypeStep({
       ) : null}
 
       {installType === "ไร้เสา" ? (
-        <div className="mt-5 rounded-3xl bg-[#f4fbff] p-4">
+        <div className="mt-4 rounded-2xl bg-[#f7fbff] p-4">
           <label className="block">
             <span className="text-sm font-black text-slate-700">รูปแบบไร้เสา</span>
             <select value={freeInstallName} onChange={(event) => onFreeInstallChange(event.target.value)} className={inputClass}>
@@ -87,7 +87,7 @@ export function InstallTypeStep({
               ))}
             </select>
           </label>
-          <p className="mt-3 text-sm leading-6 text-[#30318B]">
+          <p className="mt-3 text-sm leading-6 text-[#1E2E4F]">
             งานไร้เสาต้องตรวจสอบโครงสร้างเดิมก่อนยืนยันราคา
           </p>
         </div>
@@ -113,15 +113,15 @@ function InstallCard({
     <button
       type="button"
       onClick={onClick}
-      className={`relative rounded-3xl border p-5 text-left transition hover:-translate-y-0.5 hover:shadow-lg ${
-        selected ? "border-[#00A2EA] bg-[#e7f7ff] ring-4 ring-[#00A2EA]/15" : "border-slate-200 bg-white hover:border-[#00A2EA]/50"
+      className={`relative rounded-2xl border p-4 text-left transition hover:-translate-y-0.5 hover:shadow-lg ${
+        selected ? "border-[#314874] bg-[#eaf4ff] ring-4 ring-[#314874]/15" : "border-slate-200 bg-white hover:border-[#314874]/50"
       }`}
     >
       <div className="flex items-start justify-between gap-4">
-        <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#30318B] text-white">
+        <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#1E2E4F] text-white">
           <Icon />
         </div>
-        {selected ? <FaCheckCircle className="h-5 w-5 text-[#00A2EA]" /> : null}
+        {selected ? <FaCheckCircle className="h-5 w-5 text-[#314874]" /> : null}
       </div>
       <h3 className="mt-4 text-xl font-black text-slate-950">{title}</h3>
       <p className="mt-2 text-sm leading-6 text-slate-600">{description}</p>
@@ -132,8 +132,8 @@ function InstallCard({
 function StepHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
     <div>
-      <p className="text-xs font-black uppercase tracking-[0.18em] text-[#00A2EA]">{eyebrow}</p>
-      <h2 className="mt-1 text-2xl font-black text-[#202166]">{title}</h2>
+      <p className="text-xs font-black uppercase tracking-[0.18em] text-[#314874]">{eyebrow}</p>
+      <h2 className="mt-1 text-2xl font-black text-[#1E2E4F]">{title}</h2>
       <p className="mt-2 text-sm leading-6 text-slate-600">{description}</p>
     </div>
   );

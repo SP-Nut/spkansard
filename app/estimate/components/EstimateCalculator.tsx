@@ -89,6 +89,7 @@ export function EstimateCalculator() {
   const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [statusText, setStatusText] = useState("");
+  const [activeStep, setActiveStep] = useState(0);
 
   const fetchCalculatorData = async () => {
     setLoading(true);
@@ -176,7 +177,7 @@ export function EstimateCalculator() {
     ]
   );
 
-  const currentStep = useMemo(() => {
+  const maxStep = useMemo(() => {
     if (!selectedRoofType) return 0;
     if (!selectedProduct) return 1;
     if (!selectedSize) return 2;
@@ -184,6 +185,10 @@ export function EstimateCalculator() {
     if (!installType) return 4;
     return 5;
   }, [estimate.length, estimate.width, installType, selectedProduct, selectedRoofType, selectedSize]);
+
+  useEffect(() => {
+    if (activeStep > maxStep) setActiveStep(maxStep);
+  }, [activeStep, maxStep]);
 
   const selection: EstimateSelectionSummary = useMemo(
     () => ({
@@ -213,6 +218,7 @@ export function EstimateCalculator() {
     setSelectedProductName("");
     setSelectedSize("");
     setSelectedCeiling("");
+    setActiveStep(1);
   };
 
   const handleProductChange = (name: string) => {
@@ -221,11 +227,13 @@ export function EstimateCalculator() {
     const firstSize = product ? sizes.find((size) => product.prices[size] > 0) : "";
     setSelectedSize(firstSize || "");
     setSelectedCeiling("");
+    if (product) setActiveStep(2);
   };
 
   const handleSizeChange = (size: PriceSize) => {
     setSelectedSize(size);
     if (size !== "L+") setSelectedCeiling("");
+    setActiveStep(3);
   };
 
   const handleExtraToggle = (serviceName: string, checked: boolean) => {
@@ -241,6 +249,25 @@ export function EstimateCalculator() {
     setSelectedServices((current) => ({ ...current, [serviceName]: quantity }));
   };
 
+  const handleInstallTypeChange = (type: InstallType) => {
+    setInstallType(type);
+    if (type) setActiveStep(5);
+  };
+
+  const handleNextStep = () => {
+    if (activeStep < maxStep) setActiveStep((step) => Math.min(step + 1, 5));
+    if (activeStep === 5 && estimate.isReady) setContactOpen(true);
+  };
+
+  const stepHelpText = useMemo(() => {
+    if (activeStep === 0) return selectedRoofType ? "เลือกประเภทแล้ว ไปเลือกสินค้าต่อได้" : "เลือกประเภทหลังคาก่อน";
+    if (activeStep === 1) return selectedProduct ? "เลือกสินค้าแล้ว ไปเลือกไซซ์ต่อได้" : "เลือกสินค้าก่อน";
+    if (activeStep === 2) return selectedSize ? "เลือกไซซ์แล้ว ไปกรอกขนาดต่อได้" : "เลือกไซซ์ราคาก่อน";
+    if (activeStep === 3) return estimate.width > 0 && estimate.length > 0 ? "กรอกขนาดครบแล้ว ไปเลือกรูปแบบติดตั้งต่อได้" : "กรอกความกว้างและความยาวมากกว่า 0";
+    if (activeStep === 4) return installType ? "เลือกรูปแบบติดตั้งแล้ว ไปเลือกของเสริมต่อได้" : "เลือกรูปแบบติดตั้งก่อน";
+    return estimate.isReady ? "ตรวจของเสริม แล้วส่งข้อมูลให้ทีมงานได้เลย" : missingText;
+  }, [activeStep, estimate.isReady, estimate.length, estimate.width, installType, missingText, selectedProduct, selectedRoofType, selectedSize]);
+
   const handleSaveSummaryImage = async () => {
     if (!estimate.isReady) return;
     try {
@@ -252,9 +279,9 @@ export function EstimateCalculator() {
       const context = canvas.getContext("2d");
       if (!context) throw new Error("Canvas is not supported");
 
-      context.fillStyle = "#f4fbff";
+      context.fillStyle = "#f7fbff";
       context.fillRect(0, 0, widthPx, heightPx);
-      context.fillStyle = "#30318B";
+      context.fillStyle = "#1E2E4F";
       context.fillRect(0, 0, widthPx, 260);
       context.fillStyle = "#ffffff";
       context.font = "700 34px Arial, sans-serif";
@@ -349,60 +376,108 @@ export function EstimateCalculator() {
     }
   };
 
+  const activeStepContent = (() => {
+    if (activeStep === 0) {
+      return <RoofTypeStep selectedType={selectedRoofType} onSelect={handleRoofTypeChange} />;
+    }
+
+    if (activeStep === 1) {
+      return (
+        <ProductStep
+          roofType={selectedRoofType}
+          products={filteredProducts}
+          selectedProductName={selectedProductName}
+          loading={loading}
+          error={loadError}
+          onRetry={fetchCalculatorData}
+          onSelect={handleProductChange}
+        />
+      );
+    }
+
+    if (activeStep === 2) {
+      return <SizeStep product={selectedProduct} selectedSize={selectedSize} onSelect={handleSizeChange} />;
+    }
+
+    if (activeStep === 3) {
+      return (
+        <DimensionStep
+          width={width}
+          length={length}
+          area={estimate.squareMeters}
+          onWidthChange={setWidth}
+          onLengthChange={setLength}
+        />
+      );
+    }
+
+    if (activeStep === 4) {
+      return (
+        <InstallTypeStep
+          installType={installType}
+          postServiceName={postServiceName}
+          postCount={postCount}
+          freeInstallName={freeInstallName}
+          mainServices={mainServices}
+          freeInstallOptions={freeInstallOptions}
+          onInstallTypeChange={handleInstallTypeChange}
+          onPostServiceChange={setPostServiceName}
+          onPostCountChange={setPostCount}
+          onFreeInstallChange={setFreeInstallName}
+        />
+      );
+    }
+
+    return (
+      <OptionsStep
+        selectedSize={selectedSize}
+        selectedColor={selectedColor}
+        selectedCeiling={selectedCeiling}
+        selectedGutter={selectedGutter}
+        gutterMeters={gutterMeters}
+        selectedServices={selectedServices}
+        mainServices={mainServices}
+        extraServices={extraServices}
+        gutters={gutters}
+        freeColors={freeColors}
+        area={estimate.squareMeters}
+        onColorChange={setSelectedColor}
+        onCeilingChange={setSelectedCeiling}
+        onGutterChange={setSelectedGutter}
+        onGutterMetersChange={setGutterMeters}
+        onExtraToggle={handleExtraToggle}
+        onExtraQuantityChange={handleExtraQuantityChange}
+      />
+    );
+  })();
+
   return (
-    <section id="estimate-calculator" className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <StepProgress currentStep={currentStep} />
-      <div className="mt-5 grid gap-6 lg:grid-cols-[minmax(0,1fr)_390px]">
-        <div className="space-y-5">
-          <RoofTypeStep selectedType={selectedRoofType} onSelect={handleRoofTypeChange} />
-          <ProductStep
-            roofType={selectedRoofType}
-            products={filteredProducts}
-            selectedProductName={selectedProductName}
-            loading={loading}
-            error={loadError}
-            onRetry={fetchCalculatorData}
-            onSelect={handleProductChange}
-          />
-          <SizeStep product={selectedProduct} selectedSize={selectedSize} onSelect={handleSizeChange} />
-          <DimensionStep
-            width={width}
-            length={length}
-            area={estimate.squareMeters}
-            onWidthChange={setWidth}
-            onLengthChange={setLength}
-          />
-          <InstallTypeStep
-            installType={installType}
-            postServiceName={postServiceName}
-            postCount={postCount}
-            freeInstallName={freeInstallName}
-            mainServices={mainServices}
-            freeInstallOptions={freeInstallOptions}
-            onInstallTypeChange={setInstallType}
-            onPostServiceChange={setPostServiceName}
-            onPostCountChange={setPostCount}
-            onFreeInstallChange={setFreeInstallName}
-          />
-          <OptionsStep
-            selectedSize={selectedSize}
-            selectedColor={selectedColor}
-            selectedCeiling={selectedCeiling}
-            selectedGutter={selectedGutter}
-            gutterMeters={gutterMeters}
-            selectedServices={selectedServices}
-            mainServices={mainServices}
-            extraServices={extraServices}
-            gutters={gutters}
-            freeColors={freeColors}
-            area={estimate.squareMeters}
-            onColorChange={setSelectedColor}
-            onCeilingChange={setSelectedCeiling}
-            onGutterChange={setSelectedGutter}
-            onGutterMetersChange={setGutterMeters}
-            onExtraToggle={handleExtraToggle}
-            onExtraQuantityChange={handleExtraQuantityChange}
-          />
+    <section id="estimate-calculator" className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
+      <StepProgress activeStep={activeStep} maxStep={maxStep} onSelectStep={setActiveStep} />
+      <div className="mt-4 grid gap-5 lg:grid-cols-[minmax(0,1fr)_370px]">
+        <div>
+          <div className="min-h-[520px]">{activeStepContent}</div>
+          <div className="mt-3 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm font-semibold text-slate-600">{stepHelpText}</p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setActiveStep((step) => Math.max(0, step - 1))}
+                disabled={activeStep === 0}
+                className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-bold text-[#1E2E4F] transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                ย้อนกลับ
+              </button>
+              <button
+                type="button"
+                onClick={handleNextStep}
+                disabled={activeStep < maxStep ? false : activeStep !== 5 || !estimate.isReady}
+                className="rounded-xl bg-[#314874] px-5 py-2 text-sm font-bold text-white transition hover:bg-[#1E2E4F] disabled:cursor-not-allowed disabled:bg-slate-300"
+              >
+                {activeStep === 5 ? "ส่งประเมิน" : "ถัดไป"}
+              </button>
+            </div>
+          </div>
         </div>
 
         <EstimateSummary
