@@ -36,6 +36,8 @@ const slides = [
   },
 ];
 
+const heroCopy = slides[0];
+
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -54,7 +56,7 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative min-h-[88svh] w-full overflow-hidden bg-[#eaf4ff] text-white"
+      className="relative min-h-[100svh] w-full overflow-hidden bg-[#eaf4ff] text-white"
       aria-label="SP Kansard กันสาดและโรงจอดรถ"
     >
       <div className="absolute inset-0">
@@ -94,38 +96,34 @@ export default function HeroSection() {
         <div className="absolute inset-x-0 bottom-0 h-44 bg-linear-to-t from-[#071526]/42 to-transparent" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[88svh] max-w-[1760px] items-end justify-center px-5 pb-10 pt-28 text-center sm:px-8 md:pb-6 lg:px-10">
+      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1760px] items-end justify-center px-5 pb-20 pt-28 text-center sm:px-8 md:pb-24 lg:px-10">
         <div className="relative w-full max-w-4xl">
-          <div key={currentSlide} className="animate-[fadeIn_900ms_ease-out]">
+          <div className="animate-[fadeIn_900ms_ease-out]">
             <p className="mb-3 text-3xl font-bold italic uppercase leading-tight text-white drop-shadow-[0_3px_18px_rgba(0,0,0,0.34)] sm:text-5xl lg:text-6xl">
-              {slides[currentSlide].eyebrow}
+              {heroCopy.eyebrow}
             </p>
 
-            <h1 className="mx-auto max-w-3xl text-lg font-semibold leading-8 text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)] sm:text-2xl lg:text-3xl">
-              {slides[currentSlide].title}
-            </h1>
-
             <p className="mx-auto mt-2 max-w-2xl text-base font-medium leading-8 text-white/92 drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)] sm:text-lg lg:text-xl">
-              {slides[currentSlide].subtitle}
+              {heroCopy.subtitle}
             </p>
 
             <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <a
-                href={slides[currentSlide].primary.href}
-                target={slides[currentSlide].primary.external ? "_blank" : undefined}
-                rel={slides[currentSlide].primary.external ? "noopener noreferrer" : undefined}
+                href={heroCopy.primary.href}
+                target={heroCopy.primary.external ? "_blank" : undefined}
+                rel={heroCopy.primary.external ? "noopener noreferrer" : undefined}
                 className="inline-flex items-center justify-center rounded-full bg-[#1E3B5A] px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:bg-[#294f75] sm:text-base"
               >
-                {slides[currentSlide].primary.text}
+                {heroCopy.primary.text}
                 <span className="ml-2 text-lg leading-none" aria-hidden="true">&rsaquo;</span>
               </a>
               <a
-                href={slides[currentSlide].secondary.href}
-                target={slides[currentSlide].secondary.external ? "_blank" : undefined}
-                rel={slides[currentSlide].secondary.external ? "noopener noreferrer" : undefined}
+                href={heroCopy.secondary.href}
+                target={heroCopy.secondary.external ? "_blank" : undefined}
+                rel={heroCopy.secondary.external ? "noopener noreferrer" : undefined}
                 className="inline-flex items-center justify-center rounded-full border border-white/55 bg-white/10 px-8 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-white hover:bg-white/18 sm:text-base"
               >
-                {slides[currentSlide].secondary.text}
+                {heroCopy.secondary.text}
                 <span className="ml-2 text-lg leading-none" aria-hidden="true">&rsaquo;</span>
               </a>
             </div>
@@ -134,7 +132,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-2 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
+      <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
         {slides.map((slide, index) => (
           <button
             key={slide.desktop}
