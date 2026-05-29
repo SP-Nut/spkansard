@@ -22,10 +22,28 @@ interface Article {
   updated_at: string;
 }
 
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+const decodePathParam = (value: string) => {
+  let decoded = value;
+
+  for (let i = 0; i < 2; i += 1) {
+    try {
+      const next = decodeURIComponent(decoded);
+      if (next === decoded) break;
+      decoded = next;
+    } catch {
+      break;
+    }
+  }
+
+  return decoded;
+};
+
 const ArticlePage = () => {
   const params = useParams();
   const router = useRouter();
-  const articleId = params.id as string;
+  const articleId = decodePathParam(params.id as string);
   
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
@@ -34,27 +52,34 @@ const ArticlePage = () => {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        // Fetch the main article by slug or id
-        let articleData = null;
+        let articleData: Article | null = null;
         
         // Try to fetch by slug first
-        const { data: slugData } = await supabase
+        const { data: slugData, error: slugError } = await supabase
           .from('articles')
           .select('*')
           .eq('slug', articleId)
           .eq('published', true)
           .maybeSingle();
 
+        if (slugError) {
+          console.error('Error fetching article by slug:', slugError);
+        }
+
         if (slugData) {
           articleData = slugData;
-        } else {
+        } else if (UUID_PATTERN.test(articleId)) {
           // If no slug found, try by ID (for backward compatibility)
-          const { data: idData } = await supabase
+          const { data: idData, error: idError } = await supabase
             .from('articles')
             .select('*')
             .eq('id', articleId)
             .eq('published', true)
             .maybeSingle();
+
+          if (idError) {
+            console.error('Error fetching article by id:', idError);
+          }
           
           if (idData) {
             articleData = idData;

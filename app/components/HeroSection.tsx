@@ -36,12 +36,6 @@ const slides = [
   },
 ];
 
-const stats = [
-  { value: "38+", label: "ปีประสบการณ์" },
-  { value: "50,000+", label: "ครัวเรือนที่ไว้วางใจ" },
-  { value: "10 ปี", label: "รับประกันสูงสุด" },
-];
-
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -100,53 +94,47 @@ export default function HeroSection() {
         <div className="absolute inset-x-0 bottom-0 h-44 bg-linear-to-t from-[#071526]/42 to-transparent" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[88svh] max-w-[1760px] items-center justify-center px-5 pb-16 pt-28 text-center sm:px-8 md:pb-16 lg:px-10">
-        <div className="relative max-w-4xl">
+      <div className="relative z-10 mx-auto flex min-h-[88svh] max-w-[1760px] items-end justify-center px-5 pb-10 pt-28 text-center sm:px-8 md:pb-6 lg:px-10">
+        <div className="relative w-full max-w-4xl">
           <div key={currentSlide} className="animate-[fadeIn_900ms_ease-out]">
-            <p className="mb-4 text-xs font-semibold tracking-[0.28em] text-white/78 sm:text-sm">
+            <p className="mb-3 text-3xl font-bold italic uppercase leading-tight text-white drop-shadow-[0_3px_18px_rgba(0,0,0,0.34)] sm:text-5xl lg:text-6xl">
               {slides[currentSlide].eyebrow}
             </p>
 
-            <h1 className="mx-auto max-w-4xl text-4xl font-semibold leading-tight text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.28)] sm:text-5xl lg:text-7xl">
+            <h1 className="mx-auto max-w-3xl text-lg font-semibold leading-8 text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)] sm:text-2xl lg:text-3xl">
               {slides[currentSlide].title}
             </h1>
 
-            <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-white/88 drop-shadow-[0_1px_10px_rgba(0,0,0,0.22)] sm:text-lg lg:text-xl">
+            <p className="mx-auto mt-2 max-w-2xl text-base font-medium leading-8 text-white/92 drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)] sm:text-lg lg:text-xl">
               {slides[currentSlide].subtitle}
             </p>
 
-            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <a
                 href={slides[currentSlide].primary.href}
                 target={slides[currentSlide].primary.external ? "_blank" : undefined}
                 rel={slides[currentSlide].primary.external ? "noopener noreferrer" : undefined}
-                className="inline-flex items-center justify-center rounded-full bg-white px-7 py-3 text-sm font-semibold text-[#1E2E4F] shadow-lg shadow-black/10 transition hover:-translate-y-0.5 hover:bg-blue-50 sm:text-base"
+                className="inline-flex items-center justify-center rounded-full bg-[#1E3B5A] px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:bg-[#294f75] sm:text-base"
               >
                 {slides[currentSlide].primary.text}
+                <span className="ml-2 text-lg leading-none" aria-hidden="true">&rsaquo;</span>
               </a>
               <a
                 href={slides[currentSlide].secondary.href}
                 target={slides[currentSlide].secondary.external ? "_blank" : undefined}
                 rel={slides[currentSlide].secondary.external ? "noopener noreferrer" : undefined}
-                className="inline-flex items-center justify-center rounded-full border border-white/65 bg-white/8 px-7 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-white hover:bg-white/15 sm:text-base"
+                className="inline-flex items-center justify-center rounded-full border border-white/55 bg-white/10 px-8 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-white hover:bg-white/18 sm:text-base"
               >
                 {slides[currentSlide].secondary.text}
+                <span className="ml-2 text-lg leading-none" aria-hidden="true">&rsaquo;</span>
               </a>
             </div>
           </div>
 
-          <div className="mx-auto mt-10 grid max-w-2xl grid-cols-3 gap-4 border-t border-white/22 pt-6">
-            {stats.map((item) => (
-              <div key={item.label}>
-                <div className="text-lg font-semibold text-white sm:text-2xl">{item.value}</div>
-                <div className="mt-1 text-xs leading-5 text-white/62 sm:text-sm">{item.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
+      <div className="absolute bottom-2 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
         {slides.map((slide, index) => (
           <button
             key={slide.desktop}
