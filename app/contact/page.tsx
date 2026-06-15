@@ -1,106 +1,82 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { FaHome, FaChevronRight, FaPhone, FaEnvelope, FaFax, FaGlobe, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaHome, FaChevronRight, FaPhone, FaEnvelope, FaFax, FaGlobe, FaMapMarkerAlt, FaFacebookF, FaYoutube, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 import { SiLine } from 'react-icons/si';
 import StructuredData from '../components/StructuredData';
 
-export default function Contact() {
-  const [mounted, setMounted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    lastname: '',
-    phone: '',
-    email: '',
-    lineId: '',
-    services: [] as string[],
-    message: ''
-  });
+const initialForm = {
+  name: '',
+  lastname: '',
+  phone: '',
+  email: '',
+  lineId: '',
+  services: [] as string[],
+  message: '',
+};
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+export default function Contact() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState(initialForm);
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [statusText, setStatusText] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    
-    // Validate phone input in real-time
     if (name === 'phone') {
-      const phonePattern = /^[0-9\s\-\+\(\)]*$/;
-      if (!phonePattern.test(value)) {
-        return; // Don't update if invalid characters
-      }
+      if (!/^[0-9\s\-\+\(\)]*$/.test(value)) return;
     }
-
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleServiceChange = (service: string, checked: boolean) => {
     setFormData(prev => ({
       ...prev,
-      services: checked 
+      services: checked
         ? [...prev.services, service]
-        : prev.services.filter(s => s !== service)
+        : prev.services.filter(s => s !== service),
     }));
   };
 
-  if (!mounted) {
-    return null;
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validate phone number (only digits, spaces, hyphens allowed)
+
     const phonePattern = /^[0-9\s\-\+\(\)]+$/;
     if (!phonePattern.test(formData.phone)) {
-      alert('กรุณากรอกเบอร์โทรเป็นตัวเลขเท่านั้น');
+      setStatus('error');
+      setStatusText('กรุณากรอกเบอร์โทรเป็นตัวเลขเท่านั้น');
       return;
     }
-
-    // Validate LINE ID is required
     if (!formData.lineId.trim()) {
-      alert('กรุณากรอก LINE ID');
+      setStatus('error');
+      setStatusText('กรุณากรอก LINE ID');
       return;
     }
 
     setIsSubmitting(true);
+    setStatus('idle');
 
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
       const result = await response.json();
 
       if (response.ok) {
-        alert(result.message || 'ขอบคุณสำหรับการติดต่อ เราจะติดต่อกลับในเร็วๆ นี้');
-        
-        // Reset form after successful submission
-        setFormData({
-          name: '',
-          lastname: '',
-          phone: '',
-          email: '',
-          lineId: '',
-          services: [],
-          message: ''
-        });
+        setStatus('success');
+        setStatusText(result.message || 'ขอบคุณสำหรับการติดต่อ เราจะติดต่อกลับในเร็ว ๆ นี้');
+        setFormData(initialForm);
       } else {
-        alert(result.error || 'เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง');
+        setStatus('error');
+        setStatusText(result.error || 'เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง');
       }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต');
+    } catch {
+      setStatus('error');
+      setStatusText('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต');
     } finally {
       setIsSubmitting(false);
     }
@@ -110,7 +86,7 @@ export default function Contact() {
     <div className="font-prompt min-h-screen bg-gray-50 pt-16 sm:pt-20">
       <StructuredData type="localBusiness" />
       {/* Hero Section - unified CI (gradient like other pages) */}
-      <section className="relative bg-gradient-to-r from-[#1E2E4F] to-[#314874] text-white py-8 sm:py-12 lg:py-16">
+      <section className="relative bg-linear-to-r from-[#1E2E4F] to-[#314874] text-white py-8 sm:py-12 lg:py-16">
         <div className="w-full">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Breadcrumb */}
@@ -135,7 +111,7 @@ export default function Contact() {
 
       {/* Contact Section */}
       <section className="py-8 sm:py-12 lg:py-16">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-[1800px]">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-12">
             
             {/* Contact Form */}
@@ -280,6 +256,19 @@ export default function Contact() {
                 >
                   {isSubmitting ? 'กำลังส่งข้อมูล...' : 'ส่งข้อมูล'}
                 </button>
+
+                {status !== 'idle' && (
+                  <div className={`flex items-start gap-3 rounded-lg px-4 py-3 text-sm font-medium ${
+                    status === 'success'
+                      ? 'bg-green-50 text-green-800 border border-green-200'
+                      : 'bg-red-50 text-red-800 border border-red-200'
+                  }`}>
+                    {status === 'success'
+                      ? <FaCheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
+                      : <FaExclamationCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />}
+                    <span>{statusText}</span>
+                  </div>
+                )}
               </form>
             </div>
 
@@ -296,7 +285,7 @@ export default function Contact() {
               <div className="space-y-4 sm:space-y-6">
                 {/* Call Us */}
                 <div className="flex items-start space-x-3 sm:space-x-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0 bg-[#eaf4ff] text-[#314874]">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shrink-0 bg-[#eaf4ff] text-[#314874]">
                     <FaPhone className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
                   <div>
@@ -307,7 +296,7 @@ export default function Contact() {
 
                 {/* Email Us */}
                 <div className="flex items-start space-x-3 sm:space-x-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0 bg-[#eaf4ff] text-[#314874]">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shrink-0 bg-[#eaf4ff] text-[#314874]">
                     <FaEnvelope className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
                   <div>
@@ -318,7 +307,7 @@ export default function Contact() {
 
                 {/* LINE */}
                 <div className="flex items-start space-x-3 sm:space-x-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0 bg-[#eaf4ff] text-[#314874]">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shrink-0 bg-[#eaf4ff] text-[#314874]">
                     <SiLine className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
                   <div>
@@ -329,7 +318,7 @@ export default function Contact() {
 
                 {/* Fax */}
                 <div className="flex items-start space-x-3 sm:space-x-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0 bg-[#eaf4ff] text-[#314874]">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shrink-0 bg-[#eaf4ff] text-[#314874]">
                     <FaFax className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
                   <div>
@@ -340,7 +329,7 @@ export default function Contact() {
 
                 {/* Website */}
                 <div className="flex items-start space-x-3 sm:space-x-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0 bg-[#eaf4ff] text-[#314874]">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shrink-0 bg-[#eaf4ff] text-[#314874]">
                     <FaGlobe className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
                   <div>
@@ -351,7 +340,7 @@ export default function Contact() {
 
                 {/* Address */}
                 <div className="flex items-start space-x-3 sm:space-x-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0 bg-[#eaf4ff] text-[#314874]">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shrink-0 bg-[#eaf4ff] text-[#314874]">
                     <FaMapMarkerAlt className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
                   <div>
@@ -369,25 +358,14 @@ export default function Contact() {
               <div className="mt-8">
                 <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-4">ติดตามเรา</h3>
                 <div className="flex flex-wrap gap-3 sm:gap-4">
-                  <a href="https://www.facebook.com/spkansard/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors bg-[#314874] hover:bg-[#1E2E4F]">
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                    </svg>
+                  <a href="https://www.facebook.com/spkansard/" target="_blank" rel="noopener noreferrer" aria-label="Facebook SP Kansard" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors bg-[#314874] hover:bg-[#1E2E4F]">
+                    <FaFacebookF className="w-5 h-5 text-white" />
                   </a>
-                  <a href="#" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors bg-[#314874] hover:bg-[#1E2E4F]">
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
+                  <a href="https://line.me/R/ti/p/@spkansard" target="_blank" rel="noopener noreferrer" aria-label="LINE @spkansard" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors bg-[#314874] hover:bg-[#1E2E4F]">
+                    <SiLine className="w-5 h-5 text-white" />
                   </a>
-                  <a href="https://line.me/R/ti/p/@spkansard" target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors bg-[#314874] hover:bg-[#1E2E4F]">
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zM24 7.465V16.536C24 20.583 20.583 24 16.537 24H7.465C3.417 24 0 20.583 0 16.537V7.465C0 3.417 3.417 0 7.465 0h9.072C20.583 0 24 3.417 24 7.465"/>
-                    </svg>
-                  </a>
-                  <a href="https://www.youtube.com/@spkansard" target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors bg-[#314874] hover:bg-[#1E2E4F]">
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                    </svg>
+                  <a href="https://www.youtube.com/@spkansard" target="_blank" rel="noopener noreferrer" aria-label="YouTube SP Kansard" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors bg-[#314874] hover:bg-[#1E2E4F]">
+                    <FaYoutube className="w-5 h-5 text-white" />
                   </a>
                 </div>
               </div>
