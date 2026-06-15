@@ -1,15 +1,5 @@
-import { EstimateCalculator } from "./components/EstimateCalculator";
-import { EstimateFAQ } from "./components/EstimateFAQ";
-import { EstimateHero } from "./components/EstimateHero";
-import { TrustSection } from "./components/TrustSection";
+import { redirect } from "next/navigation";
 
 export default function EstimatePage() {
-  return (
-    <main className="min-h-screen bg-[#f7fbff] text-slate-950">
-      <EstimateHero />
-      <EstimateCalculator />
-      <TrustSection />
-      <EstimateFAQ />
-    </main>
-  );
+  redirect("https://cal-customer.vercel.app/");
 }

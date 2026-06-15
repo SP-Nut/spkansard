@@ -88,7 +88,7 @@ export default function MaterialsPage() {
   };
 
   const calculatePrice = () => {
-    window.location.href = '/estimate';
+    window.open('https://cal-customer.vercel.app/', '_blank', 'noopener,noreferrer');
   };
 
   return (

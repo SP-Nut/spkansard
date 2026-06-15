@@ -12,7 +12,7 @@ const slides = [
     title: "เอสพี กันสาด",
     subtitle: "ออกแบบและติดตั้งกันสาด โรงจอดรถ และงานโครงสร้างครบวงจร ด้วยงานเรียบ หรู และแข็งแรงในมาตรฐานมืออาชีพ",
     primary: { text: "ดูผลงาน", href: "/gallery", external: false },
-    secondary: { text: "ประเมินราคา", href: "/estimate", external: false },
+    secondary: { text: "ประเมินราคา", href: "https://cal-customer.vercel.app/", external: true },
   },
   {
     desktop: "/herosection/กันสาดเรียบๆ ทันสมัย.webp",
@@ -31,7 +31,7 @@ const slides = [
     eyebrow: "CRAFTED TO FIT",
     title: "งานติดตั้งที่พอดีกับพื้นที่",
     subtitle: "สำรวจหน้างาน วางโครงสร้าง และเก็บรายละเอียดให้ลงตัว เพื่อให้กันสาดใช้งานจริงได้ยาวนาน",
-    primary: { text: "นัดประเมิน", href: "/estimate", external: false },
+    primary: { text: "นัดประเมิน", href: "https://cal-customer.vercel.app/", external: true },
     secondary: { text: "ดูขั้นตอน", href: "#service-process", external: false },
   },
 ];

@@ -299,7 +299,9 @@ export default function Home() {
               CALL ›
             </a>
             <a
-              href="/estimate"
+              href="https://cal-customer.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-gray-200 hover:bg-white text-gray-800 font-semibold py-3 px-6 sm:px-8 rounded-full transition-all duration-300 text-sm sm:text-base"
             >
               ประเมินราคา ›
