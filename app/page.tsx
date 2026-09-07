@@ -293,7 +293,7 @@ export default function Home() {
               LINE ›
             </a>
             <a
-              href="tel:02-936-8841"
+              href="tel:081-660-8888"
               className="bg-gray-200 hover:bg-white text-gray-800 font-semibold py-3 px-6 sm:px-8 rounded-full transition-all duration-300 text-sm sm:text-base"
             >
               CALL ›
@@ -601,10 +601,10 @@ export default function Home() {
                 </a>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
-                    href="tel:02-936-8841"
+                    href="tel:081-660-8888"
                     className="inline-flex items-center justify-center flex-1 px-4 py-3 bg-white/20 hover:bg-white/30 border border-white/40 text-white font-medium rounded-lg backdrop-blur-sm transition-all duration-300 text-sm sm:text-base"
                   >
-                    โทร. 02-936-8841
+                    โทร. 081-660-8888
                   </a>
                   <a
                     href="https://line.me/R/ti/p/@spkansard"

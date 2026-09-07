@@ -64,14 +64,14 @@ export default function FloatingContactButton() {
     },
     {
       key: "phone",
-      href: "tel:02-936-8841",
-      label: "โทร 02-936-8841",
+      href: "tel:081-660-8888",
+      label: "โทร 081-660-8888",
       bg: "bg-[var(--brand-600)]",
       hoverBg: "hover:bg-[var(--brand-700)]",
       icon: <FaPhone className="w-4 h-4 sm:w-5 sm:h-5" />,
       rel: undefined,
       target: undefined,
-      aria: "โทร 02-936-8841",
+      aria: "โทร 081-660-8888",
     },
     {
       key: "calculator",

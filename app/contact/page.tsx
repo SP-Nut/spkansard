@@ -290,7 +290,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-1">โทรศัพท์</h3>
-                    <p className="text-gray-600 text-sm sm:text-base">02-936-8841</p>
+                    <p className="text-gray-600 text-sm sm:text-base">081-660-8888</p>
                   </div>
                 </div>
 

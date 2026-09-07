@@ -76,11 +76,11 @@ const Footer = () => {
             </div>
 
             <a
-              href="tel:02-936-8841"
+              href="tel:081-660-8888"
               className="inline-flex items-center gap-3 rounded-full bg-white px-5 py-3 text-[#1E2E4F] shadow-lg shadow-black/10 transition hover:-translate-y-0.5 hover:bg-blue-50"
             >
               <FaPhoneAlt className="h-4 w-4" />
-              <span className="text-lg font-semibold">02-936-8841</span>
+              <span className="text-lg font-semibold">081-660-8888</span>
             </a>
           </section>
 
@@ -124,8 +124,8 @@ const Footer = () => {
                 เขตบึงกุ่ม กรุงเทพมหานคร 10230
               </p>
               <div className="space-y-1.5">
-                <a href="tel:02-936-8841" className="block transition hover:text-white">
-                  โทร. 02-936-8841
+                <a href="tel:081-660-8888" className="block transition hover:text-white">
+                  โทร. 081-660-8888
                 </a>
                 <p>แฟกซ์. 02-936-8843</p>
                 <a href="mailto:spkansards@gmail.com" className="block transition hover:text-white">

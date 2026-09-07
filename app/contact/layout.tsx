@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'ติดต่อเรา | SP Kansard - โทร 02-936-8841',
-  description: 'ติดต่อ SP Kansard บริษัทผู้เชี่ยวชาญด้านงานกันสาด โรงจอดรถ งานฝ้า งานระแนง และงานเหล็กครบวงจร โทร 02-936-8841',
+  title: 'ติดต่อเรา | SP Kansard - โทร 081-660-8888',
+  description: 'ติดต่อ SP Kansard บริษัทผู้เชี่ยวชาญด้านงานกันสาด โรงจอดรถ งานฝ้า งานระแนง และงานเหล็กครบวงจร โทร 081-660-8888',
   keywords: 'ติดต่อ SP Kansard, โทรกันสาด, สอบถามราคากันสาด, ที่อยู่ SP Kansard',
   openGraph: {
     title: 'ติดต่อเรา | SP Kansard',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'ติดต่อเรา | SP Kansard',
-    description: 'ติดต่อ SP Kansard โทร 02-936-8841 ผู้เชี่ยวชาญด้านกันสาดและโรงจอดรถ',
+    description: 'ติดต่อ SP Kansard โทร 081-660-8888 ผู้เชี่ยวชาญด้านกันสาดและโรงจอดรถ',
     images: ['/images/logo.png'],
   },
   alternates: {

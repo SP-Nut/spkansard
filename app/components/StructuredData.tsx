@@ -23,7 +23,7 @@ export default function StructuredData({ type = 'organization', data }: Structur
           "logo": "https://spkansard.com/images/logo.png",
           "contactPoint": {
             "@type": "ContactPoint",
-            "telephone": "+66-2-936-8841",
+            "telephone": "+66-81-660-8888",
             "contactType": "customer service",
             "areaServed": "TH",
             "availableLanguage": ["Thai"]
@@ -83,7 +83,7 @@ export default function StructuredData({ type = 'organization', data }: Structur
           ],
           "logo": "https://spkansard.com/images/logo.png",
           "url": "https://spkansard.com",
-          "telephone": "+66-2-936-8841",
+          "telephone": "+66-81-660-8888",
           "email": "info@spkansard.co",
           "address": {
             "@type": "PostalAddress",
@@ -123,8 +123,8 @@ export default function StructuredData({ type = 'organization', data }: Structur
             "geoRadius": "100000"
           },
           "areaServed": [
-            "กรุงเทพมหานคร", "นนทบุรี", "ปทุมธานี", "สมุทรปราการ", 
-            "สมุทรสาคร", "นครปธม", "ภูเก็ต"
+            "กรุงเทพมหานคร", "นนทบุรี", "ปทุมธานี", "สมุทรปราการ",
+            "สมุทรสาคร", "นครปฐม"
           ],
           "aggregateRating": {
             "@type": "AggregateRating",
@@ -205,11 +205,11 @@ export default function StructuredData({ type = 'organization', data }: Structur
           "contactPoint": [
             {
               "@type": "ContactPoint",
-              "telephone": "+66-29368841",
+              "telephone": "+66-816608888",
               "contactType": "customer service",
               "areaServed": "TH",
               "availableLanguage": ["Thai"],
-              "servicePhone": "+66-29368841"
+              "servicePhone": "+66-816608888"
             }
           ]
         };
@@ -223,7 +223,7 @@ export default function StructuredData({ type = 'organization', data }: Structur
           "provider": {
             "@type": "LocalBusiness",
             "name": "เอสพี กันสาด",
-            "telephone": "+66-29368841",
+            "telephone": "+66-816608888",
             "address": {
               "@type": "PostalAddress",
               "addressLocality": "บึงกุ่ม",

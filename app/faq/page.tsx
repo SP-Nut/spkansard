@@ -216,11 +216,11 @@ export default function FAQ() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <a
-                href="tel:02-936-8841"
+                href="tel:081-660-8888"
                 className="bg-white text-blue-700 hover:bg-gray-100 font-semibold py-2.5 sm:py-3 px-5 sm:px-6 rounded-lg transition-colors duration-200 text-sm sm:text-base shadow flex items-center justify-center gap-2"
               >
                 <FaPhone className="h-4 w-4" />
-                <span>โทร 02-936-8841</span>
+                <span>โทร 081-660-8888</span>
               </a>
               <a
                 href="https://line.me/R/ti/p/@spkansard"
