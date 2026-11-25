@@ -18,6 +18,11 @@ interface Material {
   updated_at: string;
 }
 
+function getStartingPrice(priceRange?: string): number {
+  const amount = priceRange?.match(/[0-9]+(?:,[0-9]{3})*(?:\.[0-9]+)?/)?.[0];
+  return amount ? Number(amount.replace(/,/g, '')) : Infinity;
+}
+
 export default function MaterialsPage() {
   const heroRef = useRef<HTMLElement | null>(null);
   const materialsRef = useRef<HTMLElement | null>(null);
@@ -79,7 +84,7 @@ export default function MaterialsPage() {
         material.description.toLowerCase().includes(term) ||
         material.features.some((feature: string) => feature.toLowerCase().includes(term));
       return categoryMatch && searchMatch;
-    });
+    }).sort((a, b) => getStartingPrice(a.price_range) - getStartingPrice(b.price_range));
   }, [materials, selectedCategory, searchTerm]);
 
   const openMaterialDetail = (material: Material) => {
