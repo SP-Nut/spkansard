@@ -1,4 +1,6 @@
 "use client";
+
+import PageHeroBackdrop from '@/app/components/PageHeroBackdrop';
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
@@ -12,10 +14,12 @@ type GalleryItem = {
   alt?: string | null;
   display_order?: number | null;
   created_at?: string;
+  gallery_categories?: { id: string; name: string } | null;
 };
 
 export default function GalleryPage() {
-  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [items, setItems] = useState<GalleryItem[]>([]);
+  const [categoryId, setCategoryId] = useState('');
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -27,34 +31,28 @@ export default function GalleryPage() {
 
   useEffect(() => {
     let isMounted = true;
-    const emptyStateTimeout = window.setTimeout(() => {
-      if (!isMounted) return;
-      setLoading(false);
-      setLoadError(null);
-    }, 1500);
-
     const fetchGalleryItems = async () => {
       try {
-        setLoading(true);
-        setLoadError(null);
-
-        const { data, error } = await supabase
+        const query = (columns: string) => supabase
           .from("gallery_items")
-          .select("id,title,alt,image_url,display_order,created_at")
+          .select(columns)
           .eq("is_active", true)
           .order("display_order", { ascending: true })
           .order("created_at", { ascending: false });
 
-        if (error) throw error;
+        const columns = 'id,title,alt,image_url,display_order,created_at';
+        let result = await query(`${columns},gallery_categories(id,name)`).overrideTypes<GalleryItem[], { merge: false }>();
+        if (result.error?.code === 'PGRST200') {
+          result = await query(columns).overrideTypes<GalleryItem[], { merge: false }>();
+        }
+        if (result.error) throw result.error;
         if (!isMounted) return;
-        setGalleryItems(data || []);
+        setItems(result.data ?? []);
       } catch (error) {
         console.error("Error fetching gallery items:", error);
         if (!isMounted) return;
-        setGalleryItems([]);
-        setLoadError(null);
+        setLoadError('โหลดรูปผลงานไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
       } finally {
-        window.clearTimeout(emptyStateTimeout);
         if (isMounted) {
           setLoading(false);
         }
@@ -65,10 +63,16 @@ export default function GalleryPage() {
 
     return () => {
       isMounted = false;
-      window.clearTimeout(emptyStateTimeout);
     };
   }, []);
 
+  const categories = new Map<string, string>();
+  for (const { gallery_categories: category } of items) {
+    if (category) categories.set(category.id, category.name);
+  }
+  const galleryItems = categoryId
+    ? items.filter((item) => item.gallery_categories?.id === categoryId)
+    : items;
   const currentImage = galleryItems[currentImageIndex];
   const getImageAlt = (item?: GalleryItem) => item?.alt || item?.title || "รูปผลงานติดตั้งกันสาด";
 
@@ -122,10 +126,9 @@ export default function GalleryPage() {
 
   return (
     <div className="min-h-screen font-prompt bg-gray-50 overflow-x-hidden pt-16 sm:pt-20">
-      {/* ลบ background pattern ออก */}
-      {/* Hero Section - เหมือน Materials */}
-      <section className="relative bg-linear-to-r from-[#1E2E4F] to-[#314874] text-white py-8 sm:py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="page-photo-hero relative isolate overflow-hidden bg-[#1E2E4F] py-8 text-white sm:py-12 lg:py-16">
+        <PageHeroBackdrop photo="modern" />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <nav className="flex items-center space-x-2 text-sm mb-6 sm:mb-8">
             <Link href="/" className="hover:text-white/80 transition-colors">
@@ -167,6 +170,21 @@ export default function GalleryPage() {
 
       <section id="gallery-grid" className="pt-12 sm:pt-16 lg:pt-20 pb-12 sm:pb-16 lg:pb-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-1 sm:px-2 lg:px-4">
+          {categories.size > 0 && (
+            <div role="group" aria-label="กรองตามหมวดหมู่ผลงาน" className="mb-6 flex flex-wrap justify-center gap-2">
+              {[['', 'ทั้งหมด'], ...[...categories].sort((a, b) => a[1].localeCompare(b[1], 'th'))]
+                .map(([id, name]) => (
+                  <button key={id} type="button" aria-pressed={categoryId === id}
+                    className={`rounded-full px-4 py-2 text-sm font-medium ${categoryId === id
+                      ? 'bg-[#1E2E4F] text-white' : 'bg-white text-[#1E2E4F] hover:bg-gray-200'}`}
+                    onClick={() => {
+                      setCategoryId(id);
+                      setCurrentImageIndex(0);
+                      setLightboxOpen(false);
+                    }}>{name}</button>
+                ))}
+            </div>
+          )}
           
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 sm:gap-2 lg:gap-3">

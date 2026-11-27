@@ -1,5 +1,7 @@
 'use client';
 
+import PageHeroBackdrop from '@/app/components/PageHeroBackdrop';
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -218,7 +220,8 @@ const ArticlePage = () => {
       />
       
       {/* Hero Section */}
-      <div className="relative bg-linear-to-r from-[#1E2E4F] to-[#314874] text-white py-16 sm:py-20">
+      <div className="page-photo-hero relative isolate overflow-hidden bg-[#1E2E4F] text-white py-16 sm:py-20">
+        <PageHeroBackdrop photo="premium" />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <nav className="flex items-center space-x-2 text-sm mb-6">

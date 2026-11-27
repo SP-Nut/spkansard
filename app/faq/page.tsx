@@ -1,5 +1,7 @@
 'use client';
 
+import PageHeroBackdrop from '@/app/components/PageHeroBackdrop';
+
 import { useState, lazy, Suspense } from 'react';
 import Link from 'next/link';
 import { FaHome, FaChevronRight, FaPhone } from 'react-icons/fa';
@@ -121,7 +123,8 @@ export default function FAQ() {
         <StructuredData type="faq" data={{ faqs: faqs.flatMap(cat => cat.questions) }} />
       </Suspense>
       {/* Hero Section - unified CI */}
-      <section className="relative bg-linear-to-r from-[#1E2E4F] to-[#314874] text-white py-12 sm:py-16 lg:py-20">
+      <section className="page-photo-hero relative isolate overflow-hidden bg-[#1E2E4F] text-white py-12 sm:py-16 lg:py-20">
+        <PageHeroBackdrop photo="minimal" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <nav className="flex items-center space-x-2 text-sm mb-6 sm:mb-8">

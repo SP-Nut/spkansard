@@ -3,16 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { 
-  FaHome, 
-  FaBox, 
-  FaNewspaper, 
-  FaSignOutAlt, 
-  FaPlus,
-  FaChartBar,
-  FaUsers,
-  FaCalculator
-} from 'react-icons/fa';
+import { FiArrowUpRight, FiBox, FiFileText, FiImage, FiPercent, FiSend } from 'react-icons/fi';
+import { AdminHeading } from '@/app/admin/AdminHeading';
 import { AdminAuth } from '@/lib/auth';
 import { supabase } from '@/lib/supabase';
 
@@ -78,158 +70,48 @@ export default function AdminDashboard() {
     init();
   }, [router]);
 
-  const handleLogout = async () => {
-    try {
-      await fetch('/api/admin/logout', { method: 'POST' });
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-    AdminAuth.clearToken();
-    router.push('/admin/login');
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1E2E4F]"></div>
-      </div>
-    );
-  }
-
-  const menuItems = [
-    { icon: FaChartBar, label: 'Dashboard', href: '/admin/dashboard', active: true },
-    { icon: FaBox, label: 'จัดการวัสดุ', href: '/admin/materials' },
-    { icon: FaCalculator, label: 'จัดการราคาคำนวณ', href: '/admin/estimate' },
-    { icon: FaNewspaper, label: 'จัดการบทความ', href: '/admin/articles' },
-  ];
-
   const quickActions = [
-    { icon: FaPlus, label: 'เพิ่มวัสดุใหม่', href: '/admin/materials/new', color: 'bg-blue-500' },
-    { icon: FaCalculator, label: 'จัดการราคาคำนวณ', href: '/admin/estimate', color: 'bg-indigo-500' },
-    { icon: FaPlus, label: 'เขียนบทความใหม่', href: '/admin/articles/new', color: 'bg-green-500' },
+    { icon: FiImage, label: 'เพิ่มผลงาน', href: '/admin/gallery' },
+    { icon: FiBox, label: 'เพิ่มวัสดุ', href: '/admin/materials/new' },
+    { icon: FiFileText, label: 'เขียนบทความ', href: '/admin/articles/new' },
+    { icon: FiPercent, label: 'จัดการคำนวณราคา', href: '/admin/estimate' },
   ];
-
-  const statsDisplay = [
-    { label: 'วัสดุทั้งหมด', value: stats.totalMaterials.toString(), icon: FaBox, color: 'text-blue-600' },
-    { label: 'บทความ', value: stats.totalArticles.toString(), icon: FaNewspaper, color: 'text-green-600' },
-    { label: 'สินค้าคำนวณราคา', value: stats.totalEstimateProducts.toString(), icon: FaCalculator, color: 'text-indigo-600' },
-    { label: 'บทความที่เผยแพร่', value: stats.publishedArticles.toString(), icon: FaUsers, color: 'text-purple-600' },
+  const metrics = [
+    { label: 'วัสดุทั้งหมด', value: stats.totalMaterials, icon: FiBox, href: '/admin/materials' },
+    { label: 'บทความทั้งหมด', value: stats.totalArticles, icon: FiFileText, href: '/admin/articles' },
+    { label: 'บทความเผยแพร่', value: stats.publishedArticles, icon: FiSend, href: '/admin/articles' },
+    { label: 'สินค้าคำนวณราคา', value: stats.totalEstimateProducts, icon: FiPercent, href: '/admin/estimate' },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link href="/" className="text-[#1E2E4F] hover:text-[#314874] transition-colors">
-                <FaHome className="h-6 w-6" />
-              </Link>
-              <h1 className="text-2xl font-bold text-gray-900">SP Kansard Admin</h1>
+    <div>
+      <AdminHeading title="ภาพรวม" />
+      <div className="grid grid-cols-2 gap-2 sm:gap-3 xl:grid-cols-4" aria-busy={loading}>
+        {metrics.map(({ label, value, icon: Icon, href }) => (
+          <Link key={label} href={href}
+            className="group min-w-0 rounded-lg border border-slate-200 bg-white p-3 transition-colors hover:border-[#859db6]">
+            <div className="mb-2 flex items-center justify-between gap-1">
+              <Icon className="size-7 rounded-md bg-[#e8eff6] p-1.5 text-[#294867]" aria-hidden />
+              <FiArrowUpRight className="size-4 text-slate-400 group-hover:text-slate-700" aria-hidden />
             </div>
-            <div className="flex items-center space-x-4">
-              <Link
-                href="/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 px-4 py-2 bg-[#1E2E4F] text-white rounded-lg hover:bg-[#314874] transition-colors"
-              >
-                <FaHome />
-                <span>ดูหน้าเว็บ</span>
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="flex items-center space-x-2 text-gray-600 hover:text-red-600 transition-colors"
-              >
-                <FaSignOutAlt />
-                <span>ออกจากระบบ</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="flex">
-        {/* Sidebar */}
-        <aside className="w-64 bg-white shadow-sm min-h-screen">
-          <nav className="p-6">
-            <ul className="space-y-2">
-              {menuItems.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                      item.active 
-                        ? 'bg-[#1E2E4F] text-white' 
-                        : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <item.icon className="h-5 w-5" />
-                    <span>{item.label}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </aside>
-
-        {/* Main Content */}
-        <main className="flex-1 p-6">
-          {/* Welcome Section */}
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">ยินดีต้อนรับ</h2>
-            <p className="text-gray-600">จัดการเนื้อหาเว็บไซต์ SP Kansard</p>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {statsDisplay.map((stat, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">{stat.label}</p>
-                    <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
-                  </div>
-                  <stat.icon className={`h-8 w-8 ${stat.color}`} />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Quick Actions */}
-          <div className="mb-8">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">การกระทำด่วน</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {quickActions.map((action, index) => (
-                <Link
-                  key={index}
-                  href={action.href}
-                  className={`${action.color} text-white rounded-lg p-6 hover:opacity-90 transition-opacity`}
-                >
-                  <div className="flex items-center space-x-3">
-                    <action.icon className="h-6 w-6" />
-                    <span className="font-semibold">{action.label}</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Recent Activity */}
-          <div className="bg-white rounded-lg shadow-sm">
-            <div className="p-6 border-b">
-              <h3 className="text-xl font-semibold text-gray-900">กิจกรรมล่าสุด</h3>
-            </div>
-            <div className="p-6">
-              <div className="text-center text-gray-500 py-8">
-                <p>ยังไม่มีกิจกรรมล่าสุด</p>
-                <p className="text-sm mt-2">เริ่มจัดการเนื้อหาเพื่อดูกิจกรรมที่นี่</p>
-              </div>
-            </div>
-          </div>
-        </main>
+            <p className="text-xs text-slate-600">{label}</p>
+            <p className="mt-0.5 text-2xl font-semibold tabular-nums">{loading ? '–' : value}</p>
+          </Link>
+        ))}
       </div>
+      <section className="mt-3 rounded-lg border border-slate-200 bg-white">
+        <h2 className="border-b border-slate-100 px-3 py-2.5 text-sm font-semibold">ทางลัด</h2>
+        <div className="grid gap-1 p-2 sm:grid-cols-2">
+          {quickActions.map(({ icon: Icon, label, href }) => (
+            <Link key={href} href={href}
+              className="flex min-h-10 items-center gap-2 rounded-md px-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-[#1e3b5b]">
+              <Icon className="size-4 text-[#375b80]" aria-hidden />
+              {label}
+              <FiArrowUpRight className="ml-auto size-3.5 text-slate-400" aria-hidden />
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

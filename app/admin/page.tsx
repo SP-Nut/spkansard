@@ -19,14 +19,9 @@ export default function AdminPage() {
     }
   }, [router]);
 
-  // แสดง loading state ระหว่างรอ redirect
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1E2E4F] mx-auto mb-4"></div>
-        <p className="text-gray-600 mb-2">กำลังตรวจสอบสิทธิ์...</p>
-        <p className="text-sm text-gray-500">จะ redirect ไปหน้า login หรือ dashboard อัตโนมัติ</p>
-      </div>
+    <div className="admin-auth grid min-h-dvh place-items-center bg-[#edf2f7] p-4" role="status">
+      <p className="text-sm text-slate-600">กำลังตรวจสอบสิทธิ์…</p>
     </div>
   );
 }

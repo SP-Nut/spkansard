@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     }
 
     // สร้างชื่อไฟล์ที่ไม่ซ้ำ
-    const fileExt = file.name.split('.').pop();
+    const fileExt = folder === 'gallery' ? file.type.split('/')[1] : file.name.split('.').pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
     const filePath = `${folder}/${fileName}`;
 

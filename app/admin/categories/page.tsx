@@ -1,9 +1,10 @@
 ﻿'use client';
 
+import { AdminHeading, adminPrimary } from '@/app/admin/AdminHeading';
+
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { FaArrowLeft, FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaArrowUp, FaArrowDown, FaEye } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import { supabase } from '@/lib/supabase';
 import { AdminAuth } from '@/lib/auth';
 
@@ -31,7 +32,7 @@ export default function CategoriesPage() {
   });
 
   useEffect(() => {
-    // à¸•à¸£à¸§à¸ˆà¸ªà¸­à¸š authentication
+    // ตรวจสอบ authentication
     const checkAuth = () => {
       const isAuth = AdminAuth.isAuthenticated();
       
@@ -58,7 +59,7 @@ export default function CategoriesPage() {
       setCategories(data || []);
     } catch (error) {
       console.error('Error fetching categories:', error);
-      alert('à¹€à¸à¸´à¸”à¸‚à¹‰à¸­à¸œà¸´à¸”à¸žà¸¥à¸²à¸”à¹ƒà¸™à¸à¸²à¸£à¹‚à¸«à¸¥à¸”à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ');
+      alert('เกิดข้อผิดพลาดในการโหลดหมวดหมู่');
     } finally {
       setLoading(false);
     }
@@ -95,7 +96,7 @@ export default function CategoriesPage() {
   const handleSave = async () => {
     try {
       if (!formData.name.trim()) {
-        alert('à¸à¸£à¸¸à¸“à¸²à¸à¸£à¸­à¸à¸Šà¸·à¹ˆà¸­à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ');
+        alert('กรุณากรอกชื่อหมวดหมู่');
         return;
       }
 
@@ -122,15 +123,15 @@ export default function CategoriesPage() {
       console.error('Error saving category:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       if (errorMessage.includes('duplicate')) {
-        alert('à¸Šà¸·à¹ˆà¸­à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆà¸™à¸µà¹‰à¸¡à¸µà¸­à¸¢à¸¹à¹ˆà¹à¸¥à¹‰à¸§');
+        alert('ชื่อหมวดหมู่นี้มีอยู่แล้ว');
       } else {
-        alert('à¹€à¸à¸´à¸”à¸‚à¹‰à¸­à¸œà¸´à¸”à¸žà¸¥à¸²à¸”à¹ƒà¸™à¸à¸²à¸£à¸šà¸±à¸™à¸—à¸¶à¸: ' + errorMessage);
+        alert('เกิดข้อผิดพลาดในการบันทึก: ' + errorMessage);
       }
     }
   };
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`à¸•à¹‰à¸­à¸‡à¸à¸²à¸£à¸¥à¸šà¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ "${name}" à¸«à¸£à¸·à¸­à¹„à¸¡à¹ˆ?`)) {
+    if (!confirm(`ต้องการลบหมวดหมู่ "${name}" หรือไม่?`)) {
       return;
     }
 
@@ -145,7 +146,7 @@ export default function CategoriesPage() {
       if (checkError) throw checkError;
 
       if (materials && materials.length > 0) {
-        alert('à¹„à¸¡à¹ˆà¸ªà¸²à¸¡à¸²à¸£à¸–à¸¥à¸šà¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆà¸™à¸µà¹‰à¹„à¸”à¹‰ à¹€à¸™à¸·à¹ˆà¸­à¸‡à¸ˆà¸²à¸à¸¡à¸µà¸§à¸±à¸ªà¸”à¸¸à¸—à¸µà¹ˆà¹ƒà¸Šà¹‰à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆà¸™à¸µà¹‰à¸­à¸¢à¸¹à¹ˆ');
+        alert('ไม่สามารถลบหมวดหมู่นี้ได้ เนื่องจากมีวัสดุที่ใช้หมวดหมู่นี้อยู่');
         return;
       }
 
@@ -156,11 +157,11 @@ export default function CategoriesPage() {
 
       if (!response.ok) throw new Error(result.error || 'Delete failed');
       
-      alert('à¸¥à¸šà¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆà¸ªà¸³à¹€à¸£à¹‡à¸ˆ');
+      alert('ลบหมวดหมู่สำเร็จ');
       fetchCategories();
     } catch (error) {
       console.error('Error deleting category:', error);
-      alert('à¹€à¸à¸´à¸”à¸‚à¹‰à¸­à¸œà¸´à¸”à¸žà¸¥à¸²à¸”à¹ƒà¸™à¸à¸²à¸£à¸¥à¸šà¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ');
+      alert('เกิดข้อผิดพลาดในการลบหมวดหมู่');
     }
   };
 
@@ -199,87 +200,56 @@ export default function CategoriesPage() {
       fetchCategories();
     } catch (error) {
       console.error('Error reordering categories:', error);
-      alert('à¹€à¸à¸´à¸”à¸‚à¹‰à¸­à¸œà¸´à¸”à¸žà¸¥à¸²à¸”à¹ƒà¸™à¸à¸²à¸£à¹€à¸£à¸µà¸¢à¸‡à¸¥à¸³à¸”à¸±à¸š');
+      alert('เกิดข้อผิดพลาดในการเรียงลำดับ');
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="grid min-h-32 place-items-center" role="status" aria-label="กำลังโหลด">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1E2E4F]"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link 
-                href="/admin/materials"
-                className="text-[#1E2E4F] hover:text-[#314874] transition-colors"
-              >
-                <FaArrowLeft className="h-6 w-6" />
-              </Link>
-              <h1 className="text-2xl font-bold text-gray-900">à¸ˆà¸±à¸”à¸à¸²à¸£à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆà¸§à¸±à¸ªà¸”à¸¸</h1>
-            </div>
-            <div className="flex items-center space-x-3">
-              <Link
-                href="/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white border-2 border-[#1E2E4F] text-[#1E2E4F] px-4 py-2 rounded-lg hover:bg-[#1E2E4F] hover:text-white transition-colors flex items-center space-x-2"
-              >
-                <FaEye />
-                <span>à¸”à¸¹à¸«à¸™à¹‰à¸²à¹€à¸§à¹‡à¸š</span>
-              </Link>
-              <button
-                onClick={handleAdd}
-                className="bg-[#1E2E4F] text-white px-4 py-2 rounded-lg hover:bg-[#314874] transition-colors flex items-center space-x-2"
-              >
-                <FaPlus />
-                <span>à¹€à¸žà¸´à¹ˆà¸¡à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div>
+      <AdminHeading title="หมวดหมู่วัสดุ" back="/admin/materials">
+        <button type="button" onClick={handleAdd} className={adminPrimary}><FaPlus /> เพิ่มหมวดหมู่</button>
+      </AdminHeading>
 
-      <main className="p-6">
-        <div className="max-w-4xl mx-auto">
+      <div className="space-y-3">
+        <div className="min-w-0">
           {/* Add/Edit Form */}
           {(isAdding || editingId) && (
-            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div className="bg-white rounded-lg shadow-sm p-4 mb-3">
               <h2 className="text-xl font-bold mb-4">
-                {isAdding ? 'à¹€à¸žà¸´à¹ˆà¸¡à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆà¹ƒà¸«à¸¡à¹ˆ' : 'à¹à¸à¹‰à¹„à¸‚à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ'}
+                {isAdding ? 'เพิ่มหมวดหมู่ใหม่' : 'แก้ไขหมวดหมู่'}
               </h2>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    à¸Šà¸·à¹ˆà¸­à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ *
+                    ชื่อหมวดหมู่ *
                   </label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#1E2E4F] focus:border-[#1E2E4F]"
-                    placeholder="à¹€à¸Šà¹ˆà¸™ à¸œà¹‰à¸²à¹ƒà¸šà¸à¸±à¸™à¸ªà¸²à¸”"
+                    placeholder="เช่น ผ้าใบกันสาด"
                     required
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    à¸„à¸³à¸­à¸˜à¸´à¸šà¸²à¸¢
+                    คำอธิบาย
                   </label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#1E2E4F] focus:border-[#1E2E4F]"
-                    placeholder="à¸„à¸³à¸­à¸˜à¸´à¸šà¸²à¸¢à¹€à¸à¸µà¹ˆà¸¢à¸§à¸à¸±à¸šà¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆà¸™à¸µà¹‰"
+                    placeholder="คำอธิบายเกี่ยวกับหมวดหมู่นี้"
                   />
                 </div>
                 <div className="flex items-center">
@@ -290,7 +260,7 @@ export default function CategoriesPage() {
                     className="h-4 w-4 text-[#1E2E4F] focus:ring-[#1E2E4F] border-gray-300 rounded"
                   />
                   <label className="ml-2 block text-sm text-gray-900">
-                    à¹€à¸›à¸´à¸”à¹ƒà¸Šà¹‰à¸‡à¸²à¸™
+                    เปิดใช้งาน
                   </label>
                 </div>
                 <div className="flex space-x-3">
@@ -299,14 +269,14 @@ export default function CategoriesPage() {
                     className="bg-[#1E2E4F] text-white px-4 py-2 rounded-lg hover:bg-[#314874] transition-colors flex items-center space-x-2"
                   >
                     <FaSave />
-                    <span>à¸šà¸±à¸™à¸—à¸¶à¸</span>
+                    <span>บันทึก</span>
                   </button>
                   <button
                     onClick={handleCancel}
                     className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors flex items-center space-x-2"
                   >
                     <FaTimes />
-                    <span>à¸¢à¸à¹€à¸¥à¸´à¸</span>
+                    <span>ยกเลิก</span>
                   </button>
                 </div>
               </div>
@@ -315,34 +285,35 @@ export default function CategoriesPage() {
 
           {/* Categories List */}
           <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="admin-table min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    à¸¥à¸³à¸”à¸±à¸š
+                  <th className="admin-table-order px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    ลำดับ
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    à¸Šà¸·à¹ˆà¸­à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ
+                  <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    ชื่อหมวดหมู่
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    à¸„à¸³à¸­à¸˜à¸´à¸šà¸²à¸¢
+                  <th className="admin-table-extra px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    คำอธิบาย
                   </th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    à¸ªà¸–à¸²à¸™à¸°
+                  <th className="admin-table-status px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    สถานะ
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    à¸ˆà¸±à¸”à¸à¸²à¸£
+                  <th className="admin-table-actions px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    จัดการ
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {categories.map((category, index) => (
                   <tr key={category.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="admin-table-order px-3 py-4 whitespace-nowrap text-sm text-gray-900">
                       <div className="flex items-center space-x-2">
                         <span>{index + 1}</span>
                         <div className="flex flex-col">
                           <button
+                            aria-label="เลื่อนหมวดหมู่ขึ้น"
                             onClick={() => moveCategory(category.id, 'up')}
                             disabled={index === 0}
                             className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
@@ -350,6 +321,7 @@ export default function CategoriesPage() {
                             <FaArrowUp className="h-3 w-3" />
                           </button>
                           <button
+                            aria-label="เลื่อนหมวดหมู่ลง"
                             onClick={() => moveCategory(category.id, 'down')}
                             disabled={index === categories.length - 1}
                             className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
@@ -359,31 +331,33 @@ export default function CategoriesPage() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{category.name}</div>
+                    <td className="px-3 py-4">
+                      <div className="break-words text-sm font-medium text-gray-900">{category.name}</div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="admin-table-extra px-3 py-4">
                       <div className="text-sm text-gray-500">{category.description || '-'}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                    <td className="admin-table-status px-3 py-4 whitespace-nowrap text-center">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         category.is_active 
                           ? 'bg-green-100 text-green-800' 
                           : 'bg-gray-100 text-gray-800'
                       }`}>
-                        {category.is_active ? 'à¹€à¸›à¸´à¸”à¹ƒà¸Šà¹‰à¸‡à¸²à¸™' : 'à¸›à¸´à¸”à¹ƒà¸Šà¹‰à¸‡à¸²à¸™'}
+                        {category.is_active ? 'เปิดใช้งาน' : 'ปิดใช้งาน'}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <td className="admin-table-actions px-3 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
                         onClick={() => handleEdit(category)}
-                        className="text-blue-600 hover:text-blue-900 mr-3"
+                        aria-label="แก้ไขหมวดหมู่"
+                        className="admin-icon-action text-blue-700"
                       >
                         <FaEdit className="inline h-4 w-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(category.id, category.name)}
-                        className="text-red-600 hover:text-red-900"
+                        aria-label="ลบหมวดหมู่"
+                        className="admin-icon-action text-red-700"
                       >
                         <FaTrash className="inline h-4 w-4" />
                       </button>
@@ -393,13 +367,13 @@ export default function CategoriesPage() {
               </tbody>
             </table>
             {categories.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
-                à¸¢à¸±à¸‡à¹„à¸¡à¹ˆà¸¡à¸µà¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ à¸à¸”à¸›à¸¸à¹ˆà¸¡ &quot;à¹€à¸žà¸´à¹ˆà¸¡à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ&quot; à¹€à¸žà¸·à¹ˆà¸­à¹€à¸£à¸´à¹ˆà¸¡à¸•à¹‰à¸™
+              <div className="text-center py-4 text-gray-500">
+                ยังไม่มีหมวดหมู่ กดปุ่ม &quot;เพิ่มหมวดหมู่&quot; เพื่อเริ่มต้น
               </div>
             )}
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

@@ -1,10 +1,10 @@
 "use client";
 
+import { AdminHeading, adminPrimary, adminSecondary } from '@/app/admin/AdminHeading';
+
 import { type ChangeEvent, useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  FaArrowLeft,
   FaCalculator,
   FaEdit,
   FaImage,
@@ -402,45 +402,20 @@ export default function AdminEstimatePage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="grid min-h-32 place-items-center" role="status" aria-label="กำลังโหลด">
         <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-[#1E2E4F]" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="border-b bg-white shadow-sm">
-        <div className="flex flex-col gap-4 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/admin/dashboard" className="text-[#1E2E4F] hover:text-[#314874]" aria-label="กลับแดชบอร์ด">
-              <FaArrowLeft className="h-6 w-6" />
-            </Link>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">จัดการข้อมูลคำนวณราคา</h1>
-              <p className="text-sm text-gray-500">แก้สินค้า ราคา รูปสินค้า และตัวเลือกบริการของหน้า /estimate</p>
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={startNewProduct}
-              className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:border-[#314874]"
-            >
-              <FaPlus /> สินค้าใหม่
-            </button>
-            <button
-              type="button"
-              onClick={startNewService}
-              className="inline-flex items-center gap-2 rounded-lg bg-[#1E2E4F] px-4 py-2 text-sm font-semibold text-white hover:bg-[#314874]"
-            >
-              <FaPlus /> บริการใหม่
-            </button>
-          </div>
-        </div>
-      </header>
+    <div>
+      <AdminHeading title="จัดการคำนวณราคา">
+        <button type="button" onClick={startNewProduct} className={adminPrimary}><FaPlus /> สินค้าใหม่</button>
+        <button type="button" onClick={startNewService} className={adminSecondary}><FaPlus /> บริการใหม่</button>
+      </AdminHeading>
 
-      <main className="space-y-5 p-4 sm:p-6">
+      <div className="space-y-3">
         {message && (
           <div
             className={`rounded-lg border px-4 py-3 text-sm ${
@@ -453,7 +428,7 @@ export default function AdminEstimatePage() {
           </div>
         )}
 
-        <section className="grid gap-4 md:grid-cols-4">
+        <section className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           <div className="rounded-lg bg-white p-4 shadow-sm">
             <div className="text-sm text-gray-500">สินค้า</div>
             <div className="mt-1 text-2xl font-bold text-gray-900">{productStats.total}</div>
@@ -503,7 +478,7 @@ export default function AdminEstimatePage() {
           </div>
 
           {activeTab === "products" ? (
-            <section className="grid gap-0 xl:grid-cols-[420px_1fr]">
+            <section className="grid min-w-0 gap-0 2xl:grid-cols-[minmax(300px,360px)_minmax(0,1fr)]">
               <ProductForm
                 product={productForm}
                 saving={saving}
@@ -553,7 +528,7 @@ export default function AdminEstimatePage() {
               </div>
             </section>
           ) : (
-            <section className="grid gap-0 xl:grid-cols-[420px_1fr]">
+            <section className="grid min-w-0 gap-0 2xl:grid-cols-[minmax(300px,360px)_minmax(0,1fr)]">
               <ServiceForm
                 groups={serviceGroups}
                 service={serviceForm}
@@ -603,7 +578,7 @@ export default function AdminEstimatePage() {
             </section>
           )}
         </div>
-      </main>
+      </div>
     </div>
   );
 }
@@ -945,14 +920,14 @@ function ProductTable({
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200 text-sm">
+      <table className="admin-table min-w-full divide-y divide-gray-200 text-sm">
         <thead className="bg-white text-left text-xs uppercase text-gray-500">
           <tr>
             <th className="px-4 py-3">สินค้า</th>
-            <th className="px-4 py-3">ราคา</th>
-            <th className="px-4 py-3">ลำดับ</th>
-            <th className="px-4 py-3">สถานะ</th>
-            <th className="px-4 py-3 text-right">จัดการ</th>
+            <th className="admin-table-extra px-4 py-3">ราคา</th>
+            <th className="admin-table-extra px-4 py-3">ลำดับ</th>
+            <th className="admin-table-status px-4 py-3">สถานะ</th>
+            <th className="admin-table-actions px-4 py-3 text-right">จัดการ</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
@@ -961,18 +936,19 @@ function ProductTable({
               <td className="px-4 py-3">
                 <div className="font-medium text-gray-900">{product.name}</div>
                 <div className="mt-1 text-xs text-gray-500">{product.type}</div>
+                <div className="mt-1 line-clamp-2 text-xs text-slate-600 md:hidden">{productPriceSummary(product)}</div>
               </td>
-              <td className="max-w-md px-4 py-3 text-gray-600">{productPriceSummary(product)}</td>
-              <td className="px-4 py-3 text-gray-600">{product.display_order}</td>
-              <td className="px-4 py-3">
+              <td className="admin-table-extra max-w-md px-4 py-3 text-gray-600">{productPriceSummary(product)}</td>
+              <td className="admin-table-extra px-4 py-3 text-gray-600">{product.display_order}</td>
+              <td className="admin-table-status px-4 py-3">
                 <StatusButton active={product.is_active} onClick={() => onToggleStatus(product)} />
               </td>
-              <td className="px-4 py-3">
-                <div className="flex justify-end gap-2">
-                  <button type="button" onClick={() => onEdit(product)} className="rounded border p-2 text-gray-600 hover:text-[#1E2E4F]" aria-label="แก้ไขสินค้า">
+              <td className="admin-table-actions px-4 py-3">
+                <div className="flex justify-end gap-1">
+                  <button type="button" onClick={() => onEdit(product)} className="admin-icon-action text-gray-600 hover:text-[#1E2E4F]" aria-label="แก้ไขสินค้า">
                     <FaEdit />
                   </button>
-                  <button type="button" onClick={() => onDelete("products", product.id, product.name)} className="rounded border p-2 text-red-600 hover:bg-red-50" aria-label="ลบสินค้า">
+                  <button type="button" onClick={() => onDelete("products", product.id, product.name)} className="admin-icon-action text-red-600 hover:bg-red-50" aria-label="ลบสินค้า">
                     <FaTrash />
                   </button>
                 </div>
@@ -1002,15 +978,15 @@ function ServiceTable({
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200 text-sm">
+      <table className="admin-table min-w-full divide-y divide-gray-200 text-sm">
         <thead className="bg-white text-left text-xs uppercase text-gray-500">
           <tr>
             <th className="px-4 py-3">บริการ</th>
-            <th className="px-4 py-3">ชนิด</th>
-            <th className="px-4 py-3">ราคา</th>
-            <th className="px-4 py-3">ลำดับ</th>
-            <th className="px-4 py-3">สถานะ</th>
-            <th className="px-4 py-3 text-right">จัดการ</th>
+            <th className="admin-table-extra px-4 py-3">ชนิด</th>
+            <th className="admin-table-extra px-4 py-3">ราคา</th>
+            <th className="admin-table-extra px-4 py-3">ลำดับ</th>
+            <th className="admin-table-status px-4 py-3">สถานะ</th>
+            <th className="admin-table-actions px-4 py-3 text-right">จัดการ</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
@@ -1019,22 +995,23 @@ function ServiceTable({
               <td className="px-4 py-3">
                 <div className="font-medium text-gray-900">{service.name}</div>
                 <div className="mt-1 text-xs text-gray-500">{service.service_group}</div>
+                <div className="mt-1 text-xs text-slate-600 md:hidden">{formatCurrency(service.price)} / {unitLabels[service.unit]}</div>
               </td>
-              <td className="px-4 py-3 text-gray-600">{serviceTypeLabels[service.service_type]}</td>
-              <td className="px-4 py-3 text-gray-600">
+              <td className="admin-table-extra px-4 py-3 text-gray-600">{serviceTypeLabels[service.service_type]}</td>
+              <td className="admin-table-extra px-4 py-3 text-gray-600">
                 {formatCurrency(service.price)} / {unitLabels[service.unit]}
                 {service.only_size ? <span className="ml-2 rounded bg-gray-100 px-2 py-1 text-xs">เฉพาะ {service.only_size}</span> : null}
               </td>
-              <td className="px-4 py-3 text-gray-600">{service.display_order}</td>
-              <td className="px-4 py-3">
+              <td className="admin-table-extra px-4 py-3 text-gray-600">{service.display_order}</td>
+              <td className="admin-table-status px-4 py-3">
                 <StatusButton active={service.is_active} onClick={() => onToggleStatus(service)} />
               </td>
-              <td className="px-4 py-3">
-                <div className="flex justify-end gap-2">
-                  <button type="button" onClick={() => onEdit(service)} className="rounded border p-2 text-gray-600 hover:text-[#1E2E4F]" aria-label="แก้ไขบริการ">
+              <td className="admin-table-actions px-4 py-3">
+                <div className="flex justify-end gap-1">
+                  <button type="button" onClick={() => onEdit(service)} className="admin-icon-action text-gray-600 hover:text-[#1E2E4F]" aria-label="แก้ไขบริการ">
                     <FaEdit />
                   </button>
-                  <button type="button" onClick={() => onDelete("services", service.id, service.name)} className="rounded border p-2 text-red-600 hover:bg-red-50" aria-label="ลบบริการ">
+                  <button type="button" onClick={() => onDelete("services", service.id, service.name)} className="admin-icon-action text-red-600 hover:bg-red-50" aria-label="ลบบริการ">
                     <FaTrash />
                   </button>
                 </div>
@@ -1063,7 +1040,7 @@ function StatusButton({ active, onClick }: { active: boolean; onClick: () => voi
 
 function EmptyState({ text }: { text: string }) {
   return (
-    <div className="flex min-h-60 items-center justify-center p-8 text-center text-sm text-gray-500">
+    <div className="flex min-h-60 items-center justify-center p-4 text-center text-sm text-gray-500">
       {text}
     </div>
   );

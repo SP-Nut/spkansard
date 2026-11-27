@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { FaPhone, FaEye } from "react-icons/fa";
+import PageHeroBackdrop from "@/app/components/PageHeroBackdrop";
 
 export const metadata: Metadata = {
   title: "เกี่ยวกับเรา | SP Kansard - ผู้เชี่ยวชาญกันสาดกว่า 38 ปี",
@@ -86,26 +87,28 @@ export default function About() {
   ];
   return (
     <div className="font-prompt animate-fade-in overflow-x-hidden pt-16 sm:pt-20">
-      {/* Hero */}
+      <section aria-labelledby="about-intro" className="page-photo-hero relative isolate grid min-h-[21rem] place-items-center overflow-hidden bg-[#1E2E4F] px-5 py-10 text-center text-white sm:px-6 sm:py-14">
+        <PageHeroBackdrop photo="modern" />
+        <div className="mx-auto max-w-3xl">
+          <h1 id="about-intro" className="text-3xl font-extrabold italic tracking-tight sm:text-4xl md:text-5xl">
+            เอสพี กันสาด
+          </h1>
+          <p className="mt-4 text-sm leading-7 text-white sm:mt-5 sm:text-base md:text-lg md:leading-8">
+            เราคือผู้นำอันดับ 1 ด้านกันสาดในกรุงเทพฯและปริมณฑล
+            เราสร้างสรรค์พื้นที่ภายนอกบ้านและอาคารให้ทั้งสวยงาม ทันสมัย
+            และใช้งานได้จริง ด้วยประสบการณ์ยาวนานกว่า 38 ปี
+            และผลงานที่ได้รับความไว้วางใจกว่า 35,000 ครัวเรือน SP Kansard
+            ได้รับการยอมรับว่าเป็นผู้เชี่ยวชาญด้านกันสาดที่เจ้าของบ้านและโครงการเลือกใช้มากที่สุดในประเทศไทย
+          </p>
+        </div>
+      </section>
 
-      {/* Overview */}
-      <section className="py-10 sm:py-14" style={{ backgroundColor: '#eaf4ff' }}>
-        <div
-          className="mx-auto px-4 sm:px-6 lg:px-8"
-          style={{ maxWidth: "1800px" }}
-        >
-          <div className="max-w-4xl mx-auto text-center text-gray-700 space-y-4 sm:space-y-5">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold italic tracking-tight text-[#314874]">
-              เอสพี กันสาด
-            </h1>
-            <p className="text-sm sm:text-base md:text-lg leading-7 md:leading-8 font-light">
-              เราคือผู้นำอันดับ 1 ด้านกันสาดในกรุงเทพฯและปริมณฑล
-              เราสร้างสรรค์พื้นที่ภายนอกบ้านและอาคารให้ทั้งสวยงาม ทันสมัย
-              และใช้งานได้จริง ด้วยประสบการณ์ยาวนานกว่า 38 ปี
-              และผลงานที่ได้รับความไว้วางใจกว่า 35,000 ครัวเรือน SP Kansard
-              ได้รับการยอมรับว่าเป็นผู้เชี่ยวชาญด้านกันสาดที่เจ้าของบ้านและโครงการเลือกใช้มากที่สุดในประเทศไทย
-            </p>
-            <p className="text-sm sm:text-base md:text-lg leading-7 md:leading-8 font-light">
+      <section aria-labelledby="about-strengths" className="bg-[#eaf4ff] px-4 py-10 text-center sm:px-6 sm:py-14">
+        <div className="mx-auto max-w-3xl text-slate-700">
+          <h2 id="about-strengths" className="text-2xl font-bold text-[#314874] sm:text-3xl">
+            จุดแข็งของเรา
+          </h2>
+            <p className="mt-4 text-sm leading-7 sm:text-base md:text-lg md:leading-8">
               จุดแข็งของเราคือการเป็นบริษัทที่มี<Link href="/materials" className="text-[#314874] hover:underline font-medium">วัสดุกันสาดให้เลือกมากที่สุดในไทย</Link>
               ครอบคลุมตั้งแต่ กันสาดเมทัลชีท, ไวนิลดรีมรูฟ รุ่นคลิปล็อค,
               อลูมิเนียมรูฟ, โพลีคาร์บอเนต, ชินโคไลท์ ไปจนถึง
@@ -120,10 +123,7 @@ export default function About() {
               คือทางเลือกอันดับหนึ่งสำหรับผู้ที่กำลังมองหากันสาดคุณภาพ
               ด้วยตัวเลือกวัสดุที่ครบที่สุดในประเทศไทย
             </p>
-          </div>
-
-          {/* CTAs */}
-          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center text-center">
+          <div className="mx-auto mt-6 grid max-w-sm grid-cols-2 gap-2 sm:flex sm:max-w-none sm:flex-wrap sm:justify-center sm:gap-3">
             <a
               href="https://line.me/R/ti/p/@spkansard"
               target="_blank"

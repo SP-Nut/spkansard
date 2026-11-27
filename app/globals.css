@@ -46,6 +46,10 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
 }
 
+.page-photo-hero :is(h1, p, nav) {
+  text-shadow: 0 1px 3px #0b1527, 0 2px 10px #0b152799;
+}
+
 /* Fast loading animations */
 .fade-in {
   animation: fadeIn 0.3s ease-in-out;

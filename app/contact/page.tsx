@@ -1,5 +1,7 @@
 'use client';
 
+import PageHeroBackdrop from '@/app/components/PageHeroBackdrop';
+
 import { useState } from 'react';
 import Link from 'next/link';
 import { FaHome, FaChevronRight, FaPhone, FaEnvelope, FaFax, FaGlobe, FaMapMarkerAlt, FaFacebookF, FaYoutube, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
@@ -86,7 +88,8 @@ export default function Contact() {
     <div className="font-prompt min-h-screen bg-gray-50 pt-16 sm:pt-20">
       <StructuredData type="localBusiness" />
       {/* Hero Section - unified CI (gradient like other pages) */}
-      <section className="relative bg-linear-to-r from-[#1E2E4F] to-[#314874] text-white py-8 sm:py-12 lg:py-16">
+      <section className="page-photo-hero relative isolate overflow-hidden bg-[#1E2E4F] text-white py-8 sm:py-12 lg:py-16">
+        <PageHeroBackdrop photo="modern" />
         <div className="w-full">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Breadcrumb */}

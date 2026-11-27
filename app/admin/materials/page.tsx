@@ -1,10 +1,12 @@
 "use client";
 
+import { AdminHeading, adminPrimary, adminSecondary } from '@/app/admin/AdminHeading';
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaArrowLeft, FaPlus, FaEdit, FaTrash, FaEye } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 import { supabase } from '@/lib/supabase';
 import { AdminAuth } from '@/lib/auth';
 
@@ -76,68 +78,32 @@ export default function AdminMaterials() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="grid min-h-32 place-items-center" role="status" aria-label="กำลังโหลด">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1E2E4F]"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link 
-                href="/admin/dashboard"
-                className="text-[#1E2E4F] hover:text-[#314874] transition-colors"
-              >
-                <FaArrowLeft className="h-6 w-6" />
-              </Link>
-              <h1 className="text-2xl font-bold text-gray-900">จัดการวัสดุ</h1>
-            </div>
-            <div className="flex items-center space-x-3">
-              <Link
-                href="/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white border-2 border-[#1E2E4F] text-[#1E2E4F] px-4 py-2 rounded-lg hover:bg-[#1E2E4F] hover:text-white transition-colors flex items-center space-x-2"
-              >
-                <FaEye />
-                <span>ดูหน้าเว็บ</span>
-              </Link>
-              <Link
-                href="/admin/categories"
-                className="bg-white border-2 border-[#1E2E4F] text-[#1E2E4F] px-4 py-2 rounded-lg hover:bg-[#1E2E4F] hover:text-white transition-colors flex items-center space-x-2"
-              >
-                <span>จัดการหมวดหมู่</span>
-              </Link>
-              <Link
-                href="/admin/materials/new"
-                className="bg-[#1E2E4F] text-white px-4 py-2 rounded-lg hover:bg-[#314874] transition-colors flex items-center space-x-2"
-              >
-                <FaPlus />
-                <span>เพิ่มวัสดุใหม่</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div>
+      <AdminHeading title="จัดการวัสดุ">
+        <Link href="/admin/categories" className={adminSecondary}>หมวดหมู่วัสดุ</Link>
+        <Link href="/admin/materials/new" className={adminPrimary}><FaPlus /> เพิ่มวัสดุ</Link>
+      </AdminHeading>
 
-      <main className="p-6">
+      <div className="space-y-3">
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-3">
             {error}
           </div>
         )}
 
         {materials.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-sm p-8 text-center">
+          <div className="bg-white rounded-lg shadow-sm p-4 text-center">
             <p className="text-gray-500 mb-4">ยังไม่มีวัสดุในระบบ</p>
             <Link
               href="/admin/materials/new"
-              className="inline-flex items-center space-x-2 bg-[#1E2E4F] text-white px-6 py-3 rounded-lg hover:bg-[#314874] transition-colors"
+              className="inline-flex items-center space-x-2 bg-[#1E2E4F] text-white px-3 py-3 rounded-lg hover:bg-[#314874] transition-colors"
             >
               <FaPlus />
               <span>เพิ่มวัสดุแรก</span>
@@ -146,22 +112,22 @@ export default function AdminMaterials() {
         ) : (
           <div className="bg-white rounded-lg shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
+              <table className="admin-table min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       วัสดุ
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="admin-table-extra px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       ราคา
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="admin-table-extra px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       หมวดหมู่
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="admin-table-extra px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       วันที่สร้าง
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="admin-table-actions px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                       การจัดการ
                     </th>
                   </tr>
@@ -169,57 +135,58 @@ export default function AdminMaterials() {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {materials.map((material) => (
                     <tr key={material.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="h-12 w-12 flex-shrink-0">
+                      <td className="px-3 py-4">
+                        <div className="flex items-center gap-2">
+                          <div className="size-9 shrink-0 sm:size-10">
                             <Image
-                              className="h-12 w-12 rounded-lg object-cover"
+                              className="size-full rounded-md object-cover"
                               src={material.image_url || '/images/logo.png'}
                               alt={material.name}
                               width={48}
                               height={48}
                             />
                           </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">
+                          <div className="min-w-0">
+                            <div className="break-words text-sm font-medium text-gray-900">
                               {material.name}
                             </div>
-                            <div className="text-sm text-gray-500 max-w-xs truncate">
+                            <div className="hidden max-w-xs truncate text-xs text-gray-500 sm:block">
                               {material.description}
                             </div>
+                            <p className="truncate text-xs text-slate-600 md:hidden">{material.price_range || material.category}</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <td className="admin-table-extra px-3 py-4 whitespace-nowrap text-sm text-gray-900">
                         {material.price_range || 'ไม่ระบุ'}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="admin-table-extra px-3 py-4 whitespace-nowrap">
                         <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
                           {material.category || 'ไม่ระบุ'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="admin-table-extra px-3 py-4 whitespace-nowrap text-sm text-gray-500">
                         {new Date(material.created_at).toLocaleDateString('th-TH')}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div className="flex items-center justify-end space-x-2">
+                      <td className="admin-table-actions px-3 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div className="flex items-center justify-end gap-0.5">
                           <Link
                             href={`/materials`}
-                            className="text-gray-600 hover:text-blue-600 transition-colors"
+                            className="admin-icon-action text-gray-600 hover:text-blue-700"
                             title="ดู"
                           >
                             <FaEye />
                           </Link>
                           <Link
                             href={`/admin/materials/edit/${material.id}`}
-                            className="text-gray-600 hover:text-blue-600 transition-colors"
+                            className="admin-icon-action text-gray-600 hover:text-blue-700"
                             title="แก้ไข"
                           >
                             <FaEdit />
                           </Link>
                           <button
                             onClick={() => handleDelete(material.id, material.name)}
-                            className="text-gray-600 hover:text-red-600 transition-colors"
+                            className="admin-icon-action text-gray-600 hover:text-red-700"
                             title="ลบ"
                           >
                             <FaTrash />
@@ -233,7 +200,7 @@ export default function AdminMaterials() {
             </div>
           </div>
         )}
-      </main>
+      </div>
     </div>
   );
 }

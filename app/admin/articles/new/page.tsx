@@ -1,5 +1,7 @@
 'use client';
 
+import { AdminHeading } from '@/app/admin/AdminHeading';
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -209,20 +211,12 @@ export default function AddArticlePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">เขียนบทความใหม่</h1>
-            <button
-              onClick={() => router.back()}
-              className="text-gray-600 hover:text-gray-800"
-            >
-              ← กลับ
-            </button>
-          </div>
+    <div>
+      <AdminHeading title="เขียนบทความใหม่" back="/admin/articles" />
+      <div className="max-w-5xl">
+        <div className="bg-white rounded-lg shadow p-4">
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Title */}
             <div>
               <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
@@ -430,7 +424,7 @@ export default function AddArticlePage() {
               <button
                 type="button"
                 onClick={() => router.back()}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+                className="px-3 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
               >
                 ยกเลิก
               </button>

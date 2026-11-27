@@ -1,10 +1,12 @@
 ﻿"use client";
 
+import { AdminHeading } from '@/app/admin/AdminHeading';
+
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaArrowLeft, FaSave, FaUpload } from 'react-icons/fa';
+import { FaSave, FaUpload } from 'react-icons/fa';
 import { supabase } from '@/lib/supabase';
 
 interface MaterialFormData {
@@ -72,7 +74,7 @@ export default function EditMaterial() {
         }
       } catch (err) {
         console.error('Error fetching material:', err);
-        setError('à¹„à¸¡à¹ˆà¸ªà¸²à¸¡à¸²à¸£à¸–à¹‚à¸«à¸¥à¸”à¸‚à¹‰à¸­à¸¡à¸¹à¸¥à¸§à¸±à¸ªà¸”à¸¸à¹„à¸”à¹‰');
+        setError('ไม่สามารถโหลดข้อมูลวัสดุได้');
       } finally {
         setLoadingData(false);
       }
@@ -128,7 +130,7 @@ export default function EditMaterial() {
     if (file) {
       setImageFile(file);
       
-      // à¸ªà¸£à¹‰à¸²à¸‡ preview
+      // สร้าง preview
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
@@ -150,7 +152,7 @@ export default function EditMaterial() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || 'à¹„à¸¡à¹ˆà¸ªà¸²à¸¡à¸²à¸£à¸–à¸­à¸±à¸žà¹‚à¸«à¸¥à¸”à¸£à¸¹à¸›à¸ à¸²à¸žà¹„à¸”à¹‰');
+        throw new Error(result.error || 'ไม่สามารถอัพโหลดรูปภาพได้');
       }
 
       return result.url;
@@ -166,25 +168,25 @@ export default function EditMaterial() {
     setError('');
 
     try {
-      // à¸•à¸£à¸§à¸ˆà¸ªà¸­à¸šà¸‚à¹‰à¸­à¸¡à¸¹à¸¥à¸žà¸·à¹‰à¸™à¸à¸²à¸™
+      // ตรวจสอบข้อมูลพื้นฐาน
       if (!formData.name.trim()) {
-        throw new Error('à¸à¸£à¸¸à¸“à¸²à¸à¸£à¸­à¸à¸Šà¸·à¹ˆà¸­à¸§à¸±à¸ªà¸”à¸¸');
+        throw new Error('กรุณากรอกชื่อวัสดุ');
       }
       if (!formData.description.trim()) {
-        throw new Error('à¸à¸£à¸¸à¸“à¸²à¸à¸£à¸­à¸à¸„à¸³à¸­à¸˜à¸´à¸šà¸²à¸¢');
+        throw new Error('กรุณากรอกคำอธิบาย');
       }
       if (!formData.category) {
-        throw new Error('à¸à¸£à¸¸à¸“à¸²à¹€à¸¥à¸·à¸­à¸à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ');
+        throw new Error('กรุณาเลือกหมวดหมู่');
       }
 
       let imageUrl = formData.image_url;
       
-      // à¸­à¸±à¸žà¹‚à¸«à¸¥à¸”à¸£à¸¹à¸›à¸ à¸²à¸žà¹ƒà¸«à¸¡à¹ˆà¸–à¹‰à¸²à¸¡à¸µ
+      // อัพโหลดรูปภาพใหม่ถ้ามี
       if (imageFile) {
         imageUrl = await uploadImage(imageFile);
       }
 
-      // à¸­à¸±à¸žà¹€à¸”à¸—à¸‚à¹‰à¸­à¸¡à¸¹à¸¥à¹ƒà¸™ database
+      // อัพเดทข้อมูลใน database
       const response = await fetch('/api/admin/materials', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -205,12 +207,12 @@ export default function EditMaterial() {
         throw new Error(`ไม่สามารถอัพเดทข้อมูลได้: ${result.error}`);
       }
 
-      // à¸à¸¥à¸±à¸šà¹„à¸›à¸«à¸™à¹‰à¸²à¸ˆà¸±à¸”à¸à¸²à¸£à¸§à¸±à¸ªà¸”à¸¸
+      // กลับไปหน้าจัดการวัสดุ
       router.push('/admin/materials');
       
     } catch (err) {
       console.error('Error updating material:', err);
-      setError(err instanceof Error ? err.message : 'à¹€à¸à¸´à¸”à¸‚à¹‰à¸­à¸œà¸´à¸”à¸žà¸¥à¸²à¸”');
+      setError(err instanceof Error ? err.message : 'เกิดข้อผิดพลาด');
     } finally {
       setLoading(false);
     }
@@ -223,49 +225,34 @@ export default function EditMaterial() {
 
   if (loadingData) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="grid min-h-32 place-items-center" role="status" aria-label="กำลังโหลด">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1E2E4F]"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link 
-                href="/admin/materials"
-                className="text-[#1E2E4F] hover:text-[#314874] transition-colors"
-              >
-                <FaArrowLeft className="h-6 w-6" />
-              </Link>
-              <h1 className="text-2xl font-bold text-gray-900">à¹à¸à¹‰à¹„à¸‚à¸§à¸±à¸ªà¸”à¸¸</h1>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div>
+      <AdminHeading title="แก้ไขวัสดุ" back="/admin/materials" />
 
-      <main className="p-6">
-        <div className="max-w-4xl mx-auto">
+      <div className="space-y-3">
+        <div className="max-w-5xl">
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-3">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm p-6">
-            <div className="space-y-6">
-              {/* à¸‚à¹‰à¸­à¸¡à¸¹à¸¥à¸žà¸·à¹‰à¸™à¸à¸²à¸™ */}
+          <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm p-4">
+            <div className="space-y-4">
+              {/* ข้อมูลพื้นฐาน */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">à¸‚à¹‰à¸­à¸¡à¸¹à¸¥à¸žà¸·à¹‰à¸™à¸à¸²à¸™</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">ข้อมูลพื้นฐาน</h3>
                 
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      à¸Šà¸·à¹ˆà¸­à¸§à¸±à¸ªà¸”à¸¸ *
+                      ชื่อวัสดุ *
                     </label>
                     <input
                       type="text"
@@ -273,14 +260,14 @@ export default function EditMaterial() {
                       value={formData.name}
                       onChange={handleInputChange}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#1E2E4F] focus:border-[#1E2E4F]"
-                      placeholder="à¹€à¸Šà¹ˆà¸™ à¸à¸±à¸™à¸ªà¸²à¸”à¸œà¹‰à¸²à¹ƒà¸š PVC"
+                      placeholder="เช่น กันสาดผ้าใบ PVC"
                       required
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      à¸„à¸³à¸­à¸˜à¸´à¸šà¸²à¸¢ *
+                      คำอธิบาย *
                     </label>
                     <textarea
                       name="description"
@@ -288,14 +275,14 @@ export default function EditMaterial() {
                       onChange={handleInputChange}
                       rows={4}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#1E2E4F] focus:border-[#1E2E4F]"
-                      placeholder="à¸­à¸˜à¸´à¸šà¸²à¸¢à¸„à¸¸à¸“à¸ªà¸¡à¸šà¸±à¸•à¸´à¹à¸¥à¸°à¸›à¸£à¸°à¹‚à¸¢à¸Šà¸™à¹Œà¸‚à¸­à¸‡à¸§à¸±à¸ªà¸”à¸¸"
+                      placeholder="อธิบายคุณสมบัติและประโยชน์ของวัสดุ"
                       required
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ *
+                      หมวดหมู่ *
                     </label>
                     <select
                       name="category"
@@ -304,7 +291,7 @@ export default function EditMaterial() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#1E2E4F] focus:border-[#1E2E4F]"
                       required
                     >
-                      <option value="">à¹€à¸¥à¸·à¸­à¸à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ</option>
+                      <option value="">เลือกหมวดหมู่</option>
                       {categories.map((category) => (
                         <option key={category.id} value={category.name}>
                           {category.name}
@@ -315,24 +302,24 @@ export default function EditMaterial() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      à¸£à¸²à¸„à¸²
+                      ราคา
                     </label>
                     <input
                       type="text"
                       name="price_range"
                       value={formData.price_range}
                       onChange={handleInputChange}
-                      placeholder="à¹€à¸Šà¹ˆà¸™ 150 à¸šà¸²à¸—/à¸•à¸²à¸£à¸²à¸‡à¹€à¸¡à¸•à¸£ à¸«à¸£à¸·à¸­ 1,500 - 3,000 à¸šà¸²à¸—"
+                      placeholder="เช่น 150 บาท/ตารางเมตร หรือ 1,500 - 3,000 บาท"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#1E2E4F] focus:border-[#1E2E4F]"
                     />
                     <p className="mt-1 text-xs text-gray-500">
-                      à¸à¸£à¸­à¸à¸£à¸²à¸„à¸²à¸«à¸£à¸·à¸­à¸Šà¹ˆà¸§à¸‡à¸£à¸²à¸„à¸²à¸‚à¸­à¸‡à¸§à¸±à¸ªà¸”à¸¸ (à¹€à¸Šà¹ˆà¸™ &quot;150 à¸šà¸²à¸—/à¸•à¸£.à¸¡.&quot; à¸«à¸£à¸·à¸­ &quot;1,000 - 2,000 à¸šà¸²à¸—&quot;)
+                      กรอกราคาหรือช่วงราคาของวัสดุ (เช่น &quot;150 บาท/ตร.ม.&quot; หรือ &quot;1,000 - 2,000 บาท&quot;)
                     </p>
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      URL à¸£à¸¹à¸›à¸ à¸²à¸ž
+                      URL รูปภาพ
                     </label>
                     <input
                       type="url"
@@ -346,10 +333,10 @@ export default function EditMaterial() {
                 </div>
               </div>
 
-              {/* à¸£à¸¹à¸›à¸ à¸²à¸ž */}
+              {/* รูปภาพ */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">à¸£à¸¹à¸›à¸ à¸²à¸ž</h3>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">รูปภาพ</h3>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
                   {imagePreview ? (
                     <div className="space-y-4">
                       <Image
@@ -361,7 +348,7 @@ export default function EditMaterial() {
                       />
                       <div className="flex justify-center space-x-2">
                         <label className="cursor-pointer bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
-                          à¹€à¸›à¸¥à¸µà¹ˆà¸¢à¸™à¸£à¸¹à¸›
+                          เปลี่ยนรูป
                           <input
                             type="file"
                             className="hidden"
@@ -374,7 +361,7 @@ export default function EditMaterial() {
                           onClick={resetImage}
                           className="bg-gray-500 text-white px-3 py-1 rounded text-sm hover:bg-gray-600"
                         >
-                          à¸£à¸µà¹€à¸‹à¹‡à¸•
+                          รีเซ็ต
                         </button>
                       </div>
                     </div>
@@ -384,7 +371,7 @@ export default function EditMaterial() {
                       <div className="mt-4">
                         <label className="cursor-pointer">
                           <span className="mt-2 block text-sm font-medium text-gray-900">
-                            à¸„à¸¥à¸´à¸à¹€à¸žà¸·à¹ˆà¸­à¹€à¸¥à¸·à¸­à¸à¸£à¸¹à¸›à¸ à¸²à¸ž
+                            คลิกเพื่อเลือกรูปภาพ
                           </span>
                           <input
                             type="file"
@@ -399,13 +386,13 @@ export default function EditMaterial() {
                 </div>
               </div>
 
-              {/* à¸„à¸¸à¸“à¸ªà¸¡à¸šà¸±à¸•à¸´ */}
+              {/* คุณสมบัติ */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">à¸„à¸¸à¸“à¸ªà¸¡à¸šà¸±à¸•à¸´</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">คุณสมบัติ</h3>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      à¸£à¸²à¸¢à¸à¸²à¸£à¸„à¸¸à¸“à¸ªà¸¡à¸šà¸±à¸•à¸´
+                      รายการคุณสมบัติ
                     </label>
                     <div className="flex gap-2 mb-3">
                       <input
@@ -414,14 +401,14 @@ export default function EditMaterial() {
                         onChange={(e) => setNewFeature(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addFeature())}
                         className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#1E2E4F] focus:border-[#1E2E4F]"
-                        placeholder="à¹€à¸Šà¹ˆà¸™ à¸à¸±à¸™à¸™à¹‰à¸³ 100%"
+                        placeholder="เช่น กันน้ำ 100%"
                       />
                       <button
                         type="button"
                         onClick={addFeature}
                         className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                       >
-                        à¹€à¸žà¸´à¹ˆà¸¡
+                        เพิ่ม
                       </button>
                     </div>
                     
@@ -435,7 +422,7 @@ export default function EditMaterial() {
                               onClick={() => removeFeature(index)}
                               className="text-red-500 hover:text-red-700"
                             >
-                              à¸¥à¸š
+                              ลบ
                             </button>
                           </div>
                         ))}
@@ -446,26 +433,26 @@ export default function EditMaterial() {
               </div>
             </div>
 
-            {/* à¸›à¸¸à¹ˆà¸¡à¸šà¸±à¸™à¸—à¸¶à¸ */}
+            {/* ปุ่มบันทึก */}
             <div className="mt-8 flex justify-end space-x-4">
               <Link
                 href="/admin/materials"
-                className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                className="px-3 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
               >
-                à¸¢à¸à¹€à¸¥à¸´à¸
+                ยกเลิก
               </Link>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2 bg-[#1E2E4F] text-white rounded-lg hover:bg-[#314874] transition-colors flex items-center space-x-2 disabled:opacity-50"
+                className="px-3 py-2 bg-[#1E2E4F] text-white rounded-lg hover:bg-[#314874] transition-colors flex items-center space-x-2 disabled:opacity-50"
               >
                 <FaSave />
-                <span>{loading ? 'à¸à¸³à¸¥à¸±à¸‡à¸šà¸±à¸™à¸—à¸¶à¸...' : 'à¸šà¸±à¸™à¸—à¸¶à¸à¸à¸²à¸£à¹à¸à¹‰à¹„à¸‚'}</span>
+                <span>{loading ? 'กำลังบันทึก...' : 'บันทึกการแก้ไข'}</span>
               </button>
             </div>
           </form>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
