@@ -169,17 +169,13 @@ export default function AdminGalleryPage() {
 
   function removeItem(entry: GalleryItem) {
     const name = entry.title || entry.alt || 'ผลงานไม่มีชื่อ';
-    if (!window.confirm(`ลบ “${name}” ถาวรหรือไม่? ระบบจะลบไฟล์รูปของผลงานนี้ด้วย หากไม่มีรายการอื่นใช้อยู่`)) return;
+    if (!window.confirm(`ลบ “${name}” และไฟล์รูปจาก Storage ถาวรหรือไม่? หากต้องการเก็บรูปไว้ ให้ซ่อนผลงานแทน`)) return;
     void perform(async () => {
       const query = new URLSearchParams({ type: 'item', id: entry.id });
-      const result = await request<{ image: string }>(`${endpoint}?${query}`, { method: 'DELETE' });
+      await request(`${endpoint}?${query}`, { method: 'DELETE' });
       setItems((previous) => previous.filter(({ id }) => id !== entry.id));
       if (item.id === entry.id) editItem();
-      if (result.image === 'failed') {
-        setError('ลบรายการผลงานแล้ว แต่ยังลบไฟล์รูปใน Storage ไม่สำเร็จ');
-      } else {
-        setNotice(result.image === 'removed' ? 'ลบผลงานและไฟล์รูปแล้ว' : 'ลบรายการผลงานแล้ว');
-      }
+      setNotice('ลบผลงานและไฟล์รูปถาวรแล้ว');
     });
   }
 

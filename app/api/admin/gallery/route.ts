@@ -133,25 +133,41 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ success: true });
   }
 
-  const removed = await supabaseAdmin.from('gallery_items').delete().eq('id', id).select('image_url').maybeSingle();
-  if (removed.error) return databaseError(removed.error);
-  if (!removed.data) return NextResponse.json({ success: true, image: 'unchanged' });
+  const item = await supabaseAdmin.from('gallery_items').select('image_url').eq('id', id).maybeSingle();
+  if (item.error) return databaseError(item.error);
+  if (!item.data) return NextResponse.json({ success: true });
 
-  const path = galleryImagePath(removed.data.image_url);
-  if (!path) return NextResponse.json({ success: true, image: 'kept' });
+  const imageUrl = item.data.image_url;
+  const path = galleryImagePath(imageUrl);
+  if (!path) {
+    return NextResponse.json({ error: 'ลบถาวรไม่ได้ เพราะไฟล์รูปอยู่นอกโฟลเดอร์แกลเลอรี' }, { status: 409 });
+  }
 
   const references = await supabaseAdmin.from('gallery_items')
-    .select('id', { count: 'exact', head: true }).eq('image_url', removed.data.image_url);
-  if (references.error) {
-    console.error('Gallery image reference check failed:', references.error.message);
-    return NextResponse.json({ success: true, image: 'failed' });
+    .select('id', { count: 'exact', head: true }).eq('image_url', imageUrl).neq('id', id);
+  if (references.error) return databaseError(references.error);
+  if (references.count) {
+    return NextResponse.json({ error: 'ลบถาวรไม่ได้ เพราะมีผลงานอื่นใช้รูปนี้อยู่ กรุณาเปลี่ยนรูปของรายการอื่นก่อน' }, { status: 409 });
   }
-  if (references.count) return NextResponse.json({ success: true, image: 'kept' });
 
   const storage = await supabaseAdmin.storage.from('images').remove([path]);
   if (storage.error) {
     console.error('Gallery image removal failed:', storage.error.message);
-    return NextResponse.json({ success: true, image: 'failed' });
+    return NextResponse.json({ error: 'ลบไฟล์รูปจาก Storage ไม่สำเร็จ กรุณาลองอีกครั้ง' }, { status: 502 });
   }
-  return NextResponse.json({ success: true, image: 'removed' });
+
+  const removed = await supabaseAdmin.from('gallery_items')
+    .delete().eq('id', id).eq('image_url', imageUrl).select('id').maybeSingle();
+  if (removed.error) {
+    console.error('Gallery item removal failed after deleting the file:', removed.error.message);
+    return NextResponse.json({ error: 'ลบไฟล์รูปแล้ว แต่ลบรายการไม่สำเร็จ กรุณากดลบอีกครั้ง' }, { status: 502 });
+  }
+  if (!removed.data) {
+    const current = await supabaseAdmin.from('gallery_items').select('id').eq('id', id).maybeSingle();
+    if (current.error) return databaseError(current.error);
+    if (current.data) {
+      return NextResponse.json({ error: 'รูปของผลงานถูกเปลี่ยนระหว่างลบ กรุณาโหลดหน้าใหม่' }, { status: 409 });
+    }
+  }
+  return NextResponse.json({ success: true });
 }
