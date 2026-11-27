@@ -16,6 +16,7 @@ type GalleryItem = {
   is_active: boolean;
 };
 type SelectedImage = { id: string; file: File; image_url?: string };
+type DeleteTarget = { type: 'item' | 'category'; id: string; name: string };
 
 const newItem: Omit<GalleryItem, 'id'> & { id?: string } = {
   title: '', alt: '', image_url: '', category_id: null, display_order: 0, is_active: true,
@@ -68,8 +69,15 @@ export default function AdminGalleryPage() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+  const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
   const itemForm = useRef<HTMLFormElement>(null);
+  const deleteDialog = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = deleteDialog.current;
+    if (deleteTarget && dialog && !dialog.open) dialog.showModal();
+  }, [deleteTarget]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -167,28 +175,27 @@ export default function AdminGalleryPage() {
     setNotice('บันทึกหมวดหมู่แล้ว');
   }
 
-  function removeItem(entry: GalleryItem) {
-    const name = entry.title || entry.alt || 'ผลงานไม่มีชื่อ';
-    if (!window.confirm(`ลบ “${name}” และไฟล์รูปจาก Storage ถาวรหรือไม่? หากต้องการเก็บรูปไว้ ให้ซ่อนผลงานแทน`)) return;
-    void perform(async () => {
-      const query = new URLSearchParams({ type: 'item', id: entry.id });
-      await request(`${endpoint}?${query}`, { method: 'DELETE' });
-      setItems((previous) => previous.filter(({ id }) => id !== entry.id));
-      if (item.id === entry.id) editItem();
-      setNotice('ลบผลงานและไฟล์รูปถาวรแล้ว');
-    });
+  function askToDelete(target: DeleteTarget) {
+    setError('');
+    setDeleteTarget(target);
   }
 
-  function removeCategory(entry: Category) {
-    if (!window.confirm(`ลบหมวดหมู่ “${entry.name}” หรือไม่?`)) return;
-    void perform(async () => {
-      const query = new URLSearchParams({ type: 'category', id: entry.id });
-      await request(`${endpoint}?${query}`, { method: 'DELETE' });
-      setCategories((previous) => previous.filter(({ id }) => id !== entry.id));
-      setItem((previous) => previous.category_id === entry.id ? { ...previous, category_id: null } : previous);
-      if (category.id === entry.id) setCategory({ name: '' });
+  async function confirmDelete() {
+    if (!deleteTarget) return;
+    const { type, id } = deleteTarget;
+    const query = new URLSearchParams({ type, id });
+    await request(`${endpoint}?${query}`, { method: 'DELETE' });
+    deleteDialog.current?.close();
+    if (type === 'item') {
+      setItems((previous) => previous.filter((entry) => entry.id !== id));
+      if (item.id === id) editItem();
+      setNotice('ลบผลงานและไฟล์รูปถาวรแล้ว');
+    } else {
+      setCategories((previous) => previous.filter((entry) => entry.id !== id));
+      setItem((previous) => previous.category_id === id ? { ...previous, category_id: null } : previous);
+      if (category.id === id) setCategory({ name: '' });
       setNotice('ลบหมวดหมู่แล้ว');
-    });
+    }
   }
 
   const categoryUsage = new Map<string, number>();
@@ -199,9 +206,32 @@ export default function AdminGalleryPage() {
   return (
     <div>
       <AdminHeading title="จัดการผลงาน" />
+      <dialog ref={deleteDialog} aria-labelledby="gallery-delete-title" aria-describedby="gallery-delete-description"
+        onCancel={(event) => { if (pending) event.preventDefault(); }}
+        onClose={() => { setDeleteTarget(null); setError(''); }}
+        className="fixed inset-0 m-auto w-[calc(100%_-_2rem)] max-w-sm rounded-xl border border-slate-200 bg-white p-5 text-slate-900 shadow-xl backdrop:bg-slate-950/45">
+        <h2 id="gallery-delete-title" className="text-lg font-semibold">
+          {deleteTarget?.type === 'item' ? 'ลบผลงานถาวร' : 'ลบหมวดหมู่'}
+        </h2>
+        <p id="gallery-delete-description" className="mt-2 break-words text-sm text-slate-700">
+          {deleteTarget?.type === 'item'
+            ? `“${deleteTarget.name}” และไฟล์รูปจะถูกลบถาวร`
+            : `ต้องการลบหมวดหมู่ “${deleteTarget?.name ?? ''}” หรือไม่?`}
+        </p>
+        {pending && <p role="status" className="mt-3 text-sm text-slate-600">กำลังลบ…</p>}
+        {error && deleteTarget && <p role="alert" className="mt-3 rounded-md bg-red-50 p-2 text-sm text-red-800">{error}</p>}
+        <form onSubmit={(event) => submit(event, confirmDelete)} className="mt-4 flex justify-end gap-2">
+          <button autoFocus type="button" className={adminSecondary} disabled={pending}
+            onClick={() => deleteDialog.current?.close()}>ยกเลิก</button>
+          <button type="submit" disabled={pending}
+            className="min-h-9 rounded-md bg-red-700 px-3 text-sm font-medium text-white hover:bg-red-800 disabled:opacity-60">
+            ยืนยันการลบ
+          </button>
+        </form>
+      </dialog>
       <div className="space-y-3">
         {loading && <p role="status">กำลังโหลดข้อมูล…</p>}
-        {error && <p role="alert" className="rounded-md bg-red-50 p-3 text-red-800">{error}</p>}
+        {error && !deleteTarget && <p role="alert" className="rounded-md bg-red-50 p-3 text-red-800">{error}</p>}
         {notice && <p role="status" className="rounded-md bg-green-50 p-3 text-green-800">{notice}</p>}
         {ready && (
           <>
@@ -291,7 +321,7 @@ export default function AdminGalleryPage() {
                             onClick={() => setCategory(entry)}><FiEdit2 aria-hidden /></button>
                           <button className="admin-icon-action text-red-700 disabled:opacity-35" type="button" disabled={pending || count > 0}
                             aria-label={`ลบหมวดหมู่ ${entry.name}`} title={count ? 'ยังมีผลงานใช้หมวดนี้' : 'ลบหมวดหมู่'}
-                            onClick={() => removeCategory(entry)}><FiTrash2 aria-hidden /></button>
+                            onClick={() => askToDelete({ type: 'category', id: entry.id, name: entry.name })}><FiTrash2 aria-hidden /></button>
                         </div>
                       </li>
                     );
@@ -324,7 +354,7 @@ export default function AdminGalleryPage() {
                         }}><FiEdit2 aria-hidden /></button>
                       <button className="admin-icon-action text-red-700" type="button" disabled={pending}
                         aria-label={`ลบผลงาน ${entry.title || entry.alt || 'ไม่มีชื่อ'}`} title="ลบผลงาน"
-                        onClick={() => removeItem(entry)}><FiTrash2 aria-hidden /></button>
+                        onClick={() => askToDelete({ type: 'item', id: entry.id, name: entry.title || entry.alt || 'ผลงานไม่มีชื่อ' })}><FiTrash2 aria-hidden /></button>
                     </div>
                   </li>
                 ))}
